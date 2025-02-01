@@ -284,10 +284,17 @@ public class Vision
    */
   enum Cameras
   {
+    BackRight("tba",
+             new Rotation3d(0, Math.toRadians(-24.094), Math.toRadians(30)),
+             new Translation3d(Units.inchesToMeters(12.056),
+                               Units.inchesToMeters(10.981),
+                               Units.inchesToMeters(8.44)),
+             VecBuilder.fill(4, 4, 8), VecBuilder.fill(0.5, 0.5, 1)),
+    /**
     /**
      * Left Camera
      */
-    LEFT_CAM("left",
+    BackLeft("tba",
              new Rotation3d(0, Math.toRadians(-24.094), Math.toRadians(30)),
              new Translation3d(Units.inchesToMeters(12.056),
                                Units.inchesToMeters(10.981),
@@ -296,7 +303,7 @@ public class Vision
     /**
      * Right Camera
      */
-    RIGHT_CAM("right",
+    FrontLeft("Front_Left",
               new Rotation3d(0, Math.toRadians(-24.094), Math.toRadians(-30)),
               new Translation3d(Units.inchesToMeters(12.056),
                                 Units.inchesToMeters(-10.981),
@@ -305,7 +312,7 @@ public class Vision
     /**
      * Center Camera
      */
-    CENTER_CAM("photonvision",
+    FrontRight("Front_Right",
                new Rotation3d(0, Units.degreesToRadians(20), 20),
                new Translation3d(Units.inchesToMeters(-7.435273),
                                  Units.inchesToMeters(-7.435273),
@@ -320,6 +327,8 @@ public class Vision
      * Camera instance for comms.
      */
     public final  PhotonCamera                 camera;
+
+    public final PhotonCamera                   cameraRight;
     /**
      * Pose estimator for camera.
      */
@@ -372,7 +381,9 @@ public class Vision
     {
       latencyAlert = new Alert("'" + name + "' Camera is experiencing high latency.", AlertType.kWarning);
 
-      camera = new PhotonCamera(name);
+      camera = new PhotonCamera("Front_Left");
+      cameraRight = new PhotonCamera("Front_Right");
+
 
       // https://docs.wpilib.org/en/stable/docs/software/basic-programming/coordinate-system.html
       robotToCamTransform = new Transform3d(robotToCamTranslation, robotToCamRotation);
