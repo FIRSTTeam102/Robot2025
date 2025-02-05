@@ -284,7 +284,10 @@ public class Vision
    */
   enum Cameras
   {
-    BackRight("tba",
+    /*
+     * Back Right Camera
+     */
+    BackRight("BackRight",
              new Rotation3d(0, Math.toRadians(-24.094), Math.toRadians(30)),
              new Translation3d(Units.inchesToMeters(12.056),
                                Units.inchesToMeters(10.981),
@@ -292,27 +295,27 @@ public class Vision
              VecBuilder.fill(4, 4, 8), VecBuilder.fill(0.5, 0.5, 1)),
     /**
     /**
-     * Left Camera
+     * Back Left Camera
      */
-    BackLeft("tba",
+    BackLeft("BackLeft",
              new Rotation3d(0, Math.toRadians(-24.094), Math.toRadians(30)),
              new Translation3d(Units.inchesToMeters(12.056),
                                Units.inchesToMeters(10.981),
                                Units.inchesToMeters(8.44)),
              VecBuilder.fill(4, 4, 8), VecBuilder.fill(0.5, 0.5, 1)),
     /**
-     * Right Camera
+     * Front Left Camera
      */
-    FrontLeft("Front_Left",
+    FrontLeft("FrontLeft",
               new Rotation3d(0, Math.toRadians(-24.094), Math.toRadians(-30)),
               new Translation3d(Units.inchesToMeters(12.056),
                                 Units.inchesToMeters(-10.981),
                                 Units.inchesToMeters(8.44)),
               VecBuilder.fill(4, 4, 8), VecBuilder.fill(0.5, 0.5, 1)),
-    /**
-     * Center Camera
+    /*
+    Front Right Camera*
      */
-    FrontRight("Front_Right",
+    FrontRight("FrontRight",
                new Rotation3d(0, Units.degreesToRadians(20), 20),
                new Translation3d(Units.inchesToMeters(-7.435273),
                                  Units.inchesToMeters(-7.435273),
@@ -328,7 +331,6 @@ public class Vision
      */
     public final  PhotonCamera                 camera;
 
-    public final PhotonCamera                   cameraRight;
     /**
      * Pose estimator for camera.
      */
@@ -381,8 +383,7 @@ public class Vision
     {
       latencyAlert = new Alert("'" + name + "' Camera is experiencing high latency.", AlertType.kWarning);
 
-      camera = new PhotonCamera("Front_Left");
-      cameraRight = new PhotonCamera("Front_Right");
+      camera = new PhotonCamera(name);
 
 
       // https://docs.wpilib.org/en/stable/docs/software/basic-programming/coordinate-system.html
