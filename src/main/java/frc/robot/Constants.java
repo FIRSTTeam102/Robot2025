@@ -52,4 +52,16 @@ public final class Constants
   {
     public static final boolean DRIVEWITHVISION = true;
   }
+
+  public static class ShooterConstants{
+    //CAN ID's
+    public static final int leftMotorID = 100; //TEMPORARY
+    public static final int rightMotorID = 200;//temporary
+    //shooter speeds
+    public static final double maxShooterSpeed = 1;
+    public static final double L1LeftShooterSpeed = 1;
+    public static final double L1RightShooterSpeed = 0.5;
+
+
+  }
 }

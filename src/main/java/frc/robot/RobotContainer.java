@@ -17,6 +17,8 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.OperatorConstants;
+import frc.robot.commands.ShootCoral;
+import frc.robot.subsystems.Shooter;
 //import frc.robot.commands.swervedrive.drivebase.AbsoluteDriveAdv;
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
 import java.io.File;
@@ -32,7 +34,12 @@ public class RobotContainer
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
   final         CommandXboxController driverXbox = new CommandXboxController(0);
+  final         CommandXboxController operatorXbox = new CommandXboxController(1);
+  final         CommandXboxController testerXbox = new CommandXboxController(5);
   // The robot's subsystems and commands are defined here...
+
+  public final Shooter shooter = new Shooter();
+
   //Create the swerve subsystem using the YAGSL config files
   private final SwerveSubsystem drivebase = new SwerveSubsystem(new File(Filesystem.getDeployDirectory(),
                                                                          "swerve/jc"));
@@ -99,6 +106,10 @@ public class RobotContainer
    */
   private void configureBindings()
   {
+
+    testerXbox.a().whileTrue(new ShootCoral(shooter, Constants.ShooterConstants.maxShooterSpeed,Constants.ShooterConstants.maxShooterSpeed));
+
+
     // (Condition) ? Return-On-True : Return-on-False
 
     drivebase.setDefaultCommand(!RobotBase.isSimulation() ?
