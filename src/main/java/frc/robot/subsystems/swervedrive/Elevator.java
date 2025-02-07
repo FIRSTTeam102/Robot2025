@@ -22,7 +22,7 @@ import frc.robot.Constants.OperatorConstants;
 public class Elevator {
     private SparkMax motor = new SparkMax( 0, MotorType.kBrushless); //change ID later
     private SparkClosedLoopController closedLoopController = motor.getClosedLoopController(); 
-  // add lidar sensor (distance)
+  // TODO: add lidar sensor (distance)
   private SparkMaxConfig config = new SparkMaxConfig(); //encoder!!!
   // private Encoder encoder = new Encoder(null, null); <-- might not be needed
    private DigitalInput bottomlimitSwitch = new DigitalInput(1); //change channel later
@@ -30,7 +30,7 @@ public class Elevator {
    public Elevator(){
        config.encoder
         .positionConversionFactor(1000)
-        .velocityConversionFactor(1000); //change factors later
+        .velocityConversionFactor(1000); //TODO: change factors later
     }
     
 
