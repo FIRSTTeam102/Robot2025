@@ -11,10 +11,10 @@ import edu.wpi.first.wpilibj2.command.Command;
 public class ShootCoral extends Command {
   /** Creates a new ShootCoral. */
 
-  private Shooter shooter = new Shooter();
   private double leftMotorSpeed;
   private double rightMotorSpeed;
-  
+  private Shooter shooter;
+
   public ShootCoral(Shooter shooter, double leftMotorSpeed, double rightMotorSpeed) {
     this.shooter = shooter;
     this.leftMotorSpeed = leftMotorSpeed;
@@ -42,6 +42,12 @@ public class ShootCoral extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+  //if the coral sensor sees coral, keep motors running, if the coral is not sensed, stop the motors
+    if(shooter.getCoralSensor()){ 
+      return false;
+    }
+    else{
+      return true;
+    }
   }
 }

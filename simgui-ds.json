@@ -13,7 +13,6 @@
     {
       "axisConfig": [
         {
-          "decKey": 65,
           "incKey": 68
         },
         {
@@ -32,13 +31,18 @@
           "incKey": 76
         }
       ],
-      "axisCount": 5,
+      "axisCount": 0,
       "buttonCount": 4,
       "buttonKeys": [
-        90,
+        65,
         88,
         67,
         86,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
         -1
       ],
       "povConfig": [
@@ -104,6 +108,9 @@
     }
   ],
   "robotJoysticks": [
+    {},
+    {},
+    {},
     {},
     {},
     {

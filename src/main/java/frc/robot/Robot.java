@@ -44,7 +44,6 @@ public class Robot extends LoggedRobot
   @Override
   public void robotInit()
   {
-    Logger.recordMetadata("ProjectName", "MyProject"); // Set a metadata value
     Logger.addDataReceiver(new NT4Publisher()); // Publish data to NetworkTables
     Logger.start();
 
