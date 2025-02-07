@@ -29,14 +29,16 @@ import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DriverStation;
-//import edu.wpi.first.wpilibj.DriverStation.Alliance;
+
 import edu.wpi.first.wpilibj.Timer;
+
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Config;
 import frc.robot.Constants;
 import frc.robot.Constants.VisionConstants;
+import frc.robot.Constants.DrivebaseConstants.TargetSide;
 import frc.robot.subsystems.swervedrive.Vision.Cameras;
 import java.io.File;
 import java.io.IOException;
@@ -48,6 +50,8 @@ import java.util.function.Supplier;
 import org.json.simple.parser.ParseException;
 import org.littletonrobotics.junction.AutoLogOutput;
 import org.photonvision.targeting.PhotonPipelineResult;
+import org.photonvision.targeting.PhotonTrackedTarget;
+
 import swervelib.SwerveController;
 import swervelib.SwerveDrive;
 import swervelib.SwerveDriveTest;
@@ -57,6 +61,8 @@ import swervelib.parser.SwerveDriveConfiguration;
 import swervelib.parser.SwerveParser;
 import swervelib.telemetry.SwerveDriveTelemetry;
 import swervelib.telemetry.SwerveDriveTelemetry.TelemetryVerbosity;
+
+
 
 public class SwerveSubsystem extends SubsystemBase
 {
@@ -228,8 +234,75 @@ public class SwerveSubsystem extends SubsystemBase
     // IF USING CUSTOM PATHFINDER ADD BEFORE THIS LINE
     PathfindingCommand.warmupCommand().schedule();
   }
+  /*
+   * isValidTargetFor Scoring: is this a valid target to score on?
+   * Target must be within a sight of the robot and a valid target
+   * for our alliance
+   */
+  public boolean isValidTargetForScoring(PhotonTrackedTarget bestTarget){
+    //look up the target & verify it is valid for our alliance
+    //Blue Alliance reef tags = 17, 18, 19, 20, 21, 22
+    //Red Alliance reef tags = 6, 7, 8, 9, 10, 11
+    int targetAprilTag = bestTarget.getFiducialId();
+    var alliance = DriverStation.getAlliance();
+    if (!alliance.isPresent()){ return false;}
+      
+    if ((targetAprilTag >= 17 && targetAprilTag <= 22) && 
+          alliance.get() == DriverStation.Alliance.Blue){
+       return true;
+    }
+    if ((targetAprilTag >= 6 && targetAprilTag <= 11) && 
+          alliance.get() == DriverStation.Alliance.Red){
+        return true;
+    }
+    return false;
+  }
+  /*
+  *  getScorePose: look up the pose2d to drive to in order to align to the target
+  */
+  public Pose2d getScorePose(TargetSide scoringSide, int bestTargetID){
+    //look up the scoring position based on the april tag and either left or right of
+    //the tag to score on the reef
 
+    for (int pos = 0; pos < ScoringPositionConstants.scoringPositions.length; pos++){
+      if (ScoringPositionConstants.scoringPositions[pos].aprilTagId() == bestTargetID &&
+          ScoringPositionConstants.scoringPositions[pos].scoreSide() == scoringSide){
 
+            ScoringPosConst driveTo = ScoringPositionConstants.scoringPositions[pos];
+            //use the scoring position record to create a new Pose2d to drive to
+            return(new Pose2d(new Translation2d(driveTo.xPos(),driveTo.yPos()),
+                              Rotation2d.fromDegrees(driveTo.angleOffset())));
+
+      }
+    }
+    return(new Pose2d());
+  }
+  /*
+   * align to Score - align to either the left or right of the april tag on the coral reef. 
+   * make sure the returned target is a valid tag for our alliance
+   */
+  public Command alignToReefScore(Cameras camera, TargetSide scoringSide)
+  {
+    //find best target on the reef that we currently see
+    Optional<PhotonPipelineResult> pipelineResult = camera.getBestResult();
+    if (pipelineResult.isPresent()){
+        var result = pipelineResult.get();
+        if (result.hasTargets())
+        {
+          PhotonTrackedTarget bestTarget = result.getBestTarget();
+          
+          //verify that target is valid for scoring
+          if (isValidTargetForScoring(bestTarget)){
+            //determine scoring position Pose2D on either the LEFT or RIGHT of the
+            //target to autogenerate a pathplanner path to set up for scoring
+
+            return (driveToPose(getScorePose(scoringSide, bestTarget.getFiducialId())));
+          }
+        }
+      }
+    //if anything is wrong with this target do nothing
+     return Commands.none(); 
+  }
   /**
    * Aim the robot at the target returned by PhotonVision.
    *
@@ -248,7 +321,7 @@ public class SwerveSubsystem extends SubsystemBase
           drive(getTargetSpeeds(0,
                                 0,
                                 Rotation2d.fromDegrees(result.getBestTarget()
-                                                             .getYaw()))); // Not sure if this will work, more math may be required.
+                                                             .getYaw()))); 
         }
       }
     });

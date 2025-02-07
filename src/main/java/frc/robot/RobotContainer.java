@@ -117,6 +117,7 @@ public class RobotContainer
     //define the button to command bindings to run in test mode
     if (DriverStation.isTest())
     {
+      //drivebase.setDefaultCommand(driveRobotOrientAngularVelocity);
       driverXbox.a().whileTrue(drivebase.sysIdAngleMotorCommand());
       driverXbox.b().whileTrue(drivebase.sysIdDriveMotorCommand());
       driverXbox.y().whileTrue(drivebase.driveToPose(
