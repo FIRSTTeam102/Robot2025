@@ -29,35 +29,49 @@ public class Elevator {
     
         private SparkMax motor = new SparkMax(ElevatorConstants.ELEVATOR_MOTOR_ID, MotorType.kBrushless); //change ID later
     private SparkClosedLoopController closedLoopController = motor.getClosedLoopController(); 
-    // add lidar sensor (distance)
-    private SparkMaxConfig config = new SparkMaxConfig(); 
-   // private Encoder encoder = new Encoder(null, null); <-- might not be needed
-    private DigitalInput bottomlimitSwitch = new DigitalInput(ElevatorConstants.LIMIT_SWITCH_PORT); //change channel later
+  // TODO: add lidar sensor (distance)
+  private SparkMaxConfig config = new SparkMaxConfig(); //encoder!!!
+  // private Encoder encoder = new Encoder(null, null); <-- might not be needed
+   private DigitalInput bottomlimitSwitch = new DigitalInput(1); //change channel later
 
-    public Elevator(){
-        config.encoder
-            .positionConversionFactor(1000)
-            .velocityConversionFactor(1000); //change factors later and read documentation on this
-        config
-            .idleMode(IdleMode.kBrake);
-
+   public Elevator(){
+       config.encoder
+        .positionConversionFactor(1000)
+        .velocityConversionFactor(1000); //TODO: change factors later
+    }
     
+
+
+float height = 0; 
+
+public class ManualElevatorControl extends CommandBase {
+    private Elevator elevator;
+    private DoubleSupplier inputSupplier;
+    
+    public void moveManual (Elevator elevator, DoubleSupplier inputSupplier){
+    this.elevator = elevator;
+    this.inputSupplier = inputSupplier;
+    addRequirements(elevator);
+    elevator.setManualModeInput(inputSupplier);
+    }
+    @Override
+    public void initialize() {}
+
+    @Override
+    public void execute() {
+        if (elevator.inManualMode)
+            elevator.setSpeed(
+                MathUtil.applyDeadband(inputSupplier.getAsDouble(), OperatorConstants.operatorJoystickDeadband)*-.4);
     }
 
-float setVelocity = 1; //velocity in rpm (will probably be higher) 
-float height = 0; // velocity in rpm for diff lvls
+    @Override
+    public void end(boolean interrupted){
+        elevator.stop();
+    }
 
-
-    public void setMotorSpeed(){
-// Set the setpoint of the PID controller in raw position mode
-    closedLoopController.setReference(setVelocity, ControlType.kPosition);    
-}
-    
-
-
-public void moveManual(){
-    if ( bottomlimitSwitch.get() == false ) {
-        setMotorSpeed();   
+    @Override
+    public boolean isFinished(){
+        return false;
     }
 }
 
