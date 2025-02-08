@@ -52,4 +52,7 @@ public final class Constants
   {
     public static final boolean DRIVEWITHVISION = true;
   }
+  public static class FunnelConstants{
+   public static final int FUNNELSENSOR = 1;
+  }
 }
