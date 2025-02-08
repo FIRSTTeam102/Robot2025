@@ -1,5 +1,7 @@
 package frc.robot.subsystems.swervedrive;
 
+import java.util.function.DoubleSupplier;
+
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.SparkBase;
 import com.revrobotics.spark.SparkBase.ControlType;
@@ -20,6 +22,8 @@ import swervelib.parser.json.modules.ConversionFactorsJson;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 
 
+import edu.wpi.first.math.MathUtil;
+import frc.robot.Constants.OperatorConstants;
 
 public class Elevator {
     
