@@ -55,13 +55,15 @@ public final class Constants
 
   public static class ShooterConstants{
     //CAN ID's
-    public static final int leftMotorID = 31; //TEMPORARY
-    public static final int rightMotorID = 32;//temporary
+    public static final int leftMotorID = 32; //TEMPORARY
+    public static final int rightMotorID = 33;//temporary
 
     public static final int shooterSensor = 2;
 
     //shooter speeds
-    public static final double maxShooterSpeed = 1;
+    public static final double rightMaxShooterSpeed = 1;
+    public static final double LeftMaxShooterSpeed = -1;
+
     public static final double L1LeftShooterSpeed = 1;
     public static final double L1RightShooterSpeed = 0.5;
     public static final double slowShooterSpeed = 0.25;
