@@ -2,6 +2,8 @@ package frc.robot.subsystems.swervedrive;
 
 import java.util.function.DoubleSupplier;
 
+import org.littletonrobotics.junction.AutoLogOutput;
+
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.SparkBase;
 import com.revrobotics.spark.SparkBase.ControlType;
@@ -27,7 +29,7 @@ import frc.robot.Constants.OperatorConstants;
 
 public class Elevator {
     
-        private SparkMax motor = new SparkMax(ElevatorConstants.ELEVATOR_MOTOR_ID, MotorType.kBrushless); //change ID later
+    private SparkMax motor = new SparkMax(ElevatorConstants.ELEVATOR_MOTOR_ID, MotorType.kBrushless); //change ID later
     private SparkClosedLoopController closedLoopController = motor.getClosedLoopController(); 
   // TODO: add lidar sensor (distance)
   private SparkMaxConfig config = new SparkMaxConfig(); //encoder!!!
@@ -40,41 +42,14 @@ public class Elevator {
         .velocityConversionFactor(1000); //TODO: change factors later
     }
     
-
+@AutoLogOutput
+private double motorSpeedOutput = motor.getAppliedOutput();
 
 float height = 0; 
 
-public class ManualElevatorControl extends CommandBase {
-    private Elevator elevator;
-    private DoubleSupplier inputSupplier;
-    
-    public void moveManual (Elevator elevator, DoubleSupplier inputSupplier){
-    this.elevator = elevator;
-    this.inputSupplier = inputSupplier;
-    addRequirements(elevator);
-    elevator.setManualModeInput(inputSupplier);
-    }
-    @Override
-    public void initialize() {}
-
-    @Override
-    public void execute() {
-        if (elevator.inManualMode)
-            elevator.setSpeed(
-                MathUtil.applyDeadband(inputSupplier.getAsDouble(), OperatorConstants.operatorJoystickDeadband)*-.4);
-    }
-
-    @Override
-    public void end(boolean interrupted){
-        elevator.stop();
-    }
-
-    @Override
-    public boolean isFinished(){
-        return false;
-    }
+public void manualMove(float motorSpeed){
+    motor.set(motorSpeed);
 }
-
 public void moveToSetPosition (float height) {
     closedLoopController.setReference(height, ControlType.kPosition);
 }

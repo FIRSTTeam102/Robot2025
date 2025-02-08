@@ -139,6 +139,7 @@ public class RobotContainer
       driverXbox.back().whileTrue(drivebase.centerModulesCommand());
       driverXbox.leftBumper().whileTrue(Commands.runOnce(drivebase::lock, drivebase).repeatedly());
       driverXbox.rightBumper().onTrue(Commands.none());
+      //operatorXbox.leftStick().on <-- add bindings for elevator manual movement 
     }
 
   }
