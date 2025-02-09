@@ -36,18 +36,19 @@ public class ShootCoral extends Command {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    shooter.spinShooters(0,0);
+    shooter.stopShooter();
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
   //if the coral sensor sees coral, keep motors running, if the coral is not sensed, stop the motors
-    if(shooter.getCoralSensor()){ 
-      return false;
+    if(shooter.hasCoral){ 
+      return true;
+
     }
     else{
-      return true;
+      return false;
     }
   }
 }

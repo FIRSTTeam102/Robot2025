@@ -107,7 +107,7 @@ public class RobotContainer
   private void configureBindings()
   {
 
-    testerXbox.a().whileTrue(new ShootCoral(shooter, Constants.ShooterConstants.LeftMaxShooterSpeed,Constants.ShooterConstants.rightMaxShooterSpeed));
+    testerXbox.rightTrigger().whileTrue(new ShootCoral(shooter, Constants.ShooterConstants.LeftMaxShooterSpeed,Constants.ShooterConstants.rightMaxShooterSpeed));
 
 
     // (Condition) ? Return-On-True : Return-on-False
