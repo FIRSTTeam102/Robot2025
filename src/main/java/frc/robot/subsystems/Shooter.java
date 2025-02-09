@@ -52,18 +52,18 @@ public class Shooter extends SubsystemBase {
 
   @Override
   public void periodic() {
-    if(!(getBackCoralSensor() && getFrontCoralSensor())){
+    if(!(backCoralSensor.get() && frontCoralSensor.get())){
       hasCoral = false;
     }
 
     if(hasCoral == false){
-     if(!getBackCoralSensor()){
+     if(!backCoralSensor.get()){
          stopShooter();
       }
       else{
         spinShooters(0.25, 0.25);
       }
-     if(getFrontCoralSensor()&& !getBackCoralSensor()) {
+     if(frontCoralSensor.get()&& !backCoralSensor.get()) {
       hasCoral = true;
      }
     }
