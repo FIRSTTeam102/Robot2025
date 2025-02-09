@@ -55,6 +55,6 @@ public final class Constants
 
   public static final class ElevatorConstants {
     public static final int LIMIT_SWITCH_PORT = 0;
-    public static final int ELEVATOR_MOTOR_ID = 1;
+    public static final int ELEVATOR_MOTOR_ID = 30;
   }
 }
