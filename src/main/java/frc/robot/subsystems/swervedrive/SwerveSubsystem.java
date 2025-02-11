@@ -71,12 +71,14 @@ public class SwerveSubsystem extends SubsystemBase
    * Swerve drive object.
    */
   private final SwerveDrive         swerveDrive;
-  /**
-   * AprilTag field layout.
-   */
+
+ //log the current swervePose
   @AutoLogOutput
   private Pose2d swervePose;
 
+ /**
+   * AprilTag field layout.
+   */
  // private final AprilTagFieldLayout aprilTagFieldLayout = AprilTagFieldLayout.loadField(AprilTagFields.k2025Reefscape);
   /**
    * Enable vision odometry updates while driving.
@@ -281,10 +283,10 @@ public class SwerveSubsystem extends SubsystemBase
    * align to Score - align to either the left or right of the april tag on the coral reef. 
    * make sure the returned target is a valid tag for our alliance
    */
-  public Command alignToReefScore(Cameras camera, TargetSide scoringSide)
+  public Command alignToReefScore(Cameras cam, TargetSide scoringSide)
   {
     //find best target on the reef that we currently see
-    Optional<PhotonPipelineResult> pipelineResult = camera.getBestResult();
+    Optional<PhotonPipelineResult> pipelineResult =   cam.getBestResult();
     if (pipelineResult.isPresent()){
         var result = pipelineResult.get();
         if (result.hasTargets())
@@ -312,6 +314,7 @@ public class SwerveSubsystem extends SubsystemBase
   {
 
     return run(() -> {
+      
       Optional<PhotonPipelineResult> resultO = camera.getBestResult();
       if (resultO.isPresent())
       {

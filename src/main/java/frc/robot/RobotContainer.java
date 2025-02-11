@@ -16,6 +16,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import frc.robot.Constants.DrivebaseConstants.TargetSide;
 import frc.robot.Constants.OperatorConstants;
 //import frc.robot.commands.swervedrive.drivebase.AbsoluteDriveAdv;
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
@@ -120,9 +121,9 @@ public class RobotContainer
       //drivebase.setDefaultCommand(driveRobotOrientAngularVelocity);
       driverXbox.a().whileTrue(drivebase.sysIdAngleMotorCommand());
       driverXbox.b().whileTrue(drivebase.sysIdDriveMotorCommand());
-      driverXbox.y().whileTrue(drivebase.driveToPose(
-              new Pose2d(new Translation2d(4, 4), Rotation2d.fromDegrees(0))));
-      
+ //     driverXbox.y().whileTrue(drivebase.driveToPose(
+ //           drivebase.getScorePose(TargetSide.LEFT, 6)));
+      driverXbox.y().whileTrue(drivebase.driveToPose(drivebase.getScorePose(TargetSide.LEFT, 17)));       
       driverXbox.x().onTrue(Commands.runOnce(drivebase::addFakeVisionReading));
       driverXbox.start().onTrue((Commands.runOnce(drivebase::zeroGyro)));
       driverXbox.back().whileTrue(drivebase.centerModulesCommand());
