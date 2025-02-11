@@ -34,7 +34,7 @@ public class Elevator {
   // TODO: add lidar sensor (distance)
   private SparkMaxConfig config = new SparkMaxConfig(); //encoder!!!
   // private Encoder encoder = new Encoder(null, null); <-- might not be needed
-   private DigitalInput bottomlimitSwitch = new DigitalInput(1); //change channel later
+   private DigitalInput bottomlimitSwitch = new DigitalInput(ElevatorConstants.LIMIT_SWITCH_PORT); //change channel later
 
    public Elevator(){
        config.encoder
@@ -49,7 +49,10 @@ float height = 0;
 
 public void manualMove(float motorSpeed){
     motor.set(motorSpeed);
+    closedLoopController.setReference(height, ControlType.kPosition); //notsure which way to move motors I should use
+
 }
+
 public void moveToSetPosition (float height) {
     closedLoopController.setReference(height, ControlType.kPosition);
 }
