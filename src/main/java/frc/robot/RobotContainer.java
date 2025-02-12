@@ -18,6 +18,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.OperatorConstants;
+import frc.robot.commands.ManualElevatorControl;
 import frc.robot.subsystems.swervedrive.Elevator;
 //import frc.robot.commands.swervedrive.drivebase.AbsoluteDriveAdv;
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
@@ -40,6 +41,7 @@ public class RobotContainer
   //Create the swerve subsystem using the YAGSL config files
   private final SwerveSubsystem drivebase = new SwerveSubsystem(new File(Filesystem.getDeployDirectory(),
                                                                          "swerve/jc"));
+  private final Elevator elevator = new Elevator();
   
   /**
    * Converts driver input into a field-relative ChassisSpeeds input stream that is 
@@ -82,6 +84,7 @@ public class RobotContainer
 
   Command driveRobotOrientAngularVelocity = drivebase.driveRobotOriented(driveRobotOriented); 
   Command driveRobotOrientAngularVelocitySim = drivebase.driveRobotOriented(driveRobotAngularVelocitySim);
+  
 
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -139,6 +142,8 @@ public class RobotContainer
       driverXbox.back().whileTrue(drivebase.centerModulesCommand());
       driverXbox.leftBumper().whileTrue(Commands.runOnce(drivebase::lock, drivebase).repeatedly());
       driverXbox.rightBumper().onTrue(Commands.none());
+      		elevator.setDefaultCommand(new ManualElevatorControl(elevator,  () -> operatorXbox.getLeftY() * -1));
+
       //operatorXbox.leftStick().on <-- add bindings for elevator manual movement 
     }
 

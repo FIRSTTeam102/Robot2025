@@ -18,6 +18,7 @@ import frc.robot.Constants.ElevatorConstants;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Config;
 import swervelib.parser.json.modules.ConversionFactorsJson;
 
@@ -27,7 +28,7 @@ import com.revrobotics.spark.SparkLowLevel.MotorType;
 import edu.wpi.first.math.MathUtil;
 import frc.robot.Constants.OperatorConstants;
 
-public class Elevator {
+public class Elevator extends SubsystemBase {
     
     private SparkMax motor = new SparkMax(ElevatorConstants.ELEVATOR_MOTOR_ID, MotorType.kBrushless); //change ID later
     private SparkClosedLoopController closedLoopController = motor.getClosedLoopController(); 
