@@ -56,6 +56,7 @@ public final class Constants
   public static final class ElevatorConstants {
     public static final int LIMIT_SWITCH_PORT = 0;
     public static final int ELEVATOR_MOTOR_ID = 30;
+    public static final double JStick_Speed_Mult = 0.4;
 // TODO: Ask mechanical for real info
     public static final double gearRatio = 25; // motor rotations per main shaft rotation
     public static final double conversionFactor_m_per_roatation = 1
