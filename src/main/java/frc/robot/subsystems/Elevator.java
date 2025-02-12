@@ -1,32 +1,20 @@
 package frc.robot.subsystems;
 
-import java.util.function.DoubleSupplier;
 
 import org.littletonrobotics.junction.AutoLogOutput;
 
-import com.revrobotics.RelativeEncoder;
-import com.revrobotics.spark.SparkBase;
+
 import com.revrobotics.spark.SparkBase.ControlType;
 import com.revrobotics.spark.SparkClosedLoopController;
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.config.SparkMaxConfig;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
-import edu.wpi.first.hal.DIOJNI;
-
 import frc.robot.Constants.ElevatorConstants;
 
 import edu.wpi.first.wpilibj.DigitalInput;
-import edu.wpi.first.wpilibj.Encoder;
-import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Config;
-import swervelib.parser.json.modules.ConversionFactorsJson;
 
 import com.revrobotics.spark.SparkLowLevel.MotorType;
-
-
-import edu.wpi.first.math.MathUtil;
-import frc.robot.Constants.OperatorConstants;
 
 public class Elevator extends SubsystemBase {
     
