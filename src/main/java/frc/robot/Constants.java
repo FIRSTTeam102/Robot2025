@@ -56,5 +56,14 @@ public final class Constants
   public static final class ElevatorConstants {
     public static final int LIMIT_SWITCH_PORT = 0;
     public static final int ELEVATOR_MOTOR_ID = 30;
+// TODO: Ask mechanical for real info
+    public static final double gearRatio = 25; // motor rotations per main shaft rotation
+    public static final double conversionFactor_m_per_roatation = 1
+      * (1 / gearRatio)
+      * 0.2282;
+    public static final double conversionFactor_mps_per_rpm = conversionFactor_m_per_roatation / 60;
+    public static final double maxHeight_m = 1.24;
+    public static final double carriageMass_kg = Units
+      .lbsToKilograms(4.893 /* inner elevator */ + 9 /* carriage + arm */ + 6 /* ahooter */);
   }
-}
+}//

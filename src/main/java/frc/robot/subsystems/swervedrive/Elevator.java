@@ -38,22 +38,31 @@ public class Elevator {
 
    public Elevator(){
        config.encoder
-        .positionConversionFactor(1000)
-        .velocityConversionFactor(1000); //TODO: change factors later
+        .positionConversionFactor(ElevatorConstants.conversionFactor_m_per_roatation)
+        .velocityConversionFactor(ElevatorConstants.conversionFactor_mps_per_rpm); //TODO: change factors later
+
+       config   
+        .idleMode(IdleMode.kBrake);
+        //TODO: add ramp rate (maybe) and change PID values
+       config.closedLoop
+       .pid(1, 0, 0);
     }
     
 @AutoLogOutput
 private double motorSpeedOutput = motor.getAppliedOutput();
 
-float height = 0; 
+double height = 0; 
 
-public void manualMove(float motorSpeed){
-    motor.set(motorSpeed);
-    closedLoopController.setReference(height, ControlType.kPosition); //notsure which way to move motors I should use
+public void manualMove(double motorSpeed){
+    closedLoopController.setReference(motorSpeed, ControlType.kDutyCycle); //notsure which way to move motors I should use
 
 }
 
-public void moveToSetPosition (float height) {
+public void stop() {
+    closedLoopController.setReference(0, ControlType.kDutyCycle);
+}
+
+public void moveToSetPosition (double height) {
     closedLoopController.setReference(height, ControlType.kPosition);
 }
 }
