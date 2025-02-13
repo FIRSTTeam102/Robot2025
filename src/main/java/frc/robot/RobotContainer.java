@@ -20,6 +20,7 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.OperatorConstants;
+import frc.robot.commands.Intake;
 import frc.robot.commands.ShootCoral;
 import frc.robot.subsystems.Shooter;
 //import frc.robot.commands.swervedrive.drivebase.AbsoluteDriveAdv;
@@ -151,6 +152,7 @@ public class RobotContainer
 
 
       Trigger funnelTrigger = new Trigger(shooter.getCoralSensor2BooleanSupplier()); //make the trigger and bind it to the funnel sensor
+      funnelTrigger.onTrue(new Intake(shooter));
     }
 
   }

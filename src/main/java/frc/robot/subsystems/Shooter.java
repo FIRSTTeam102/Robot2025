@@ -55,6 +55,10 @@ public class Shooter extends SubsystemBase {
   public BooleanSupplier getCoralSensor2BooleanSupplier(){
     return coralSensor2BooleanSupplier;
   }
+  
+  public BooleanSupplier getCoralSensor3BooleanSupplier(){
+    return coralSensor3BooleanSupplier;
+  }
 
   public boolean getCoralSensor3(){
     return coralSensor3BooleanSupplier.getAsBoolean();
@@ -67,13 +71,13 @@ public class Shooter extends SubsystemBase {
 
   @Override
   public void periodic() {
-    coralSensor2 =coralSensor2BooleanSupplier.getAsBoolean();
+    coralSensor2Output =coralSensor2BooleanSupplier.getAsBoolean();
     
 
-    coralSensor2BooleanSupplier = coralSensor2.getAsBoolean();
-    coralSensor3BooleanSupplier = coralSensor3.getAsBoolean();
+    coralSensor2BooleanSupplier = getCoralSensor2BooleanSupplier();
+    coralSensor3BooleanSupplier = getCoralSensor3BooleanSupplier();
 
     backCoralSensorPublisher.setDefault(false);
-    backCoralSensorPublisher.set(coralSensor3BooleanSupplier);
+    backCoralSensorPublisher.set(coralSensor3Output);
   }
 }
