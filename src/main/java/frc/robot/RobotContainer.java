@@ -146,7 +146,7 @@ public class RobotContainer
       driverXbox.rightBumper().onTrue(Commands.none());
       
 
-      //operatorXbox.leftStick().on <-- add bindings for elevator manual movement 
+      operatorXbox.a().onTrue(elevator.moveToPosition(45));
     }
 
   }

@@ -52,19 +52,38 @@ public final class Constants
   {
     public static final boolean DRIVEWITHVISION = true;
   }
-
+//TODO get the CAN id of the sparkmax motor controller & DIO port for the limit switch
   public static final class ElevatorConstants {
     public static final int LIMIT_SWITCH_PORT = 0;
     public static final int ELEVATOR_MOTOR_ID = 30;
     public static final double JStick_Speed_Mult = 0.4;
-// TODO: Ask mechanical for real info
-    public static final double gearRatio = 25; // motor rotations per main shaft rotation
-    public static final double conversionFactor_m_per_roatation = 1
-      * (1 / gearRatio)
-      * 0.2282;
-    public static final double conversionFactor_mps_per_rpm = conversionFactor_m_per_roatation / 60;
-    public static final double maxHeight_m = 1.24;
+// TODO: verify values and max height
+// The encoder is directly mounted to the elevator shaft - 1 rotation = 1 full rotation of the chain
+// sprocket. The diameter of the sprocket is 2", so the circumference = 2 pi. This is a 3 stage elevator
+// where all stages move, so the elevator moves at 3* the distance of the change with each rotation =6.283
+    public static final double conversionFactor_inches_per_roatation = 2 * 3.14 * 3;
+    public static final double conversionFactor_ips_per_rpm = conversionFactor_inches_per_roatation / 60;
+    public static final double maxHeight_inches = 73;
     public static final double carriageMass_kg = Units
       .lbsToKilograms(4.893 /* inner elevator */ + 9 /* carriage + arm */ + 6 /* ahooter */);
+      // smartmotion
+	  public static double maxAccel_rpmps = 7200;
+	  public static double maxVelocity_rpm = 3800;
+
+    //PID values
+    public static double kP = 5e-5; 
+    public static double kI = 1e-6;
+    public static double kD = 0; 
+    public static double kIz = 0; 
+    public static double kFF = 0.000156; 
+    public static double kMaxOutput = 1; 
+    public static double kMinOutput = -1;
+    public static double maxRPM = 5700;
+
+    // Smart Motion Coefficients
+    public static double maxVel = 2000; // rpm
+    public static double maxAcc = 1500;
+    // feedforward
+	  public static final double kG = .5;
   }
 }//
