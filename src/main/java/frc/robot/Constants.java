@@ -58,8 +58,8 @@ public final class Constants
     public static final int leftMotorID = 32; 
     public static final int rightMotorID = 33;
 
-    public static final int frontShooterSensor = 2; 
-    public static final int backShooterSensor = 3;
+    public static final int coralSensor2 = 2; 
+    public static final int coralSensor3 = 3;
 
     //shooter speeds
     public static final double rightMaxShooterSpeed = -0.4;

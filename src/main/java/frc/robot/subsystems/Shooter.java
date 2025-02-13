@@ -8,11 +8,14 @@
 //TODO test this on the robot
 
 package frc.robot.subsystems;
+import java.util.function.BooleanSupplier;
+
 import org.littletonrobotics.junction.AutoLogOutput;
 
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.SparkMax;
 
+import edu.wpi.first.networktables.BooleanPublisher;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
@@ -21,27 +24,40 @@ public class Shooter extends SubsystemBase {
   /** Creates a new Shooter. */
   private SparkMax leftMotor = new SparkMax(Constants.ShooterConstants.leftMotorID,MotorType.kBrushless);
   private SparkMax rightMotor = new SparkMax(Constants.ShooterConstants.rightMotorID, MotorType.kBrushless);
-  private DigitalInput frontCoralSensor = new DigitalInput(Constants.ShooterConstants.frontShooterSensor);
-  private DigitalInput backCoralSensor = new DigitalInput(Constants.ShooterConstants.backShooterSensor);
+  private DigitalInput coralSensor2 = new DigitalInput(Constants.ShooterConstants.coralSensor2);
+  private DigitalInput coralSensor3 = new DigitalInput(Constants.ShooterConstants.coralSensor3);
 
   public boolean hasCoral = true;
 
+  BooleanPublisher backCoralSensorPublisher;
 
 @AutoLogOutput
-  private boolean frontCoralSensorOutput; 
-  private boolean backCoralSensorOutput;
-  public Shooter() {}
+  private BooleanSupplier coralSensor2BooleanSupplier; 
+  private BooleanSupplier coralSensor3BooleanSupplier;
+
+  private boolean coralSensor2Output;
+  private boolean coralSensor3Output;
+
+  //private Boolean coralSensor3BooleanSupplier;
+
+  public Shooter() {
+
+  }
 
   public void spinShooters(double rightMotorSpeed, double leftMotorSpeed){
     leftMotor.set(leftMotorSpeed);
     rightMotor.set(rightMotorSpeed);
   }
-  public boolean getFrontCoralSensor(){
-    return frontCoralSensorOutput;
+  public boolean getCoralSensor2(){
+    return  coralSensor2BooleanSupplier.getAsBoolean();
   }
 
-  public boolean getBackCoralSensor(){
-    return frontCoralSensorOutput;
+  public BooleanSupplier getCoralSensor2BooleanSupplier(){
+    return coralSensor2BooleanSupplier;
+  }
+
+  public boolean getCoralSensor3(){
+    return coralSensor3BooleanSupplier.getAsBoolean();
   }
 
   public void stopShooter(){
@@ -49,23 +65,15 @@ public class Shooter extends SubsystemBase {
     rightMotor.stopMotor();
   }
 
-
   @Override
   public void periodic() {
-    if(!(backCoralSensor.get() && frontCoralSensor.get())){
-      hasCoral = false;
-    }
+    coralSensor2 =coralSensor2BooleanSupplier.getAsBoolean();
+    
 
-    if(hasCoral == false){
-     if(!backCoralSensor.get()){
-         stopShooter();
-      }
-      else{
-        spinShooters(0.25, 0.25);
-      }
-     if(frontCoralSensor.get()&& !backCoralSensor.get()) {
-      hasCoral = true;
-     }
-    }
+    coralSensor2BooleanSupplier = coralSensor2.getAsBoolean();
+    coralSensor3BooleanSupplier = coralSensor3.getAsBoolean();
+
+    backCoralSensorPublisher.setDefault(false);
+    backCoralSensorPublisher.set(coralSensor3BooleanSupplier);
   }
 }
