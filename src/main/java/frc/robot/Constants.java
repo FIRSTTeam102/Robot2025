@@ -52,4 +52,13 @@ public final class Constants
   {
     public static final boolean DRIVEWITHVISION = true;
   }
+
+  public static class ClimberConstants {
+    public static final int climberMotorID = 33; //temporary
+    public static final int funnelMotorID = 34; //temporary
+
+    public static final int climberInPosition = 0; //might need testing to find correct position or maybe it is just 0
+    public static final int climberOutPosition = 60; //temporary needs testing to find correct position
+    public static final int funnelMotorStallCurrentAmps = 40; //temp needs testing, changes the amps for the stall current
+  }
 }

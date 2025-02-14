@@ -17,6 +17,9 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.OperatorConstants;
+import frc.robot.commands.ClimberOut;
+import frc.robot.commands.FunnelOut;
+import frc.robot.subsystems.Climber;
 //import frc.robot.commands.swervedrive.drivebase.AbsoluteDriveAdv;
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
 import java.io.File;
@@ -32,11 +35,12 @@ public class RobotContainer
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
   final         CommandXboxController driverXbox = new CommandXboxController(0);
+  final         CommandXboxController testerXbox = new CommandXboxController(5);
   // The robot's subsystems and commands are defined here...
   //Create the swerve subsystem using the YAGSL config files
   private final SwerveSubsystem drivebase = new SwerveSubsystem(new File(Filesystem.getDeployDirectory(),
                                                                          "swerve/jc"));
-  
+  private final Climber climber = new Climber();
   /**
    * Converts driver input into a field-relative ChassisSpeeds input stream that is 
    * controlled by angular velocity. Invert Joysticks & scale the joystick input (this slows the robot
@@ -100,6 +104,7 @@ public class RobotContainer
   private void configureBindings()
   {
     // (Condition) ? Return-On-True : Return-on-False
+    
 
     drivebase.setDefaultCommand(!RobotBase.isSimulation() ?
                                driveFieldOrientedAnglularVelocity :
@@ -135,8 +140,10 @@ public class RobotContainer
       driverXbox.back().whileTrue(drivebase.centerModulesCommand());
       driverXbox.leftBumper().whileTrue(Commands.runOnce(drivebase::lock, drivebase).repeatedly());
       driverXbox.rightBumper().onTrue(Commands.none());
-    }
 
+
+    }
+    testerXbox.a().onTrue(new FunnelOut(climber, 1).andThen(new ClimberOut(climber, 1)));
   }
 
   /**
