@@ -55,19 +55,23 @@ public final class Constants
 
   public static class ShooterConstants{
     //CAN ID's
-    public static final int leftMotorID = 32; 
-    public static final int rightMotorID = 33;
+    public static final int RightMotorID = 33; 
+    public static final int LeftMotorID = 32;
 
-    public static final int coralSensor2 = 2; 
-    public static final int coralSensor3 = 3;
+    public static final int coralSensor2Front = 2; 
+    public static final int coralSensor1Back = 1;
 
     //shooter speeds
-    public static final double rightMaxShooterSpeed = -0.4;
-    public static final double LeftMaxShooterSpeed = 0.4;
+    public static final double LeftMaxShooterSpeed = -0.3;
+    public static final double RightMaxShooterSpeed = 0.3;
+
 
     public static final double L1LeftShooterSpeed = 1;
     public static final double L1RightShooterSpeed = 0.5;
-    public static final double slowShooterSpeed = 0.25;
+    public static final double slowShooterSpeed = 0.05;
+
+    public static final double leftIntakeSpeed = 0.04;
+    public static final double rightIntakeSpeed = -0.04;
 
   }
 }

@@ -12,6 +12,7 @@ import com.pathplanner.lib.auto.NamedCommands;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.RobotBase;
@@ -110,7 +111,10 @@ public class RobotContainer
   private void configureBindings()
   {
 
-    testerXbox.rightTrigger().whileTrue(new ShootCoral(shooter, Constants.ShooterConstants.LeftMaxShooterSpeed,Constants.ShooterConstants.rightMaxShooterSpeed));
+      DigitalInput coralSensor1 = new DigitalInput(1);
+      Trigger funnelTrigger = new Trigger(coralSensor1::get); //make the trigger and bind it to the funnel sensor
+      funnelTrigger.whileFalse(new Intake(shooter));
+      testerXbox.rightTrigger().whileTrue(new ShootCoral(shooter, Constants.ShooterConstants.LeftMaxShooterSpeed,Constants.ShooterConstants.RightMaxShooterSpeed));
 
 
     // (Condition) ? Return-On-True : Return-on-False
@@ -151,8 +155,6 @@ public class RobotContainer
       driverXbox.rightBumper().onTrue(Commands.none());
 
 
-      Trigger funnelTrigger = new Trigger(shooter.getCoralSensor2BooleanSupplier()); //make the trigger and bind it to the funnel sensor
-      funnelTrigger.onTrue(new Intake(shooter));
     }
 
   }
