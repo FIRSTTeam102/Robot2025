@@ -44,12 +44,14 @@ public class ShootCoral extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-  //if the coral sensor sees coral, keep motors running, if the coral is not sensed, stop the motors
-     if(!(shooter.getCoralSensor2())){ 
+    return false;
+
+  //if the coral sensor sees coral,
+ //  keep motors running, if the coral is not sensed, stop the motors
+     /*if(!(shooter.getCoralSensor2())){ 
       return false;
     }
     else{
-      return true;
+      return true;*/
     }
-  }
 }
