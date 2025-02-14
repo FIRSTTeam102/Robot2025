@@ -73,17 +73,17 @@ public final class Constants
     public static double kD = 0; 
     public static double kIz = 0.1; 
     public static double kFF = 0.63; 
-    public static double kMaxOutput = 1; 
-    public static double kMinOutput = -1;
+    public static double kMaxOutput = 0.5; 
+    public static double kMinOutput = -0.5;
     public static double maxRPM = 5700;
 
-    // Smart Motion Coefficients
+    /**  Smart Motion Coefficients
     public static double maxVel = 2000; // rpm
     public static double maxAcc = 1500;
 	  public static double maxAccel_rpmps = 7200;
 	  public static double maxVelocity_rpm = 3800;
     
-    // feedforward
+    // feedforward */
 	  public static final double kG = .5;
   }
-}//
+}

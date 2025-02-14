@@ -51,7 +51,7 @@ public class Elevator extends SubsystemBase {
  
     // TODO: add lidar sensor (distance)
   
-    private SparkMaxConfig config = new SparkMaxConfig(); //encoder!!!
+    private SparkMaxConfig config = new SparkMaxConfig(); 
 
    public Elevator(){
 
@@ -106,7 +106,7 @@ public class Elevator extends SubsystemBase {
 @AutoLogOutput
 private double motorSpeedOutput = motor.getAppliedOutput();
 
-double height = 0; 
+double height = 0; //inches
 
 public void manualMove(double motorSpeed){
     closedLoopController.setReference(motorSpeed, ControlType.kVelocity,ClosedLoopSlot.kSlot1);
