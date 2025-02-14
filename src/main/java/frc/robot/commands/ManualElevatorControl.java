@@ -33,7 +33,7 @@ public class ManualElevatorControl extends Command {
   @Override
   public void execute() {
     elevator.manualMove(MathUtil.applyDeadband(joystick.getAsDouble(),OperatorConstants.LEFT_Y_DEADBAND)
-                                                                     * ElevatorConstants.JStick_Speed_Mult);
+                                                                     * ElevatorConstants.JStick_Speed_Mult * 21);
   }
 
   // Called once the command ends or is interrupted.

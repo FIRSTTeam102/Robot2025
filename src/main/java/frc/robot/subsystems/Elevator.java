@@ -7,25 +7,39 @@ import org.littletonrobotics.junction.AutoLogOutput;
 
 
 import com.revrobotics.AbsoluteEncoder;
-import com.revrobotics.spark.SparkAbsoluteEncoder;
-import com.revrobotics.spark.SparkBase.ControlType;
+import com.revrobotics.sim.SparkFlexSim;
+import com.revrobotics.sim.SparkMaxSim;
+import com.revrobotics.spark.ClosedLoopSlot;
+
 import com.revrobotics.spark.SparkClosedLoopController;
+import com.revrobotics.spark.SparkFlex;
+import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.SparkMax;
+import com.revrobotics.spark.SparkBase.ControlType;
+import com.revrobotics.spark.SparkBase.PersistMode;
+import com.revrobotics.spark.SparkBase.ResetMode;
 import com.revrobotics.spark.config.SparkMaxConfig;
+import com.revrobotics.spark.config.ClosedLoopConfig.FeedbackSensor;
+
+import com.revrobotics.AbsoluteEncoder;
+import com.revrobotics.spark.SparkAbsoluteEncoder;
+
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import frc.robot.Constants.ElevatorConstants;
-import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 
-
-import com.revrobotics.spark.SparkLowLevel.MotorType;
-
 public class Elevator extends SubsystemBase {
-    
+    // create the DCMotor objects to specify the motor type
+    DCMotor maxGearbox = DCMotor.getNEO(1);
+
     private SparkMax motor = new SparkMax(ElevatorConstants.ELEVATOR_MOTOR_ID, MotorType.kBrushless);
+
+    // create the Spark MAX sim object
+    SparkMaxSim maxSim = new SparkMaxSim(motor, maxGearbox);
 
     private SparkClosedLoopController closedLoopController = motor.getClosedLoopController(); 
     
@@ -49,11 +63,43 @@ public class Elevator extends SubsystemBase {
 
        config   
         .idleMode(IdleMode.kBrake);
+    
     //Set PID values
-       config.closedLoop.pid(ElevatorConstants.kP, ElevatorConstants.kI, ElevatorConstants.kD);
+    /*   config.closedLoop.pid(ElevatorConstants.kP, ElevatorConstants.kI, ElevatorConstants.kD);
        config.closedLoop.iZone(ElevatorConstants.kIz);
-       config.closedLoop.minOutput(ElevatorConstants.kMinOutput);
-       config.closedLoop.maxOutput(ElevatorConstants.kMaxOutput);
+
+    */
+
+    /*
+     * Configure the closed loop controller. We want to make sure we set the
+     * feedback sensor as the primary encoder.
+     */
+      config.closedLoop
+        .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
+        // Set PID values for position control. We don't need to pass a closed loop
+        // slot, as it will default to slot 0.
+        .p(0.1)
+        .i(0)
+        .d(0)
+        .outputRange(ElevatorConstants.kMinOutput, ElevatorConstants.kMaxOutput)
+        // Set PID values for velocity control in slot 1
+        .p(0.0001, ClosedLoopSlot.kSlot1)
+        .i(0, ClosedLoopSlot.kSlot1)
+        .d(0, ClosedLoopSlot.kSlot1)
+        .velocityFF(1.0 / 5767, ClosedLoopSlot.kSlot1)
+        .outputRange(-1, 1, ClosedLoopSlot.kSlot1);
+
+    /*
+     * Apply the configuration to the SPARK MAX.
+     *
+     * kResetSafeParameters is used to get the SPARK MAX to a known state. This
+     * is useful in case the SPARK MAX is replaced.
+     *
+     * kPersistParameters is used to ensure the configuration is not lost when
+     * the SPARK MAX loses power. This is useful for power cycles that may occur
+     * mid-operation.
+     */
+    motor.configure(config, ResetMode.kResetSafeParameters, PersistMode.kNoPersistParameters);
 
     }
     
@@ -63,7 +109,7 @@ private double motorSpeedOutput = motor.getAppliedOutput();
 double height = 0; 
 
 public void manualMove(double motorSpeed){
-    closedLoopController.setReference(motorSpeed, ControlType.kVelocity);
+    closedLoopController.setReference(motorSpeed, ControlType.kVelocity,ClosedLoopSlot.kSlot1);
 }
 
 public void stop() {
@@ -78,9 +124,9 @@ public void moveToSetPosition (double height) {
     if (height < 0) height = 0;
     if (height > ElevatorConstants.maxHeight_inches) height = ElevatorConstants.maxHeight_inches;
 
-    closedLoopController.setReference(height, ControlType.kPosition);
+    closedLoopController.setReference(height, ControlType.kPosition,ClosedLoopSlot.kSlot0);
 }
-//TODO if the botom limit switch is triggered zero the encoder
+//TODO if the bottom limit switch is triggered zero the encoder
 public void zeroEncoder() {
 }
 

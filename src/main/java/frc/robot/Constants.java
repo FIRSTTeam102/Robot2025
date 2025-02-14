@@ -64,18 +64,15 @@ public final class Constants
     public static final double conversionFactor_inches_per_roatation = 2 * 3.14 * 3;
     public static final double conversionFactor_ips_per_rpm = conversionFactor_inches_per_roatation / 60;
     public static final double maxHeight_inches = 73;
-    public static final double carriageMass_kg = Units
-      .lbsToKilograms(4.893 /* inner elevator */ + 9 /* carriage + arm */ + 6 /* ahooter */);
-      // smartmotion
-	  public static double maxAccel_rpmps = 7200;
-	  public static double maxVelocity_rpm = 3800;
+    
+  
 
     //PID values
-    public static double kP = 5e-5; 
-    public static double kI = 1e-6;
+    public static double kP = 1; 
+    public static double kI = 0.00065;
     public static double kD = 0; 
-    public static double kIz = 0; 
-    public static double kFF = 0.000156; 
+    public static double kIz = 0.1; 
+    public static double kFF = 0.63; 
     public static double kMaxOutput = 1; 
     public static double kMinOutput = -1;
     public static double maxRPM = 5700;
@@ -83,6 +80,9 @@ public final class Constants
     // Smart Motion Coefficients
     public static double maxVel = 2000; // rpm
     public static double maxAcc = 1500;
+	  public static double maxAccel_rpmps = 7200;
+	  public static double maxVelocity_rpm = 3800;
+    
     // feedforward
 	  public static final double kG = .5;
   }
