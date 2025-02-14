@@ -27,7 +27,6 @@ public class ShootCoral extends Command {
   @Override
   public void initialize() {
     shooter.spinShooters(leftMotorSpeed,rightMotorSpeed);
-   System.out.println("shooting");
   }
 
   // Called every time the scheduler runs while the command is scheduled.

@@ -29,7 +29,7 @@ public class Shooter extends SubsystemBase {
   private DigitalInput coralSensor2 = new DigitalInput(Constants.ShooterConstants.coralSensor2Front);
  // private DigitalInput coralSensor1 = new DigitalInput(Constants.ShooterConstants.coralSensor1Back);
 
-  public boolean hasCoral = true;
+  public boolean hasCoral = false;
 
   BooleanPublisher backCoralSensorPublisher;
 
@@ -67,11 +67,19 @@ public class Shooter extends SubsystemBase {
     LeftMotor.stopMotor();
   }
 
+  public void hasCoralToggle(){
+    hasCoral=!hasCoral;
+  }
+
   @Override
   public void periodic() {
 
   //  coralSensor1Output =getCoralSensor1();
     coralSensor2Output =getCoralSensor2();
+    
+    if(coralSensor2Output == true){
+      hasCoral =true;
+    }
     
  //   backCoralSensorPublisher.setDefault(false);
  //   backCoralSensorPublisher.set(coralSensor3Output);
