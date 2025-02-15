@@ -59,11 +59,12 @@ public final class Constants
     public static final double JStick_Speed_Mult = 0.4;
 // TODO: verify values and max height
 // The encoder is directly mounted to the elevator shaft - 1 rotation = 1 full rotation of the chain
-// sprocket. The diameter of the sprocket is 2", so the circumference = 2 pi. This is a 3 stage elevator
-// where all stages move, so the elevator moves at 3* the distance of the change with each rotation =6.283
-    public static final double conversionFactor_inches_per_roatation = 2 * 3.14 * 3;
-    public static final double conversionFactor_ips_per_rpm = conversionFactor_inches_per_roatation / 60;
-    public static final double maxHeight_inches = 73;
+// sprocket. The diameter of the sprocket is 2", so the circumference = 2 pi.
+    public static final double conversionFactor_inches_per_roatation = 2 * Math.PI;
+    public static final double motor_max_rpm = 5676;
+    public static final double gear_ratio_to_1 = 25;
+    public static final double max_linear_ips = ((motor_max_rpm / gear_ratio_to_1) * conversionFactor_inches_per_roatation) / 60;
+    public static final double maxHeight_inches = 20;//73;
     
   
 

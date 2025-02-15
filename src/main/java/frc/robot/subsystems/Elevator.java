@@ -44,7 +44,7 @@ public class Elevator extends SubsystemBase {
     private SparkClosedLoopController closedLoopController = motor.getClosedLoopController(); 
     
     // initialze PID controller and encoder objects
-    private SparkAbsoluteEncoder shaftEncoder = motor.getAbsoluteEncoder();
+   // private SparkAbsoluteEncoder shaftEncoder = motor.getAbsoluteEncoder();
     
     private DigitalInput bottomlimitSwitch = new DigitalInput(ElevatorConstants.LIMIT_SWITCH_PORT);
 
@@ -53,13 +53,16 @@ public class Elevator extends SubsystemBase {
   
     private SparkMaxConfig config = new SparkMaxConfig(); 
 
+    @AutoLogOutput
+    private double voltageLogged;
+
    public Elevator(){
 
     //each revolution of the encoder is 2*3.14*3 =6.283
     //sprocket gear is 2" diameter & we have a 3 stage elevator
        config.encoder
         .positionConversionFactor(ElevatorConstants.conversionFactor_inches_per_roatation)
-        .velocityConversionFactor(ElevatorConstants.conversionFactor_ips_per_rpm);
+        .velocityConversionFactor(ElevatorConstants.max_linear_ips);
 
        config   
         .idleMode(IdleMode.kBrake);
@@ -83,10 +86,10 @@ public class Elevator extends SubsystemBase {
         .d(0)
         .outputRange(ElevatorConstants.kMinOutput, ElevatorConstants.kMaxOutput)
         // Set PID values for velocity control in slot 1
-        .p(0.0001, ClosedLoopSlot.kSlot1)
+        .p(.1, ClosedLoopSlot.kSlot1)
         .i(0, ClosedLoopSlot.kSlot1)
         .d(0, ClosedLoopSlot.kSlot1)
-        .velocityFF(1.0 / 5767, ClosedLoopSlot.kSlot1)
+        .velocityFF(0.1, ClosedLoopSlot.kSlot1)
         .outputRange(-1, 1, ClosedLoopSlot.kSlot1);
 
     /*
@@ -104,7 +107,7 @@ public class Elevator extends SubsystemBase {
     }
     
 @AutoLogOutput
-private double motorSpeedOutput = motor.getAppliedOutput();
+private double motorSpeedOutput;
 
 double height = 0; //inches
 
@@ -144,6 +147,8 @@ public Command moveToPosition(double height)
 public void periodic()
 {
   //zero the encode when we trigger the bottom limit switch
+  motorSpeedOutput= motor.getAppliedOutput();
+  voltageLogged = motor.getAppliedOutput();
   if (bottomlimitSwitch.get() == true){
     zeroEncoder();
   }
