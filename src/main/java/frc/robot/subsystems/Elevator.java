@@ -86,7 +86,7 @@ public class Elevator extends SubsystemBase {
         .d(0)
         .outputRange(ElevatorConstants.kMinOutput, ElevatorConstants.kMaxOutput)
         // Set PID values for velocity control in slot 1
-        .p(.25, ClosedLoopSlot.kSlot1)
+        .p(.15, ClosedLoopSlot.kSlot1)
         .i(0, ClosedLoopSlot.kSlot1)
         .d(0, ClosedLoopSlot.kSlot1)
         .velocityFF(0.01056, ClosedLoopSlot.kSlot1)

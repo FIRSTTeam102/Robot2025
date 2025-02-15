@@ -146,7 +146,7 @@ public class RobotContainer
       driverXbox.rightBumper().onTrue(Commands.none());
       
 
-      operatorXbox.a().onTrue(elevator.moveToPosition(10));
+      operatorXbox.a().onTrue(elevator.moveToPosition(360));
     }
 
   }
