@@ -56,7 +56,7 @@ public final class Constants
   public static final class ElevatorConstants {
     public static final int LIMIT_SWITCH_PORT = 0;
     public static final int ELEVATOR_MOTOR_ID = 30;
-    public static final double JStick_Speed_Mult = 0.4;
+    public static final double JStick_Speed_Mult = 1;
 // TODO: verify values and max height
 // The encoder is directly mounted to the elevator shaft - 1 rotation = 1 full rotation of the chain
 // sprocket. The diameter of the sprocket is 2", so the circumference = 2 pi.
@@ -64,19 +64,19 @@ public final class Constants
     public static final double motor_max_rpm = 5676;
     public static final double gear_ratio_to_1 = 25;
     public static final double max_linear_ips = ((motor_max_rpm / gear_ratio_to_1) * conversionFactor_inches_per_roatation) / 60;
-    public static final double maxHeight_inches = 20;//73;
+    public static final double maxHeight_inches = 80;//73;
     
   
 
     //PID values
-    public static double kP = 1; 
-    public static double kI = 0.00065;
+    public static double kP = 0.00025; 
+    public static double kI = 0;
     public static double kD = 0; 
     public static double kIz = 0.1; 
-    public static double kFF = 0.63; 
-    public static double kMaxOutput = 0.5; 
-    public static double kMinOutput = -0.5;
-    public static double maxRPM = 5700;
+    public static double kFF = 0.000015; 
+    public static double kMaxOutput = 1; 
+    public static double kMinOutput = -1;
+    public static double maxRPM = 3000;
 
     /**  Smart Motion Coefficients
     public static double maxVel = 2000; // rpm
@@ -85,6 +85,6 @@ public final class Constants
 	  public static double maxVelocity_rpm = 3800;
     
     // feedforward */
-	  public static final double kG = .5;
+	  public static final double kG = 0;
   }
 }

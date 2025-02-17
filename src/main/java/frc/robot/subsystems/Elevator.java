@@ -78,18 +78,18 @@ public class Elevator extends SubsystemBase {
      * feedback sensor as the primary encoder.
      */
       config.closedLoop
-        .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
+        .feedbackSensor(FeedbackSensor.kAlternateOrExternalEncoder)
         // Set PID values for position control. We don't need to pass a closed loop
         // slot, as it will default to slot 0.
-        .p(0.25)
+        .p(0.00025)
         .i(0)
         .d(0)
         .outputRange(ElevatorConstants.kMinOutput, ElevatorConstants.kMaxOutput)
         // Set PID values for velocity control in slot 1
-        .p(.15, ClosedLoopSlot.kSlot1)
+        .p(0.00025, ClosedLoopSlot.kSlot1)
         .i(0, ClosedLoopSlot.kSlot1)
         .d(0, ClosedLoopSlot.kSlot1)
-        .velocityFF(0.01056, ClosedLoopSlot.kSlot1)
+        .velocityFF(0.000015, ClosedLoopSlot.kSlot1)
         .outputRange(-1, 1, ClosedLoopSlot.kSlot1);
 
     /*
