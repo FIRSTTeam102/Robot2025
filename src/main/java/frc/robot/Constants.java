@@ -52,20 +52,20 @@ public final class Constants
   {
     public static final boolean DRIVEWITHVISION = true;
   }
-//TODO get the CAN id of the sparkmax motor controller & DIO port for the limit switch
+//TODO get the DIO port for the limit switch
   public static final class ElevatorConstants {
     public static final int LIMIT_SWITCH_PORT = 0;
     public static final int ELEVATOR_MOTOR_ID = 30;
     public static final double JStick_Speed_Mult = 1;
-// TODO: verify values and max height
+
 // The encoder is directly mounted to the elevator shaft - 1 rotation = 1 full rotation of the chain
 // sprocket. The diameter of the sprocket is 2", so the circumference = 2 pi.
     public static final double conversionFactor_inches_per_roatation = 2 * Math.PI;
-    public static final double motor_max_rpm = 5676;
+    public static final double motor_max_rpm = 1200;//5676;//TODO what is the real rpm???
     public static final double gear_ratio_to_1 = 25;
     public static final double max_linear_ips = ((motor_max_rpm / gear_ratio_to_1) * conversionFactor_inches_per_roatation) / 60;
-    public static final double maxHeight_inches = 80;//73;
-    
+    public static final double maxHeight_inches = 80;
+    public static final double ElevatorDefaultTolerance = 2.0;
   
 
     //PID values
@@ -76,13 +76,7 @@ public final class Constants
     public static double kFF = 0.000015; 
     public static double kMaxOutput = 1; 
     public static double kMinOutput = -1;
-    public static double maxRPM = 3000;
-
-    /**  Smart Motion Coefficients
-    public static double maxVel = 2000; // rpm
-    public static double maxAcc = 1500;
-	  public static double maxAccel_rpmps = 7200;
-	  public static double maxVelocity_rpm = 3800;
+    public static double maxRPM = 1200;
     
     // feedforward */
 	  public static final double kG = 0;

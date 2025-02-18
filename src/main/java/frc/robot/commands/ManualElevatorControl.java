@@ -32,8 +32,10 @@ public class ManualElevatorControl extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    //joystick value is between -1 & 1. JStick speed multiplier is used to slow down the overall speed from 
+    //the maximum with 1 being maximum speed
     elevator.manualMove(MathUtil.applyDeadband(joystick.getAsDouble(),OperatorConstants.LEFT_Y_DEADBAND)
-                                                                     * ElevatorConstants.JStick_Speed_Mult * 1000);
+                                                                     * ElevatorConstants.JStick_Speed_Mult );
   }
 
   // Called once the command ends or is interrupted.
