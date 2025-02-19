@@ -60,12 +60,13 @@ public final class Constants
 
 // The encoder is directly mounted to the elevator shaft - 1 rotation = 1 full rotation of the chain
 // sprocket. The diameter of the sprocket is 2", so the circumference = 2 pi.
-    public static final double conversionFactor_inches_per_roatation = 2 * Math.PI;
+    public static final double inches_per_rotation = 2 * Math.PI;
+    public static final double conversionFactor_rotations_per_inch = 1/inches_per_rotation;
     public static final double motor_max_rpm = 1200;//5676;//TODO what is the real rpm???
     public static final double gear_ratio_to_1 = 25;
-    public static final double max_linear_ips = ((motor_max_rpm / gear_ratio_to_1) * conversionFactor_inches_per_roatation) / 60;
+    public static final double max_linear_ips = ((motor_max_rpm / gear_ratio_to_1) * inches_per_rotation) / 60;
     public static final double maxHeight_inches = 80;
-    public static final double ElevatorDefaultTolerance = 2.0;
+    public static final double ElevatorDefaultTolerance = 1.0;
   
 
     //PID values

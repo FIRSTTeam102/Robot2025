@@ -11,6 +11,7 @@ import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.SparkClosedLoopController;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.SparkMax;
+import com.revrobotics.spark.SparkMaxAlternateEncoder;
 import com.revrobotics.spark.SparkBase.ControlType;
 import com.revrobotics.spark.SparkBase.PersistMode;
 import com.revrobotics.spark.SparkBase.ResetMode;
@@ -38,6 +39,7 @@ public class Elevator extends SubsystemBase {
     SparkMaxSim maxSim = new SparkMaxSim(motor, maxGearbox);
 
     private final RelativeEncoder encoder = motor.getAlternateEncoder();
+    
 
     private SparkClosedLoopController closedLoopController = motor.getClosedLoopController(); 
     
@@ -77,7 +79,10 @@ public class Elevator extends SubsystemBase {
         .velocityFF(ElevatorConstants.kFF, ClosedLoopSlot.kSlot1)
         .outputRange(ElevatorConstants.kMinOutput,ElevatorConstants.kMaxOutput, ClosedLoopSlot.kSlot1);
         
-        config.alternateEncoder.positionConversionFactor(ElevatorConstants.conversionFactor_inches_per_roatation)
+        // the conversion factor is multiplied by the setpoint to get native units (rotations) - 
+        //if we ask for a positoin of 40" that should be 40"* rotatoins/inch to get rotations we want the
+        //encoder to read
+        config.alternateEncoder.positionConversionFactor(ElevatorConstants.conversionFactor_rotations_per_inch)
                                .countsPerRevolution(8192);
         
     /*
@@ -100,14 +105,14 @@ public class Elevator extends SubsystemBase {
  * get the current position of the elevator in inches, based on the encoder reading
  */
 public double getPositionInches() {
-  return encoder.getPosition() * ElevatorConstants.conversionFactor_inches_per_roatation;
+  return encoder.getPosition() * ElevatorConstants.inches_per_rotation;
 }
 /*
  * get the current velocity - how fast is the elevator moving in inches per
  *   second
  */
 public double getVelocityInchesPerSecond() {
-  return (encoder.getVelocity() / 60) * ElevatorConstants.conversionFactor_inches_per_roatation;
+  return (encoder.getVelocity() / 60) * ElevatorConstants.inches_per_rotation;
 }
 
 /*
@@ -125,7 +130,7 @@ public void stop() {
  * MoveToSetPosition - go to the height in inches specified
  */
 public void moveToSetPosition (double height) {
-    //the height in inches is in the the encoder position conversion factor
+    //the height in inches to encoder rotations is in the the encoder position conversion factor
     
     closedLoopController.setReference(
             MathUtil.clamp(height,0,ElevatorConstants.maxHeight_inches), 
@@ -150,7 +155,8 @@ public Command moveToPosition(double height)
     public Command setElevatorHeight(double height){
         return moveToPosition(height).until(()->aroundHeight(height));
     }
-    //allow a close enough height estimate on the elevator
+    //allow a close enough height estimate on the elevator, defaults to constant but
+    //can be overridden
     public boolean aroundHeight(double height){
         return aroundHeight(height, ElevatorConstants.ElevatorDefaultTolerance);
     }
