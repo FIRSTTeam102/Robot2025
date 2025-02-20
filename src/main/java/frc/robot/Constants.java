@@ -54,9 +54,11 @@ public final class Constants
   }
 //TODO get the DIO port for the limit switch
   public static final class ElevatorConstants {
+
     public static final int LIMIT_SWITCH_PORT = 0;
     public static final int ELEVATOR_MOTOR_ID = 30;
     public static final double JStick_Speed_Mult = 1;
+    public static final double OUTPUT_VOLTS = 0.003;
 
 // The encoder is directly mounted to the elevator shaft - 1 rotation = 1 full rotation of the chain
 // sprocket. The diameter of the sprocket is 2", so the circumference = 2 pi.

@@ -17,7 +17,7 @@ import com.revrobotics.spark.SparkBase.PersistMode;
 import com.revrobotics.spark.SparkBase.ResetMode;
 import com.revrobotics.spark.config.SparkMaxConfig;
 import com.revrobotics.spark.config.ClosedLoopConfig.FeedbackSensor;
-
+import com.revrobotics.spark.config.SparkBaseConfig;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import frc.robot.Constants.ElevatorConstants;
 import edu.wpi.first.math.MathUtil;
@@ -47,10 +47,10 @@ public class Elevator extends SubsystemBase {
 
  
     // TODO: add lidar sensor (distance)
-  
+
     private SparkMaxConfig config = new SparkMaxConfig(); 
 
-  
+  double nominalVoltage = 0;
 
    public Elevator(){
 
@@ -84,6 +84,7 @@ public class Elevator extends SubsystemBase {
         //encoder to read
         config.alternateEncoder.positionConversionFactor(ElevatorConstants.conversionFactor_rotations_per_inch)
                                .countsPerRevolution(8192);
+                               
         
     /*
      * Apply the configuration to the SPARK MAX.
@@ -121,6 +122,7 @@ public double getVelocityInchesPerSecond() {
 public void manualMove(double motorSpeedPercent){
     double motorSpeed = motorSpeedPercent * ElevatorConstants.maxRPM;
     closedLoopController.setReference(motorSpeed, ControlType.kVelocity,ClosedLoopSlot.kSlot1);
+
 }
 
 public void stop() {
@@ -135,12 +137,17 @@ public void moveToSetPosition (double height) {
     closedLoopController.setReference(
             MathUtil.clamp(height,0,ElevatorConstants.maxHeight_inches), 
             ControlType.kPosition,ClosedLoopSlot.kSlot0);
+    motor.setVoltage(ElevatorConstants.OUTPUT_VOLTS);
 }
 //if the bottom limit switch is triggered zero the encoder
 public void zeroEncoder() {
   encoder.setPosition(0);
 }
 
+public void holdStill(){
+  motor.setVoltage(ElevatorConstants.OUTPUT_VOLTS);
+
+}
 /*
 *  move to Position - create a command that uses the pid loop to set the height
 *    in inches
