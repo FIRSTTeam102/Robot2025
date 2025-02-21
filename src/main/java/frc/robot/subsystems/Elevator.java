@@ -6,7 +6,7 @@ import org.littletonrobotics.junction.AutoLogOutput;
 
 import com.revrobotics.sim.SparkMaxSim;
 import com.revrobotics.spark.ClosedLoopSlot;
-
+import com.revrobotics.spark.SparkBase;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.SparkClosedLoopController;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
@@ -22,8 +22,11 @@ import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import frc.robot.Constants.ElevatorConstants;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.system.plant.DCMotor;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj.simulation.BatterySim;
+import edu.wpi.first.wpilibj.simulation.ElevatorSim;
 import edu.wpi.first.wpilibj.simulation.RoboRioSim;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -36,7 +39,8 @@ public class Elevator extends SubsystemBase {
     private SparkMax motor = new SparkMax(ElevatorConstants.ELEVATOR_MOTOR_ID, MotorType.kBrushless);
 
     // create the Spark MAX sim object
-    SparkMaxSim maxSim = new SparkMaxSim(motor, maxGearbox);
+    SparkMaxSim motorSim = new SparkMaxSim(motor, maxGearbox);
+    private ElevatorSim m_elevatorSim = null;
 
     private final RelativeEncoder encoder = motor.getAlternateEncoder();
     
@@ -62,8 +66,14 @@ public class Elevator extends SubsystemBase {
       config.idleMode(IdleMode.kBrake);
     
       config.closedLoop
+        //tell the pid loop how fast to move the motor to achieve position goal
+        .maxMotion
+          .maxVelocity(ElevatorConstants.motor_max_rpm)
+          .maxAcceleration(ElevatorConstants.motor_max_accel)
+          .allowedClosedLoopError(ElevatorConstants.ElevatorDefToleranceRotations);
         //set the feedback sensor to the alternate encoder - rev shaft encoder plugged in
         //to the sparkmax via the alternate encoder adaptor
+      config.closedLoop
         .feedbackSensor(FeedbackSensor.kAlternateOrExternalEncoder)
 
         // Set PID values for position control. We don't need to pass a closed loop
@@ -79,11 +89,8 @@ public class Elevator extends SubsystemBase {
         .velocityFF(ElevatorConstants.kFF, ClosedLoopSlot.kSlot1)
         .outputRange(ElevatorConstants.kMinOutput,ElevatorConstants.kMaxOutput, ClosedLoopSlot.kSlot1);
         
-        // the conversion factor is multiplied by the setpoint to get native units (rotations) - 
-        //if we ask for a positoin of 40" that should be 40"* rotatoins/inch to get rotations we want the
-        //encoder to read
-        config.alternateEncoder.positionConversionFactor(ElevatorConstants.conversionFactor_rotations_per_inch)
-                               .countsPerRevolution(8192);
+        //rev throughbore definition
+        config.alternateEncoder.countsPerRevolution(8192);
                                
         
     /*
@@ -98,7 +105,19 @@ public class Elevator extends SubsystemBase {
      */
     motor.configure(config, ResetMode.kResetSafeParameters, PersistMode.kNoPersistParameters);
 
+    if (RobotBase.isSimulation()) {
+            m_elevatorSim = new ElevatorSim(maxGearbox,
+                    ElevatorConstants.gear_ratio_to_1,
+                    Units.lbsToKilograms(ElevatorConstants.carriageMass),
+                    Units.inchesToMeters(2),
+                    0,
+                    Units.inchesToMeters(ElevatorConstants.maxHeight_inches),
+                    true,
+                    0.0,
+                    0.0,
+                    0.0);
     }
+  }
     
 
 
@@ -106,7 +125,7 @@ public class Elevator extends SubsystemBase {
  * get the current position of the elevator in inches, based on the encoder reading
  */
 public double getPositionInches() {
-  return encoder.getPosition() * ElevatorConstants.inches_per_rotation;
+  return (encoder.getPosition() * ElevatorConstants.inches_per_rotation);
 }
 /*
  * get the current velocity - how fast is the elevator moving in inches per
@@ -120,7 +139,7 @@ public double getVelocityInchesPerSecond() {
  * ManualMove takes the percentage of maximum motor speed (velocity)
  */
 public void manualMove(double motorSpeedPercent){
-    double motorSpeed = motorSpeedPercent * ElevatorConstants.maxRPM;
+    double motorSpeed = motorSpeedPercent * ElevatorConstants.motor_max_rpm;
     closedLoopController.setReference(motorSpeed, ControlType.kVelocity,ClosedLoopSlot.kSlot1);
 
 }
@@ -132,18 +151,22 @@ public void stop() {
  * MoveToSetPosition - go to the height in inches specified
  */
 public void moveToSetPosition (double height) {
-    //the height in inches to encoder rotations is in the the encoder position conversion factor
-    
+    //convert the height in inches to rotations
+    double rotationGoal = height * ElevatorConstants.rotations_per_inch;
+
+    //clamp returns a value between the max & min rotations possible for the elevator
+    // preventing us from going over the top or through the floor
     closedLoopController.setReference(
-            MathUtil.clamp(height,0,ElevatorConstants.maxHeight_inches), 
-            ControlType.kPosition,ClosedLoopSlot.kSlot0);
-    motor.setVoltage(ElevatorConstants.OUTPUT_VOLTS);
+            MathUtil.clamp(rotationGoal,0,ElevatorConstants.maxHeight_rotations), 
+            SparkBase.ControlType.kMAXMotionPositionControl,ClosedLoopSlot.kSlot0);
+    //adjust the voltage to keep the elevator at a stable height        
+    holdStill();
 }
 //if the bottom limit switch is triggered zero the encoder
 public void zeroEncoder() {
   encoder.setPosition(0);
 }
-
+//adjust the output voltage to hold the elevator in place //TODO tune this
 public void holdStill(){
   motor.setVoltage(ElevatorConstants.OUTPUT_VOLTS);
 
@@ -165,7 +188,7 @@ public Command moveToPosition(double height)
     //allow a close enough height estimate on the elevator, defaults to constant but
     //can be overridden
     public boolean aroundHeight(double height){
-        return aroundHeight(height, ElevatorConstants.ElevatorDefaultTolerance);
+        return aroundHeight(height, ElevatorConstants.ElevatorDefaultToleranceInch);
     }
     public boolean aroundHeight(double height, double tolerance){
         return MathUtil.isNear(height,getPositionInches(),tolerance);
@@ -179,6 +202,8 @@ public Command moveToPosition(double height)
     private double currPositon;
 @AutoLogOutput
     private double currVelInchesPerSec;
+@AutoLogOutput
+    private double currRotations;
 
 @Override
 public void periodic()
@@ -188,10 +213,27 @@ public void periodic()
   voltageLogged = motor.getAppliedOutput();
   currPositon = getPositionInches();
   currVelInchesPerSec = getVelocityInchesPerSecond();
+  currRotations = encoder.getPosition();
 
   if (bottomlimitSwitch.get() == true){
     zeroEncoder();
   }
 }
+public void simulationPeriodic() {
+  //set input(voltage)
+  m_elevatorSim.setInput(motorSim.getAppliedOutput() * RoboRioSim.getVInVoltage());
 
+  //update-every 20 milliseconds
+  m_elevatorSim.update(0.02);
+  double velocityMeterPerSec = m_elevatorSim.getVelocityMetersPerSecond();
+  double simRotations = Units.metersToInches(velocityMeterPerSec * 60) * ElevatorConstants.rotations_per_inch;
+  motorSim.iterate(simRotations,
+          RoboRioSim.getVInVoltage(),
+          0.020);
+
+  RoboRioSim.setVInVoltage(BatterySim.calculateDefaultBatteryLoadedVoltage(m_elevatorSim.getCurrentDrawAmps()));
+
+
+ 
+}
 }
