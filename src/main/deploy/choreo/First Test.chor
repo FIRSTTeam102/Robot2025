@@ -1,5 +1,5 @@
 {
- "name":"test 1",
+ "name":"First Test",
  "version":1,
  "type":"Swerve",
  "variables":{
@@ -9,35 +9,35 @@
  "config":{
   "frontLeft":{
    "x":{
-    "exp":"11 in",
-    "val":0.2794
+    "exp":"12.87 in",
+    "val":0.32689799999999997
    },
    "y":{
-    "exp":"11 in",
-    "val":0.2794
+    "exp":"12.87 in",
+    "val":0.32689799999999997
    }
   },
   "backLeft":{
    "x":{
-    "exp":"-11 in",
-    "val":-0.2794
+    "exp":"-12.87 in",
+    "val":-0.32689799999999997
    },
    "y":{
-    "exp":"11 in",
-    "val":0.2794
+    "exp":"12.87 in",
+    "val":0.32689799999999997
    }
   },
   "mass":{
-   "exp":"150 lbs",
-   "val":68.0388555
+   "exp":"107 lbs",
+   "val":48.53438359
   },
   "inertia":{
-   "exp":"6 kg m ^ 2",
-   "val":6.0
+   "exp":"4.696 kg m ^ 2",
+   "val":4.696
   },
   "gearing":{
-   "exp":"6.5",
-   "val":6.5
+   "exp":"6.75",
+   "val":6.75
   },
   "radius":{
    "exp":"2 in",
@@ -48,25 +48,25 @@
    "val":628.3185307179587
   },
   "tmax":{
-   "exp":"1.2 N * m",
-   "val":1.2
+   "exp":"3.65 N * m",
+   "val":3.65
   },
   "cof":{
-   "exp":"1.5",
-   "val":1.5
+   "exp":"1.19",
+   "val":1.19
   },
   "bumper":{
    "front":{
-    "exp":"16 in",
-    "val":0.4064
+    "exp":"15 in",
+    "val":0.381
    },
    "side":{
-    "exp":"16 in",
-    "val":0.4064
+    "exp":"15 in",
+    "val":0.381
    },
    "back":{
-    "exp":"16 in",
-    "val":0.4064
+    "exp":"15 in",
+    "val":0.381
    }
   },
   "differentialTrackWidth":{
