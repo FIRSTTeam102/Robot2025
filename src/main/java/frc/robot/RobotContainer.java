@@ -89,10 +89,8 @@ public class RobotContainer
    */
   public RobotContainer()
   {
-    
 
     autoChooser = AutoBuilder.buildAutoChooser();
-
     SmartDashboard.putData("Auto Chooser", autoChooser);
 
     // Configure the trigger bindings
@@ -102,6 +100,8 @@ public class RobotContainer
     NamedCommands.registerCommand("skibidi", driveFieldOrientedAnglularVelocity);
 
   }
+
+  
 
   /**
    * Use this method to define your trigger->command mappings. Triggers can be created via the
