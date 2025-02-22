@@ -152,7 +152,7 @@ public void stop() {
  */
 public void moveToSetPosition (double height) {
     //convert the height in inches to rotations
-    double rotationGoal = height * ElevatorConstants.rotations_per_inch;
+    double rotationGoal = height * ElevatorConstants.rotations_per_inch * ElevatorConstants.NATIVE_UNITS_PER_ROTATION;
 
     //clamp returns a value between the max & min rotations possible for the elevator
     // preventing us from going over the top or through the floor

@@ -55,6 +55,7 @@ public final class Constants
 //TODO get the DIO port for the limit switch
   public static final class ElevatorConstants {
 
+    public static final double NATIVE_UNITS_PER_ROTATION = 8192;
     public static final int LIMIT_SWITCH_PORT = 0;
     public static final int ELEVATOR_MOTOR_ID = 30;
     public static final double JStick_Speed_Mult = 1;
@@ -66,7 +67,8 @@ public final class Constants
     public static final double inches_per_rotation = 2 * Math.PI * 3;
     public static final double maxHeight_inches = 80;
     public static final double carriageMass = 13; 
-    public static final double maxHeight_rotations = maxHeight_inches/inches_per_rotation;
+    //multiplied maxHeight Rotations by native units to get max native units
+    public static final double maxHeight_rotations = (maxHeight_inches/inches_per_rotation) * NATIVE_UNITS_PER_ROTATION;
     public static final double rotations_per_inch = 1/inches_per_rotation;
     public static final double secondsToMaxHeight = 2; //top speed goal
     public static final double maxRotationsPerMin = maxHeight_rotations/secondsToMaxHeight * 60;
@@ -76,6 +78,7 @@ public final class Constants
 
     public static final double ElevatorDefaultToleranceInch = 1.0; //1 inch either way error in position
     public static final double ElevatorDefToleranceRotations = ElevatorDefaultToleranceInch /inches_per_rotation;
+    
 
     //PID values - determined using Rev hardware client & graphing velocity
     public static double kP = 0.00025; 
