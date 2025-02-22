@@ -89,8 +89,6 @@ public class RobotContainer
    */
   public RobotContainer()
   {
-    SwerveSubsystem swerve =  new SwerveSubsystem(new File(Filesystem.getDeployDirectory(),
-    "swerve/Robot2025")); 
     
 
     autoChooser = AutoBuilder.buildAutoChooser();
