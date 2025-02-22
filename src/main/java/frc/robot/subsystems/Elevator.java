@@ -160,7 +160,7 @@ public void moveToSetPosition (double height) {
             MathUtil.clamp(rotationGoal,0,ElevatorConstants.maxHeight_rotations), 
             SparkBase.ControlType.kMAXMotionPositionControl,ClosedLoopSlot.kSlot0);
     //adjust the voltage to keep the elevator at a stable height        
-    holdStill();
+    //holdStill();  figure this out later 
 }
 //if the bottom limit switch is triggered zero the encoder
 public void zeroEncoder() {
@@ -193,6 +193,8 @@ public Command moveToPosition(double height)
     public boolean aroundHeight(double height, double tolerance){
         return MathUtil.isNear(height,getPositionInches(),tolerance);
     }
+    //make if st atement to add hold stil here when is true
+
 
 @AutoLogOutput
     private double voltageLogged; 
