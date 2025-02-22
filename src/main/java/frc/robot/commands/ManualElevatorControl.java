@@ -41,7 +41,8 @@ public class ManualElevatorControl extends Command {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) { 
-    elevator.holdStill();
+    //TODO find out the correct value for nominal voltage to fight gravity
+    //elevator.holdStill();
   }
 
   // Returns true when the command should end.

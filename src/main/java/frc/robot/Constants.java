@@ -65,14 +65,14 @@ public final class Constants
 // the shooter is attached to the 3rd stage, so it moves at 3x the rate of the chain distance
     public static final double inches_per_rotation = 2 * Math.PI * 3;
     public static final double maxHeight_inches = 80;
-    public static final double carriageMass = 13;
+    public static final double carriageMass = 13; 
     public static final double maxHeight_rotations = maxHeight_inches/inches_per_rotation;
     public static final double rotations_per_inch = 1/inches_per_rotation;
     public static final double secondsToMaxHeight = 2; //top speed goal
     public static final double maxRotationsPerMin = maxHeight_rotations/secondsToMaxHeight * 60;
     public static final double gear_ratio_to_1 = 25; //NEO gear ratio
     public static final double motor_max_rpm = maxRotationsPerMin * gear_ratio_to_1; //Goal of max height in 2 seconds
-    public static final double motor_max_accel = 2000;
+    public static final double motor_max_accel = 500;//TODO tune this to achieve fast ramp up
 
     public static final double ElevatorDefaultToleranceInch = 1.0; //1 inch either way error in position
     public static final double ElevatorDefToleranceRotations = ElevatorDefaultToleranceInch /inches_per_rotation;

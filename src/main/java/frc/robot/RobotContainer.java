@@ -145,7 +145,8 @@ public class RobotContainer
       driverXbox.leftBumper().whileTrue(Commands.runOnce(drivebase::lock, drivebase).repeatedly());
       driverXbox.rightBumper().onTrue(Commands.none());
       
-
+      //TODO make a constant for Levels L!, L2, L3, L4 in inches & set to a,b,x,y buttons per Drive team
+      //definitions
       operatorXbox.a().onTrue(elevator.setElevatorHeight(20));
     }
 
