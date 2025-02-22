@@ -92,7 +92,7 @@ public class RobotContainer
     SwerveSubsystem swerve =  new SwerveSubsystem(new File(Filesystem.getDeployDirectory(),
     "swerve/Robot2025")); 
     
-    
+
     autoChooser = AutoBuilder.buildAutoChooser();
 
     SmartDashboard.putData("Auto Chooser", autoChooser);
@@ -101,6 +101,7 @@ public class RobotContainer
     configureBindings();
     DriverStation.silenceJoystickConnectionWarning(true);
     NamedCommands.registerCommand("test", Commands.print("I EXIST"));
+    NamedCommands.registerCommand("skibidi", driveFieldOrientedAnglularVelocity);
   }
 
   /**
