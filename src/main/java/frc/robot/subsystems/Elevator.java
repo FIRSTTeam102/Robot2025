@@ -152,37 +152,37 @@ public void stop() {
  */
 public void moveToSetPosition (double height) {
     //convert the height in inches to rotations
-    double rotationGoal = height * ElevatorConstants.rotations_per_inch * ElevatorConstants.NATIVE_UNITS_PER_ROTATION;
-
+    //double rotationGoal = height * ElevatorConstants.rotations_per_inch * ElevatorConstants.NATIVE_UNITS_PER_ROTATION;
     //clamp returns a value between the max & min rotations possible for the elevator
     // preventing us from going over the top or through the floor
     closedLoopController.setReference(
-            MathUtil.clamp(rotationGoal,0,ElevatorConstants.maxHeight_rotations), 
-            SparkBase.ControlType.kMAXMotionPositionControl,ClosedLoopSlot.kSlot0);
-    //adjust the voltage to keep the elevator at a stable height        
+            //MathUtil.clamp(rotationGoal,0,ElevatorConstants.maxHeight_rotations), 
+            //rotationGoal, 
+            8192
+            ,SparkBase.ControlType.kMAXMotionPositionControl,ClosedLoopSlot.kSlot0);
+
+    //adjust the voltage to keep the elevator at a stable height   
+
+    
     //holdStill();  figure this out later 
 }
-//if the bottom limit switch is triggered zero the encoder
-public void zeroEncoder() {
-  encoder.setPosition(0);
-}
-//adjust the output voltage to hold the elevator in place //TODO tune this
-public void holdStill(){
-  motor.setVoltage(ElevatorConstants.OUTPUT_VOLTS);
 
-}
+
 /*
 *  move to Position - create a command that uses the pid loop to set the height
 *    in inches
 */
 public Command moveToPosition(double height)
   {
+    System.out.println("moveToPos, height:"+ height);
     return run(() -> {
       moveToSetPosition(height);
+
     });
   }
     //set the elevator height until it is close to the right height
     public Command setElevatorHeight(double height){
+        System.out.println("setElevatorHeight, height: " + height);
         return moveToPosition(height).until(()->aroundHeight(height));
     }
     //allow a close enough height estimate on the elevator, defaults to constant but
@@ -195,7 +195,15 @@ public Command moveToPosition(double height)
     }
     //make if st atement to add hold stil here when is true
 
+//if the bottom limit switch is triggered zero the encoder
+public void zeroEncoder() {
+  encoder.setPosition(0);
+}
+//adjust the output voltage to hold the elevator in place //TODO tune this
+public void holdStill(){
+  motor.setVoltage(ElevatorConstants.OUTPUT_VOLTS);
 
+}
 @AutoLogOutput
     private double voltageLogged; 
 @AutoLogOutput
