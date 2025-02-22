@@ -72,7 +72,7 @@ public final class Constants
     public static final double maxRotationsPerMin = maxHeight_rotations/secondsToMaxHeight * 60;
     public static final double gear_ratio_to_1 = 25; //NEO gear ratio
     public static final double motor_max_rpm = maxRotationsPerMin * gear_ratio_to_1; //Goal of max height in 2 seconds
-    public static final double motor_max_accel = motor_max_rpm / 60;
+    public static final double motor_max_accel = 2000;
 
     public static final double ElevatorDefaultToleranceInch = 1.0; //1 inch either way error in position
     public static final double ElevatorDefToleranceRotations = ElevatorDefaultToleranceInch /inches_per_rotation;
