@@ -64,7 +64,9 @@ public class Elevator extends SubsystemBase {
      * feedback sensor as the primary encoder.
      */
       config.idleMode(IdleMode.kBrake);
-    
+
+      config.encoder.positionConversionFactor(1000);
+
       config.closedLoop
         //tell the pid loop how fast to move the motor to achieve position goal
         .maxMotion
@@ -90,6 +92,7 @@ public class Elevator extends SubsystemBase {
         .outputRange(ElevatorConstants.kMinOutput,ElevatorConstants.kMaxOutput, ClosedLoopSlot.kSlot1);
         
         //rev throughbore definition
+        
         config.alternateEncoder.countsPerRevolution(8192);
                                
         
@@ -152,14 +155,11 @@ public void stop() {
  */
 public void moveToSetPosition (double height) {
     //convert the height in inches to rotations
-    //double rotationGoal = height * ElevatorConstants.rotations_per_inch * ElevatorConstants.NATIVE_UNITS_PER_ROTATION;
+    double rotationGoal = height * ElevatorConstants.rotations_per_inch * ElevatorConstants.NATIVE_UNITS_PER_ROTATION;
     //clamp returns a value between the max & min rotations possible for the elevator
     // preventing us from going over the top or through the floor
     closedLoopController.setReference(
-            //MathUtil.clamp(rotationGoal,0,ElevatorConstants.maxHeight_rotations), 
-            //rotationGoal, 
-            8192
-            ,SparkBase.ControlType.kMAXMotionPositionControl,ClosedLoopSlot.kSlot0);
+            MathUtil.clamp(rotationGoal,0,ElevatorConstants.maxHeight_rotations), SparkBase.ControlType.kMAXMotionPositionControl,ClosedLoopSlot.kSlot0);
 
     //adjust the voltage to keep the elevator at a stable height   
 
@@ -207,23 +207,25 @@ public void holdStill(){
 @AutoLogOutput
     private double voltageLogged; 
 @AutoLogOutput
-    private double motorSpeedOutput;
-@AutoLogOutput
     private double currPositon;
 @AutoLogOutput
     private double currVelInchesPerSec;
 @AutoLogOutput
     private double currRotations;
+@AutoLogOutput
+    private double AppliedOutput;
+@AutoLogOutput
+    private double OutputCurrent;
 
 @Override
 public void periodic()
 {
   //zero the encode when we trigger the bottom limit switch
-  motorSpeedOutput= motor.getAppliedOutput();
   voltageLogged = motor.getAppliedOutput();
   currPositon = getPositionInches();
   currVelInchesPerSec = getVelocityInchesPerSecond();
   currRotations = encoder.getPosition();
+  OutputCurrent = motor.getOutputCurrent();
 
   if (bottomlimitSwitch.get() == true){
     zeroEncoder();

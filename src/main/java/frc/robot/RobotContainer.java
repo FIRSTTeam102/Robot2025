@@ -121,7 +121,7 @@ public class RobotContainer
     }
 
     //Left operator joystick controls manual elevator control regardless of mode
-		//elevator.setDefaultCommand(new ManualElevatorControl(elevator,  () -> operatorXbox.getLeftY() * -1));
+		elevator.setDefaultCommand(new ManualElevatorControl(elevator,  () -> operatorXbox.getLeftY() * -1));
 
     //define the button to command bindings to run in test mode
     if (DriverStation.isTest())
@@ -147,7 +147,7 @@ public class RobotContainer
       
       //TODO make a constant for Levels L!, L2, L3, L4 in inches & set to a,b,x,y buttons per Drive team
       //definitions
-      operatorXbox.a().whileTrue(elevator.setElevatorHeight(20));
+      operatorXbox.a().onTrue(elevator.setElevatorHeight(20));
     }
 
   }
