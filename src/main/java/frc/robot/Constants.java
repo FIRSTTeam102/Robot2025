@@ -66,9 +66,9 @@ public final class Constants
 // the shooter is attached to the 3rd stage, so it moves at 3x the rate of the chain distance
     public static final double inches_per_rotation = 2 * Math.PI * 3;
     public static final double maxHeight_inches = 80;
-    public static final double carriageMass = 13; 
+    public static final double carriageMass = 23; //lbs shooter + elevator carriage + chain 
     //multiplied maxHeight Rotations by native units to get max native units
-    public static final double maxHeight_rotations = (maxHeight_inches/inches_per_rotation) * NATIVE_UNITS_PER_ROTATION;
+    public static final double maxHeight_rotations = (maxHeight_inches/inches_per_rotation);
     public static final double rotations_per_inch = 1/inches_per_rotation;
     public static final double secondsToMaxHeight = 2; //top speed goal
     public static final double maxRotationsPerMin = (maxHeight_rotations/secondsToMaxHeight) * 60;
@@ -76,7 +76,7 @@ public final class Constants
     public static final double motor_max_rpm = 3000;//maxRotationsPerMin * gear_ratio_to_1; //Goal of max height in 2 seconds
     public static final double motor_max_accel = 500;//TODO tune this to achieve fast ramp up
 
-    public static final double ElevatorDefaultToleranceInch = 1.0; //1 inch either way error in position
+    public static final double ElevatorDefaultToleranceInch = 0.5; //1 inch either way error in position
     public static final double ElevatorDefToleranceRotations = ElevatorDefaultToleranceInch /inches_per_rotation;
     
 
@@ -85,11 +85,12 @@ public final class Constants
     public static double kI = 0;
     public static double kD = 0; 
     public static double kIz = 0.1; 
-    public static double kFF = 0.000015; 
+    public static double kFF = 0.002114; //velocity feed forward = 1/kv = 1/473 per neo docs 
     public static double kMaxOutput = 1; 
     public static double kMinOutput = -1;
     
     // feedforward */
-	  public static final double kG = 0;
+	  public static final double kG = 0.1056 * .01957;//effect of elevator gravity on neo 
+    public static final double KV = .01965; //for a neo
   }
 }

@@ -54,7 +54,7 @@ public class Elevator extends SubsystemBase {
 
     private SparkMaxConfig config = new SparkMaxConfig(); 
 
-  double nominalVoltage = 0;
+  //double nominalVoltage = 0;
 
    public Elevator(){
 
@@ -65,7 +65,7 @@ public class Elevator extends SubsystemBase {
      */
       config.idleMode(IdleMode.kBrake);
 
-      config.encoder.positionConversionFactor(1000);
+      config.encoder.positionConversionFactor(1);
 
       config.closedLoop
         //tell the pid loop how fast to move the motor to achieve position goal
@@ -83,7 +83,8 @@ public class Elevator extends SubsystemBase {
         .p(0.1)
         .i(0)
         .d(0)
-        .outputRange(ElevatorConstants.kMinOutput, ElevatorConstants.kMaxOutput)
+        .velocityFF(ElevatorConstants.kFF)
+        .outputRange(0,ElevatorConstants.maxHeight_rotations)
         // Set PID values for velocity control in slot 1
         .p(ElevatorConstants.kP, ClosedLoopSlot.kSlot1)
         .i(ElevatorConstants.kI, ClosedLoopSlot.kSlot1)
@@ -107,6 +108,7 @@ public class Elevator extends SubsystemBase {
      * mid-operation.
      */
     motor.configure(config, ResetMode.kResetSafeParameters, PersistMode.kNoPersistParameters);
+    encoder.setPosition(0);
 
     if (RobotBase.isSimulation()) {
             m_elevatorSim = new ElevatorSim(maxGearbox,
@@ -155,16 +157,14 @@ public void stop() {
  */
 public void moveToSetPosition (double height) {
     //convert the height in inches to rotations
-    double rotationGoal = height * ElevatorConstants.rotations_per_inch * ElevatorConstants.NATIVE_UNITS_PER_ROTATION;
+    double rotationGoal = height * ElevatorConstants.rotations_per_inch;
     //clamp returns a value between the max & min rotations possible for the elevator
     // preventing us from going over the top or through the floor
     closedLoopController.setReference(
-            MathUtil.clamp(rotationGoal,0,ElevatorConstants.maxHeight_rotations), SparkBase.ControlType.kMAXMotionPositionControl,ClosedLoopSlot.kSlot0);
+            MathUtil.clamp(rotationGoal,0,ElevatorConstants.maxHeight_rotations), 
+                     SparkBase.ControlType.kMAXMotionPositionControl,ClosedLoopSlot.kSlot0,
+                     ElevatorConstants.KV);
 
-    //adjust the voltage to keep the elevator at a stable height   
-
-    
-    //holdStill();  figure this out later 
 }
 
 
@@ -227,9 +227,9 @@ public void periodic()
   currRotations = encoder.getPosition();
   OutputCurrent = motor.getOutputCurrent();
 
-  if (bottomlimitSwitch.get() == true){
-    zeroEncoder();
-  }
+  //if (bottomlimitSwitch.get() == true){
+  //  zeroEncoder();
+  //}
 }
 public void simulationPeriodic() {
   //set input(voltage)
