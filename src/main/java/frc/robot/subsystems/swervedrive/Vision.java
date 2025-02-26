@@ -284,28 +284,38 @@ public class Vision
    */
   enum Cameras
   {
-    /**
-     * Left Camera
+    /*
+     * Back Right Camera
      */
-    LEFT_CAM("left",
+    BackRight("BackRight",
              new Rotation3d(0, Math.toRadians(-24.094), Math.toRadians(30)),
              new Translation3d(Units.inchesToMeters(12.056),
                                Units.inchesToMeters(10.981),
                                Units.inchesToMeters(8.44)),
              VecBuilder.fill(4, 4, 8), VecBuilder.fill(0.5, 0.5, 1)),
     /**
-     * Right Camera
+    /**
+     * Back Left Camera
      */
-    RIGHT_CAM("right",
+    BackLeft("BackLeft",
+             new Rotation3d(0, Math.toRadians(-24.094), Math.toRadians(30)),
+             new Translation3d(Units.inchesToMeters(12.056),
+                               Units.inchesToMeters(10.981),
+                               Units.inchesToMeters(8.44)),
+             VecBuilder.fill(4, 4, 8), VecBuilder.fill(0.5, 0.5, 1)),
+    /**
+     * Front Left Camera
+     */
+    FrontLeft("FrontLeft",
               new Rotation3d(0, Math.toRadians(-24.094), Math.toRadians(-30)),
               new Translation3d(Units.inchesToMeters(12.056),
                                 Units.inchesToMeters(-10.981),
                                 Units.inchesToMeters(8.44)),
               VecBuilder.fill(4, 4, 8), VecBuilder.fill(0.5, 0.5, 1)),
-    /**
-     * Center Camera
+    /*
+    Front Right Camera*
      */
-    CENTER_CAM("photonvision",
+    FrontRight("FrontRight",
                new Rotation3d(0, Units.degreesToRadians(20), 20),
                new Translation3d(Units.inchesToMeters(-7.435273),
                                  Units.inchesToMeters(-7.435273),
@@ -320,6 +330,7 @@ public class Vision
      * Camera instance for comms.
      */
     public final  PhotonCamera                 camera;
+
     /**
      * Pose estimator for camera.
      */
@@ -373,6 +384,7 @@ public class Vision
       latencyAlert = new Alert("'" + name + "' Camera is experiencing high latency.", AlertType.kWarning);
 
       camera = new PhotonCamera(name);
+
 
       // https://docs.wpilib.org/en/stable/docs/software/basic-programming/coordinate-system.html
       robotToCamTransform = new Transform3d(robotToCamTranslation, robotToCamRotation);
