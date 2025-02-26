@@ -25,10 +25,8 @@ public class FunnelOut extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    if (!Climber.getfunnelOut()){ //ends command instantly if funnel is already out but probably not the most efficient way to do this
     climber.setFunnelMotorSpeed(funnelMotorSpeed);
     }
-  }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
@@ -45,13 +43,10 @@ public class FunnelOut extends Command {
   @Override
   public boolean isFinished() {
     if (climber.getFunnelMotorCurrent()>=Constants.ClimberConstants.funnelMotorStallCurrentAmps){
-      return false;
-    }
-    else if(Climber.getfunnelOut()){ 
-      return false;
+      return true;
     }
     else{
-      return true;
+      return false;
     }
   }
 }

@@ -50,7 +50,7 @@ public class Climber extends SubsystemBase {
     }
 
     public void togglefunnelOut(){
-      funnelOut = true;
+      funnelOut = !funnelOut;
     }
 
   @Override
