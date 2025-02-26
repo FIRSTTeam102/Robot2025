@@ -71,6 +71,10 @@ public class Shooter extends SubsystemBase {
     hasCoral=!hasCoral;
   }
 
+  public boolean hasCoral(){
+    return hasCoral;
+  }
+
   @Override
   public void periodic() {
 
@@ -79,6 +83,9 @@ public class Shooter extends SubsystemBase {
     
     if(coralSensor2Output == true){
       hasCoral =true;
+    }
+    else{
+      hasCoral = false;
     }
     
  //   backCoralSensorPublisher.setDefault(false);

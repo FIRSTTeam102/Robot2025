@@ -9,13 +9,11 @@ import frc.robot.Constants;
 import frc.robot.subsystems.Shooter;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
-public class Intake extends Command {
+public class IntakeAuto extends Command {
   Shooter shooter;
-  boolean hasCoral = false;
-
-
-  /** Creates a new Intake. */
-  public Intake(Shooter shooter) {
+  
+  /** Creates a new IntakeAuto. */
+  public IntakeAuto(Shooter shooter) {
     this.shooter = shooter;
     addRequirements(shooter);
   }
@@ -29,7 +27,6 @@ public class Intake extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
- 
   }
 
   // Called once the command ends or is interrupted.
@@ -40,11 +37,12 @@ public class Intake extends Command {
 
   // Returns true when the command should end.
   @Override
-  public boolean isFinished() { //doesn't have an end condition because the trigger that calls this command will cause an interrupt when there is coral
+  public boolean isFinished() { //This has a trigger to stop it since there is no trigger that calls this function, thus there is no trigger that can cause an interrupt.
+    if(shooter.hasCoral){
+      return true;
+    }
+    else{
       return false;
-     }
-
+    }
   }
-
-
-
+}
