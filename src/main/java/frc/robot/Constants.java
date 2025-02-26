@@ -47,6 +47,7 @@ public final class Constants
     public static final double LEFT_Y_DEADBAND = 0.1;
     public static final double RIGHT_X_DEADBAND = 0.3;
     public static final double TURN_CONSTANT    = 6;
+    
   }
   public static class VisionConstants
   {
@@ -58,8 +59,14 @@ public final class Constants
     public static final double NATIVE_UNITS_PER_ROTATION = 8192;
     public static final int LIMIT_SWITCH_PORT = 0;
     public static final int ELEVATOR_MOTOR_ID = 30;
-    public static final double JStick_Speed_Mult = 1;
-    public static final double OUTPUT_VOLTS = 0.003;
+    public static final double JStick_Speed_Mult = 0.6;
+    public static final double OUTPUT_VOLTS = 1;
+    public static final double HOME = 0;
+    public static final double LEVEL1 = 26.895 - 6.5;
+    public static final double LEVEL2 = 37.562 - 6.5;
+    public static final double LEVEL3 = 52.572 - 6.5; 
+    public static final double LEVEL4= 78.415 -6.5;
+
 
 // The encoder is directly mounted to the elevator shaft - 1 rotation = 1 full rotation of the chain
 // sprocket. The diameter of the sprocket is 2", so the circumference = 2 pi. This is a 3 stage elevator &
@@ -91,6 +98,6 @@ public final class Constants
     
     // feedforward */
 	  public static final double kG = 0.1056 * .01957;//effect of elevator gravity on neo 
-    public static final double KV = .01965; //for a neo
+    public static final double KV = .5; //for a neo
   }
 }

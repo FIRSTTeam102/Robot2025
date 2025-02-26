@@ -84,12 +84,12 @@ public class Elevator extends SubsystemBase {
         .i(0)
         .d(0)
         .velocityFF(ElevatorConstants.kFF)
-        .outputRange(0,ElevatorConstants.maxHeight_rotations)
+        .outputRange(-4.2,ElevatorConstants.maxHeight_rotations)
         // Set PID values for velocity control in slot 1
         .p(ElevatorConstants.kP, ClosedLoopSlot.kSlot1)
         .i(ElevatorConstants.kI, ClosedLoopSlot.kSlot1)
         .d(ElevatorConstants.kD, ClosedLoopSlot.kSlot1)
-        .velocityFF(ElevatorConstants.kFF, ClosedLoopSlot.kSlot1)
+        .velocityFF(0.000015, ClosedLoopSlot.kSlot1)
         .outputRange(ElevatorConstants.kMinOutput,ElevatorConstants.kMaxOutput, ClosedLoopSlot.kSlot1);
         
         //rev throughbore definition
@@ -145,7 +145,7 @@ public double getVelocityInchesPerSecond() {
  */
 public void manualMove(double motorSpeedPercent){
     double motorSpeed = motorSpeedPercent * ElevatorConstants.motor_max_rpm;
-    closedLoopController.setReference(motorSpeed, ControlType.kVelocity,ClosedLoopSlot.kSlot1);
+    closedLoopController.setReference(motorSpeed, ControlType.kVelocity,ClosedLoopSlot.kSlot1,ElevatorConstants.KV);
 
 }
 
@@ -182,8 +182,7 @@ public Command moveToPosition(double height)
   }
     //set the elevator height until it is close to the right height
     public Command setElevatorHeight(double height){
-        System.out.println("setElevatorHeight, height: " + height);
-        return moveToPosition(height).until(()->aroundHeight(height));
+                return moveToPosition(height).until(()->aroundHeight(height));
     }
     //allow a close enough height estimate on the elevator, defaults to constant but
     //can be overridden
@@ -202,7 +201,12 @@ public void zeroEncoder() {
 //adjust the output voltage to hold the elevator in place //TODO tune this
 public void holdStill(){
   motor.setVoltage(ElevatorConstants.OUTPUT_VOLTS);
+}
 
+public Command stayStill(){
+  return run(() -> {
+    holdStill(); 
+  });
 }
 @AutoLogOutput
     private double voltageLogged; 

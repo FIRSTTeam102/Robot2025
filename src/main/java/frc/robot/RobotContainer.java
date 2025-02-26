@@ -17,6 +17,7 @@ import edu.wpi.first.wpilibj2.command.Commands;
 
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import frc.robot.Constants.ElevatorConstants;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.ManualElevatorControl;
 import frc.robot.subsystems.Elevator;
@@ -147,7 +148,12 @@ public class RobotContainer
       
       //TODO make a constant for Levels L!, L2, L3, L4 in inches & set to a,b,x,y buttons per Drive team
       //definitions
-      operatorXbox.a().onTrue(elevator.setElevatorHeight(20));
+      operatorXbox.leftBumper().onTrue(elevator.setElevatorHeight(ElevatorConstants.HOME));
+      operatorXbox.a().onTrue(elevator.setElevatorHeight(ElevatorConstants.LEVEL2));
+      operatorXbox.b().onTrue(elevator.setElevatorHeight(ElevatorConstants.LEVEL1));
+      operatorXbox.x().onTrue(elevator.setElevatorHeight(ElevatorConstants.LEVEL4));
+      operatorXbox.y().onTrue(elevator.setElevatorHeight(ElevatorConstants.LEVEL3));
+
     }
 
   }
