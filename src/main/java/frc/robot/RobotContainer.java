@@ -149,10 +149,11 @@ public class RobotContainer
       //TODO make a constant for Levels L!, L2, L3, L4 in inches & set to a,b,x,y buttons per Drive team
       //definitions
       operatorXbox.leftBumper().onTrue(elevator.setElevatorHeight(ElevatorConstants.HOME));
-      operatorXbox.a().onTrue(elevator.setElevatorHeight(ElevatorConstants.LEVEL2));
-      operatorXbox.b().onTrue(elevator.setElevatorHeight(ElevatorConstants.LEVEL1));
-      operatorXbox.x().onTrue(elevator.setElevatorHeight(ElevatorConstants.LEVEL4));
-      operatorXbox.y().onTrue(elevator.setElevatorHeight(ElevatorConstants.LEVEL3));
+      operatorXbox.a().onTrue(elevator.setElevatorHeight(ElevatorConstants.LEVEL1));
+      operatorXbox.b().onTrue(elevator.setElevatorHeight(ElevatorConstants.LEVEL2));
+      operatorXbox.x().onTrue(elevator.setElevatorHeight(ElevatorConstants.LEVEL3));
+      operatorXbox.y().onTrue(elevator.setElevatorHeight(ElevatorConstants.LEVEL4));
+
 
     }
 
