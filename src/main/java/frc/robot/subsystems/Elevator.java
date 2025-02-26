@@ -24,6 +24,7 @@ import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DigitalInput;
+
 import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj.simulation.BatterySim;
 import edu.wpi.first.wpilibj.simulation.ElevatorSim;
@@ -109,6 +110,10 @@ public class Elevator extends SubsystemBase {
      */
     motor.configure(config, ResetMode.kResetSafeParameters, PersistMode.kNoPersistParameters);
     encoder.setPosition(0);
+
+    if(bottomlimitSwitch.get()){
+      
+    }
 
     if (RobotBase.isSimulation()) {
             m_elevatorSim = new ElevatorSim(maxGearbox,
