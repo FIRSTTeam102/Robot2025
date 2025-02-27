@@ -1,6 +1,8 @@
 package frc.robot.subsystems;
 
 
+import java.beans.Encoder;
+
 import org.littletonrobotics.junction.AutoLogOutput;
 
 
@@ -20,6 +22,7 @@ import com.revrobotics.spark.config.ClosedLoopConfig.FeedbackSensor;
 import com.revrobotics.spark.config.SparkBaseConfig;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import frc.robot.Constants.ElevatorConstants;
+import edu.wpi.first.hal.EncoderJNI;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.math.util.Units;
@@ -53,9 +56,7 @@ public class Elevator extends SubsystemBase {
  
     // TODO: add lidar sensor (distance)
 
-    private SparkMaxConfig config = new SparkMaxConfig(); 
-
-  //double nominalVoltage = 0;
+    private SparkMaxConfig config = new SparkMaxConfig();
 
    public Elevator(){
 
@@ -111,9 +112,11 @@ public class Elevator extends SubsystemBase {
     motor.configure(config, ResetMode.kResetSafeParameters, PersistMode.kNoPersistParameters);
     encoder.setPosition(0);
 
+    //sets encoder pos to 0 if bottomLimistswitch is triggered 
     if(bottomlimitSwitch.get()){
-      
+      EncoderJNI.resetEncoder(0);
     }
+    
 
     if (RobotBase.isSimulation()) {
             m_elevatorSim = new ElevatorSim(maxGearbox,
