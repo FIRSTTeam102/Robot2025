@@ -144,7 +144,7 @@ public class RobotContainer
       driverXbox.start().onTrue((Commands.runOnce(drivebase::zeroGyro)));
       driverXbox.back().whileTrue(drivebase.centerModulesCommand());
       driverXbox.leftBumper().whileTrue(Commands.runOnce(drivebase::lock, drivebase).repeatedly());
-      driverXbox.rightBumper().onTrue(Commands.none());
+      
       
       //TODO make a constant for Levels L!, L2, L3, L4 in inches & set to a,b,x,y buttons per Drive team
       //definitions
@@ -153,6 +153,8 @@ public class RobotContainer
       operatorXbox.b().onTrue(elevator.setElevatorHeight(ElevatorConstants.LEVEL2));
       operatorXbox.x().onTrue(elevator.setElevatorHeight(ElevatorConstants.LEVEL3));
       operatorXbox.y().onTrue(elevator.setElevatorHeight(ElevatorConstants.LEVEL4));
+      //TODO if the right bumper is pressed send the Elevator back to zero - Coral station Level
+      operatorXbox.rightBumper().onTrue(elevator.setElevatorHeight(ElevatorConstants.CORALSTA));
 
 
     }

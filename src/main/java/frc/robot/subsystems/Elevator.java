@@ -52,7 +52,7 @@ public class Elevator extends SubsystemBase {
     private SparkClosedLoopController closedLoopController = motor.getClosedLoopController(); 
     
     private DigitalInput bottomlimitSwitch = new DigitalInput(ElevatorConstants.LIMIT_SWITCH_PORT);
-
+    private boolean prevSetEncoder = true;
  
     // TODO: add lidar sensor (distance)
 
@@ -86,7 +86,7 @@ public class Elevator extends SubsystemBase {
         .i(0)
         .d(0)
         .velocityFF(ElevatorConstants.kFF)
-        .outputRange(-4.2,ElevatorConstants.maxHeight_rotations)
+        .outputRange(-1*ElevatorConstants.maxHeight_rotations,ElevatorConstants.maxHeight_rotations)
         // Set PID values for velocity control in slot 1
         .p(ElevatorConstants.kP, ClosedLoopSlot.kSlot1)
         .i(ElevatorConstants.kI, ClosedLoopSlot.kSlot1)
@@ -110,7 +110,10 @@ public class Elevator extends SubsystemBase {
      * mid-operation.
      */
     motor.configure(config, ResetMode.kResetSafeParameters, PersistMode.kNoPersistParameters);
-    encoder.setPosition(0);
+    
+    //assume the elevator is in the down position, so zero it out & set prev set to true
+    zeroEncoder();
+    prevSetEncoder = true;
 
     
     
@@ -202,6 +205,7 @@ public Command moveToPosition(double height)
 //if the bottom limit switch is triggered zero the encoder
 public void zeroEncoder() {
   encoder.setPosition(0);
+  prevSetEncoder = true;
 }
 //adjust the output voltage to hold the elevator in place //TODO tune this
 public void holdStill(){
@@ -212,6 +216,11 @@ public Command stayStill(){
   return run(() -> {
     holdStill(); 
   });
+}
+public boolean bottomLimitSwitchIsBeingPressed() {
+  //when this limit switch is being pressed it returns low &
+  //returns high when not being pressed, so return the opposite.
+  return (!bottomlimitSwitch.get());
 }
 @AutoLogOutput
     private double voltageLogged; 
@@ -239,10 +248,12 @@ public void periodic()
   System.out.print("value of limit swtich" + bottomlimitSwitch.get());
 
     //sets position(inces) to 0 if bottomLimistswitch is triggered 
-    if(bottomlimitSwitch.get() == false){
+    if(bottomLimitSwitchIsBeingPressed() && !prevSetEncoder){
       System.out.print("reset height to 0");
-      currPositon = 0;
-
+      zeroEncoder();
+    }
+    if (!bottomLimitSwitchIsBeingPressed()){
+      prevSetEncoder = false;
     }
 }
 public void simulationPeriodic() {

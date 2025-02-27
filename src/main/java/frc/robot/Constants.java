@@ -66,6 +66,7 @@ public final class Constants
     public static final double LEVEL2 = 37.562 - 6.5;
     public static final double LEVEL3 = 52.572 - 6.5; 
     public static final double LEVEL4= 78.415 -6.5;
+    public static final double CORALSTA = 0;
 
 
 // The encoder is directly mounted to the elevator shaft - 1 rotation = 1 full rotation of the chain
