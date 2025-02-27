@@ -36,7 +36,7 @@ public class FunnelOut extends Command {
   @Override
   public void end(boolean interrupted) {
     climber.setFunnelMotorSpeed(0); 
-    climber.togglefunnelOut(); //may want to make it possible to put funnel back in incase of accidental press
+    climber.togglefunnelOut(); 
   }
 
   // Returns true when the command should end.
