@@ -112,10 +112,7 @@ public class Elevator extends SubsystemBase {
     motor.configure(config, ResetMode.kResetSafeParameters, PersistMode.kNoPersistParameters);
     encoder.setPosition(0);
 
-    //sets encoder pos to 0 if bottomLimistswitch is triggered 
-    if(bottomlimitSwitch.get()){
-      EncoderJNI.resetEncoder(0);
-    }
+    
     
 
     if (RobotBase.isSimulation()) {
@@ -239,9 +236,14 @@ public void periodic()
   currRotations = encoder.getPosition();
   OutputCurrent = motor.getOutputCurrent();
 
-  //if (bottomlimitSwitch.get() == true){
-  //  zeroEncoder();
-  //}
+  System.out.print("value of limit swtich" + bottomlimitSwitch.get());
+
+    //sets position(inces) to 0 if bottomLimistswitch is triggered 
+    if(bottomlimitSwitch.get() == false){
+      System.out.print("reset height to 0");
+      currPositon = 0;
+
+    }
 }
 public void simulationPeriodic() {
   //set input(voltage)
