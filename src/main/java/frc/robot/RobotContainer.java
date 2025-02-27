@@ -4,11 +4,15 @@
 
 package frc.robot;
 
+import java.io.File;
+
 import com.pathplanner.lib.auto.NamedCommands;
+
 //import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.RobotBase;
@@ -18,9 +22,11 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.DrivebaseConstants.TargetSide;
 import frc.robot.Constants.OperatorConstants;
+import frc.robot.commands.Intake;
+import frc.robot.commands.ShootCoral;
+import frc.robot.subsystems.Shooter;
 //import frc.robot.commands.swervedrive.drivebase.AbsoluteDriveAdv;
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
-import java.io.File;
 import swervelib.SwerveInputStream;
 
 /**
@@ -33,7 +39,12 @@ public class RobotContainer
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
   final         CommandXboxController driverXbox = new CommandXboxController(0);
+  final         CommandXboxController operatorXbox = new CommandXboxController(1);
+  final         CommandXboxController testerXbox = new CommandXboxController(5);
   // The robot's subsystems and commands are defined here...
+
+  public final Shooter shooter = new Shooter();
+
   //Create the swerve subsystem using the YAGSL config files
   private final SwerveSubsystem drivebase = new SwerveSubsystem(new File(Filesystem.getDeployDirectory(),
                                                                          "swerve/Robot2025"));
@@ -100,6 +111,13 @@ public class RobotContainer
    */
   private void configureBindings()
   {
+
+      DigitalInput coralSensor1 = new DigitalInput(1);
+      Trigger funnelTrigger = new Trigger(coralSensor1::get); //make the trigger and bind it to the funnel sensor
+      funnelTrigger.whileFalse(new Intake(shooter));
+      testerXbox.rightTrigger().whileTrue(new ShootCoral(shooter, Constants.ShooterConstants.LeftMaxShooterSpeed,Constants.ShooterConstants.RightMaxShooterSpeed));
+
+
     // (Condition) ? Return-On-True : Return-on-False
 
     drivebase.setDefaultCommand(!RobotBase.isSimulation() ?
@@ -137,6 +155,8 @@ public class RobotContainer
       driverXbox.back().whileTrue(drivebase.centerModulesCommand());
       driverXbox.leftBumper().whileTrue(Commands.runOnce(drivebase::lock, drivebase).repeatedly());
       driverXbox.rightBumper().onTrue(Commands.none());
+
+
     }
 
   }
