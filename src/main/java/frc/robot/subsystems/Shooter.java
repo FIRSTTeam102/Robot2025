@@ -81,7 +81,7 @@ public class Shooter extends SubsystemBase {
   //  coralSensor1Output =getCoralSensor1();
     coralSensor2Output =getCoralSensor2();
     
-    if(coralSensor2Output == true){
+    if(coralSensor2Output == false){
       hasCoral =true;
     }
     else{
