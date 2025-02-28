@@ -288,38 +288,38 @@ public class Vision
      * Back Right Camera
      */
     BackRight("BackRight",
-             new Rotation3d(0, Math.toRadians(-24.094), Math.toRadians(30)),
-             new Translation3d(Units.inchesToMeters(12.056),
-                               Units.inchesToMeters(10.981),
-                               Units.inchesToMeters(8.44)),
+             new Rotation3d(0, Math.toRadians(30), Math.toRadians(140)),
+             new Translation3d(Units.inchesToMeters(10.6488),
+                               Units.inchesToMeters(-11.957134),
+                               Units.inchesToMeters(7.503258)),
              VecBuilder.fill(4, 4, 8), VecBuilder.fill(0.5, 0.5, 1)),
     /**
     /**
      * Back Left Camera
      */
     BackLeft("BackLeft",
-             new Rotation3d(0, Math.toRadians(-24.094), Math.toRadians(30)),
-             new Translation3d(Units.inchesToMeters(12.056),
-                               Units.inchesToMeters(10.981),
-                               Units.inchesToMeters(8.44)),
+             new Rotation3d(0, Math.toRadians(30), Math.toRadians(220)),
+             new Translation3d(Units.inchesToMeters(-10.6488),
+                               Units.inchesToMeters(11.957134),
+                               Units.inchesToMeters(7.503258)),
              VecBuilder.fill(4, 4, 8), VecBuilder.fill(0.5, 0.5, 1)),
     /**
      * Front Left Camera
      */
     FrontLeft("FrontLeft",
-              new Rotation3d(0, Math.toRadians(-24.094), Math.toRadians(-30)),
-              new Translation3d(Units.inchesToMeters(12.056),
-                                Units.inchesToMeters(-10.981),
-                                Units.inchesToMeters(8.44)),
+              new Rotation3d(0, Math.toRadians(30), Math.toRadians(-40)),
+              new Translation3d(Units.inchesToMeters(10.6488),
+                                Units.inchesToMeters(11.957134),
+                                Units.inchesToMeters(7.503258)),
               VecBuilder.fill(4, 4, 8), VecBuilder.fill(0.5, 0.5, 1)),
     /*
     Front Right Camera*
      */
     FrontRight("FrontRight",
-               new Rotation3d(0, Units.degreesToRadians(20), 20),
-               new Translation3d(Units.inchesToMeters(-7.435273),
-                                 Units.inchesToMeters(-7.435273),
-                                 Units.inchesToMeters(4)),
+               new Rotation3d(0, Math.toRadians(30), Math.toRadians(40)),
+               new Translation3d(Units.inchesToMeters(10.6488),
+                                 Units.inchesToMeters(-11.957134),
+                                 Units.inchesToMeters(7.503258)),
                VecBuilder.fill(4, 4, 8), VecBuilder.fill(0.5, 0.5, 1));
 
     /**
