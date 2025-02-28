@@ -50,7 +50,7 @@ public final class Constants
   }
   public static class VisionConstants
   {
-    public static final boolean DRIVEWITHVISION = true;
+    public static final boolean DRIVEWITHVISION = false;
   }
 
   public static class ShooterConstants{

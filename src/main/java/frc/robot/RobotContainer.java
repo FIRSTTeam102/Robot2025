@@ -46,7 +46,7 @@ public class RobotContainer
 
   //Create the swerve subsystem using the YAGSL config files
   private final SwerveSubsystem drivebase = new SwerveSubsystem(new File(Filesystem.getDeployDirectory(),
-                                                                         "swerve/jc"));
+                                                                         "swerve/Robot2025"));
   
   /**
    * Converts driver input into a field-relative ChassisSpeeds input stream that is 
@@ -114,7 +114,7 @@ public class RobotContainer
       DigitalInput coralSensor1 = new DigitalInput(1);
       Trigger funnelTrigger = new Trigger(coralSensor1::get); //make the trigger and bind it to the funnel sensor
       funnelTrigger.whileFalse(new Intake(shooter));
-      testerXbox.rightTrigger().whileTrue(new ShootCoral(shooter, Constants.ShooterConstants.LeftMaxShooterSpeed,Constants.ShooterConstants.RightMaxShooterSpeed));
+      operatorXbox.rightTrigger().whileTrue(new ShootCoral(shooter, Constants.ShooterConstants.LeftMaxShooterSpeed,Constants.ShooterConstants.RightMaxShooterSpeed));
 
 
     // (Condition) ? Return-On-True : Return-on-False
