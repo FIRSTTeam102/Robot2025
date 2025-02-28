@@ -37,6 +37,7 @@ public final class Constants
 
     // Hold time on motor brakes when disabled
     public static final double WHEEL_LOCK_TIME = 10; // seconds
+    public enum TargetSide {LEFT, RIGHT};
   }
 
   public static class OperatorConstants
@@ -53,7 +54,8 @@ public final class Constants
   {
     public static final boolean DRIVEWITHVISION = false;
   }
-//TODO get the DIO port for the limit switch
+
+  //TODO get the DIO port for the limit switch
   public static final class ElevatorConstants {
 
     public static final double NATIVE_UNITS_PER_ROTATION = 8192;
@@ -100,5 +102,25 @@ public final class Constants
     // feedforward */
 	  public static final double kG = 0.1056 * .01957;//effect of elevator gravity on neo 
     public static final double KV = .5; //for a neo
+
+  public static class ShooterConstants{
+    //CAN ID's
+    public static final int RightMotorID = 33; 
+    public static final int LeftMotorID = 32;
+
+    public static final int coralSensor2Front = 2; 
+    public static final int coralSensor1Back = 1;
+
+    //shooter speeds
+    public static final double LeftMaxShooterSpeed = -0.3;
+    public static final double RightMaxShooterSpeed = 0.3;
+
+
+    public static final double L1LeftShooterSpeed = -0.3;
+    public static final double L1RightShooterSpeed = 0;
+
+    public static final double leftIntakeSpeed = 0.05;
+    public static final double rightIntakeSpeed = -0.05;
+
   }
 }
