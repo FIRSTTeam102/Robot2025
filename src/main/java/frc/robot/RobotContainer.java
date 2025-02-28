@@ -22,6 +22,7 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.DrivebaseConstants.TargetSide;
 import frc.robot.Constants.OperatorConstants;
+import frc.robot.Constants.ShooterConstants;
 import frc.robot.commands.Intake;
 import frc.robot.commands.ShootCoral;
 import frc.robot.subsystems.Shooter;
@@ -41,8 +42,10 @@ public class RobotContainer
   final         CommandXboxController driverXbox = new CommandXboxController(0);
   final         CommandXboxController operatorXbox = new CommandXboxController(1);
   final         CommandXboxController testerXbox = new CommandXboxController(5);
-  DigitalInput  coralSensor1;
-  Trigger       funnelTrigger;
+
+  DigitalInput coralSensor1 = new DigitalInput(ShooterConstants.coralSensor1Back);
+  Trigger funnelTrigger;
+  
   // The robot's subsystems and commands are defined here...
 
   public final Shooter shooter = new Shooter();
@@ -114,13 +117,13 @@ public class RobotContainer
   private void configureBindings()
   {
 
-     coralSensor1 = new DigitalInput(1);
-     funnelTrigger = new Trigger(coralSensor1::get); //make the trigger and bind it to the funnel sensor
-     funnelTrigger.whileFalse(new Intake(shooter));
-  
+    funnelTrigger = new Trigger(coralSensor1::get); //make the trigger and bind it to the funnel sensor
+      
+    funnelTrigger.whileFalse(new Intake(shooter));
 
-      testerXbox.rightTrigger().whileTrue(new ShootCoral(shooter, Constants.ShooterConstants.LeftMaxShooterSpeed,Constants.ShooterConstants.RightMaxShooterSpeed));
+    operatorXbox.rightTrigger().whileTrue(new ShootCoral(shooter, Constants.ShooterConstants.LeftMaxShooterSpeed,Constants.ShooterConstants.RightMaxShooterSpeed));
 
+     
 
     // (Condition) ? Return-On-True : Return-on-False
 

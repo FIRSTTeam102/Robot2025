@@ -70,8 +70,8 @@ public final class Constants
     public static final double L1LeftShooterSpeed = -0.3;
     public static final double L1RightShooterSpeed = 0;
 
-    public static final double leftIntakeSpeed = 0.04;
-    public static final double rightIntakeSpeed = -0.04;
+    public static final double leftIntakeSpeed = 0.05;
+    public static final double rightIntakeSpeed = -0.05;
 
   }
 }
