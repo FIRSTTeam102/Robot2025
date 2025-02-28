@@ -41,6 +41,8 @@ public class RobotContainer
   final         CommandXboxController driverXbox = new CommandXboxController(0);
   final         CommandXboxController operatorXbox = new CommandXboxController(1);
   final         CommandXboxController testerXbox = new CommandXboxController(5);
+  DigitalInput  coralSensor1;
+  Trigger       funnelTrigger;
   // The robot's subsystems and commands are defined here...
 
   public final Shooter shooter = new Shooter();
@@ -112,9 +114,11 @@ public class RobotContainer
   private void configureBindings()
   {
 
-      DigitalInput coralSensor1 = new DigitalInput(1);
-      Trigger funnelTrigger = new Trigger(coralSensor1::get); //make the trigger and bind it to the funnel sensor
-      funnelTrigger.whileFalse(new Intake(shooter));
+     coralSensor1 = new DigitalInput(1);
+     funnelTrigger = new Trigger(coralSensor1::get); //make the trigger and bind it to the funnel sensor
+     funnelTrigger.whileFalse(new Intake(shooter));
+  
+
       testerXbox.rightTrigger().whileTrue(new ShootCoral(shooter, Constants.ShooterConstants.LeftMaxShooterSpeed,Constants.ShooterConstants.RightMaxShooterSpeed));
 
 
