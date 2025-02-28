@@ -18,14 +18,20 @@ import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
+
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import frc.robot.Constants.ElevatorConstants;
+import frc.robot.Constants.OperatorConstants;
+import frc.robot.commands.ManualElevatorControl;
+import frc.robot.subsystems.Elevator;
 import frc.robot.Constants.DrivebaseConstants.TargetSide;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.Constants.ShooterConstants;
 import frc.robot.commands.Intake;
 import frc.robot.commands.ShootCoral;
 import frc.robot.subsystems.Shooter;
+
 //import frc.robot.commands.swervedrive.drivebase.AbsoluteDriveAdv;
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
 import swervelib.SwerveInputStream;
@@ -41,6 +47,7 @@ public class RobotContainer
   // Replace with CommandPS4Controller or CommandJoystick if needed
   final         CommandXboxController driverXbox = new CommandXboxController(0);
   final         CommandXboxController operatorXbox = new CommandXboxController(1);
+
   final         CommandXboxController testerXbox = new CommandXboxController(5);
 
   DigitalInput coralSensor1 = new DigitalInput(ShooterConstants.coralSensor1Back);
@@ -53,6 +60,9 @@ public class RobotContainer
   //Create the swerve subsystem using the YAGSL config files
   private final SwerveSubsystem drivebase = new SwerveSubsystem(new File(Filesystem.getDeployDirectory(),
                                                                          "swerve/Robot2025"));
+
+  private final Elevator elevator = new Elevator();
+
   
   /**
    * Converts driver input into a field-relative ChassisSpeeds input stream that is 
@@ -95,6 +105,7 @@ public class RobotContainer
 
   Command driveRobotOrientAngularVelocity = drivebase.driveRobotOriented(driveRobotOriented); 
   Command driveRobotOrientAngularVelocitySim = drivebase.driveRobotOriented(driveRobotAngularVelocitySim);
+  
 
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -139,6 +150,8 @@ public class RobotContainer
       driverXbox.rightTrigger().whileTrue(driveRobotOrientAngularVelocity);
     }
 
+    //Left operator joystick controls manual elevator control regardless of mode
+		elevator.setDefaultCommand(new ManualElevatorControl(elevator,  () -> operatorXbox.getLeftY() * -1));
 
     //define the button to command bindings to run in test mode
     if (DriverStation.isTest())
@@ -161,7 +174,19 @@ public class RobotContainer
       driverXbox.start().onTrue((Commands.runOnce(drivebase::zeroGyro)));
       driverXbox.back().whileTrue(drivebase.centerModulesCommand());
       driverXbox.leftBumper().whileTrue(Commands.runOnce(drivebase::lock, drivebase).repeatedly());
+      
+      
+      //TODO make a constant for Levels L1, L2, L3, L4 in inches & set to a,b,x,y buttons per Drive team
+      //definitions
+      operatorXbox.leftBumper().onTrue(elevator.setElevatorHeight(ElevatorConstants.HOME));
+      operatorXbox.a().onTrue(elevator.setElevatorHeight(ElevatorConstants.LEVEL1));
+      operatorXbox.b().onTrue(elevator.setElevatorHeight(ElevatorConstants.LEVEL2));
+      operatorXbox.x().onTrue(elevator.setElevatorHeight(ElevatorConstants.LEVEL3));
+      operatorXbox.y().onTrue(elevator.setElevatorHeight(ElevatorConstants.LEVEL4));
+      //TODO if the right bumper is pressed send the Elevator back to zero - Coral station Level
+      operatorXbox.rightBumper().onTrue(elevator.setElevatorHeight(ElevatorConstants.CORALSTA));
       driverXbox.rightBumper().onTrue(Commands.none());
+
 
 
     }
