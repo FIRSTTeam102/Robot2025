@@ -20,6 +20,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import frc.robot.Constants.DrivebaseConstants.TargetSide;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.Constants.ShooterConstants;
 import frc.robot.commands.Intake;
@@ -41,9 +42,10 @@ public class RobotContainer
   final         CommandXboxController driverXbox = new CommandXboxController(0);
   final         CommandXboxController operatorXbox = new CommandXboxController(1);
   final         CommandXboxController testerXbox = new CommandXboxController(5);
+
   DigitalInput coralSensor1 = new DigitalInput(ShooterConstants.coralSensor1Back);
   Trigger funnelTrigger;
-
+  
   // The robot's subsystems and commands are defined here...
 
   public final Shooter shooter = new Shooter();
@@ -121,6 +123,7 @@ public class RobotContainer
 
     operatorXbox.rightTrigger().whileTrue(new ShootCoral(shooter, Constants.ShooterConstants.LeftMaxShooterSpeed,Constants.ShooterConstants.RightMaxShooterSpeed));
 
+     
 
     // (Condition) ? Return-On-True : Return-on-False
 
@@ -140,11 +143,12 @@ public class RobotContainer
     //define the button to command bindings to run in test mode
     if (DriverStation.isTest())
     {
+      //drivebase.setDefaultCommand(driveRobotOrientAngularVelocity);
       driverXbox.a().whileTrue(drivebase.sysIdAngleMotorCommand());
       driverXbox.b().whileTrue(drivebase.sysIdDriveMotorCommand());
-      driverXbox.y().whileTrue(drivebase.driveToPose(
-              new Pose2d(new Translation2d(4, 4), Rotation2d.fromDegrees(0))));
-      
+ //     driverXbox.y().whileTrue(drivebase.driveToPose(
+ //           drivebase.getScorePose(TargetSide.LEFT, 6)));
+      driverXbox.y().whileTrue(drivebase.driveToPose(drivebase.getScorePose(TargetSide.LEFT, 17)));       
       driverXbox.x().onTrue(Commands.runOnce(drivebase::addFakeVisionReading));
       driverXbox.start().onTrue((Commands.runOnce(drivebase::zeroGyro)));
       driverXbox.back().whileTrue(drivebase.centerModulesCommand());
