@@ -79,7 +79,7 @@ public class Shooter extends SubsystemBase {
   public void periodic() {
 
   //  coralSensor1Output =getCoralSensor1();
-    coralSensor2Output =getCoralSensor2();
+  /* coralSensor2Output =getCoralSensor2();
     
     if(coralSensor2Output == false){
       hasCoral =true;
@@ -87,7 +87,7 @@ public class Shooter extends SubsystemBase {
     else{
       hasCoral = false;
     }
-    
+    */
  //   backCoralSensorPublisher.setDefault(false);
  //   backCoralSensorPublisher.set(coralSensor3Output);
   }
