@@ -46,7 +46,7 @@ public class ClimberOut extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if ((climber.getEncoderPosition()>Constants.ClimberConstants.climberInPosition && Climber.getisOut()) || (climber.getEncoderPosition()<Constants.ClimberConstants.climberOutPosition && !Climber.getisOut())){ //if climber is in will end command when position is out or if climber is out will end command when position is in
+    if ((climber.getClimberEncoderPosition()>Constants.ClimberConstants.climberInPosition && Climber.getisOut()) || (climber.getClimberEncoderPosition()<Constants.ClimberConstants.climberOutPosition && !Climber.getisOut())){ //if climber is in will end command when position is out or if climber is out will end command when position is in
       climber.toggleisOut(); 
    return false;
     }

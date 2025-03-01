@@ -59,6 +59,8 @@ public final class Constants
 
     public static final int climberInPosition = 0; //might need testing to find correct position or maybe it is just 0
     public static final int climberOutPosition = 60; //temporary needs testing to find correct position
-    public static final int funnelMotorStallCurrentAmps = 50; //temp needs testing, changes the amps for the stall current
+    public static final double funnelPosition = 0.9;
+
+    public static final int gearboxConversion = 125;
   }
 }
