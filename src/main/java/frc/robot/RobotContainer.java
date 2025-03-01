@@ -32,6 +32,10 @@ import frc.robot.commands.Intake;
 import frc.robot.commands.ShootCoral;
 import frc.robot.subsystems.Shooter;
 
+
+import frc.robot.commands.ClimberOut;
+import frc.robot.commands.FunnelOut;
+import frc.robot.subsystems.Climber;
 //import frc.robot.commands.swervedrive.drivebase.AbsoluteDriveAdv;
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
 import swervelib.SwerveInputStream;
@@ -64,6 +68,9 @@ public class RobotContainer
   private final Elevator elevator = new Elevator();
 
   
+
+                                                                        
+  private final Climber climber = new Climber();
   /**
    * Converts driver input into a field-relative ChassisSpeeds input stream that is 
    * controlled by angular velocity. Invert Joysticks & scale the joystick input (this slows the robot
@@ -137,6 +144,7 @@ public class RobotContainer
      
 
     // (Condition) ? Return-On-True : Return-on-False
+    
 
     drivebase.setDefaultCommand(!RobotBase.isSimulation() ?
                                driveFieldOrientedAnglularVelocity :
@@ -190,6 +198,11 @@ public class RobotContainer
 
     }
 
+
+
+    }
+    testerXbox.povLeft().onTrue(new FunnelOut(climber, 0.2)); //flip funnel in or out
+    testerXbox.povRight().onTrue(new ClimberOut(climber, 1)); //flip climber in or out
   }
 
   /**

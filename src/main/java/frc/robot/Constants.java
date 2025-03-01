@@ -123,4 +123,15 @@ public final class Constants
     public static final double rightIntakeSpeed = -0.05;
 
   }
+
+  public static class ClimberConstants {
+    public static final int climberMotorID = 40; 
+    public static final int funnelMotorID = 34; //temporary
+
+    public static final int climberInPosition = 0; //might need testing to find correct position or maybe it is just 0
+    public static final int climberOutPosition = 60; //temporary needs testing to find correct position
+    public static final double funnelPosition = 0.9;
+
+    public static final int gearboxConversion = 125;
+  }
 }
