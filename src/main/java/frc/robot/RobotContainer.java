@@ -82,7 +82,16 @@ public class RobotContainer
 
                                                             .withControllerRotationAxis(()->driverXbox.getRightX() * 1)
                                                             .deadband(OperatorConstants.DEADBAND)
-                                                            .scaleTranslation(0.8)
+                                                            .scaleTranslation(1)
+                                                            .allianceRelativeControl(true);
+
+  SwerveInputStream drivePreciseMode = SwerveInputStream.of(drivebase.getSwerveDrive(),
+                                                                () -> driverXbox.getLeftY() * -1,
+                                                                () -> driverXbox.getLeftX() * -1)
+
+                                                            .withControllerRotationAxis(()->driverXbox.getRightX() * 1)
+                                                            .deadband(OperatorConstants.DEADBAND)
+                                                            .scaleTranslation(0.5)
                                                             .allianceRelativeControl(true);
 
   /**
@@ -112,6 +121,7 @@ public class RobotContainer
 
   Command driveRobotOrientAngularVelocity = drivebase.driveRobotOriented(driveRobotOriented); 
   Command driveRobotOrientAngularVelocitySim = drivebase.driveRobotOriented(driveRobotAngularVelocitySim);
+  Command drivePreciseCommand = drivebase.driveFieldOriented(drivePreciseMode);
   
 
   /**
@@ -155,7 +165,6 @@ public class RobotContainer
     {
       driverXbox.rightTrigger().whileTrue(driveRobotOrientAngularVelocitySim);
     } else {
-      driverXbox.rightTrigger().whileTrue(driveRobotOrientAngularVelocity);
     }
 
     //Left operator joystick controls manual elevator control regardless of mode
@@ -182,7 +191,9 @@ public class RobotContainer
       driverXbox.start().onTrue((Commands.runOnce(drivebase::zeroGyro)));
       driverXbox.back().whileTrue(drivebase.centerModulesCommand());
       driverXbox.leftBumper().whileTrue(Commands.runOnce(drivebase::lock, drivebase).repeatedly());
-      
+      driverXbox.rightTrigger().whileTrue(driveRobotOrientAngularVelocity);
+      driverXbox.leftTrigger().whileTrue(drivePreciseCommand);
+
       
       //TODO make a constant for Levels L1, L2, L3, L4 in inches & set to a,b,x,y buttons per Drive team
       //definitions
@@ -191,8 +202,9 @@ public class RobotContainer
       operatorXbox.b().onTrue(elevator.setElevatorHeight(ElevatorConstants.LEVEL2));
       operatorXbox.x().onTrue(elevator.setElevatorHeight(ElevatorConstants.LEVEL3));
       operatorXbox.y().onTrue(elevator.setElevatorHeight(ElevatorConstants.LEVEL4));
+
+      
       //TODO if the right bumper is pressed send the Elevator back to zero - Coral station Level
-      driverXbox.rightBumper().onTrue(Commands.none());
 
 
 
