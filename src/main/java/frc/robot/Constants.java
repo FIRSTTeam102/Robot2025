@@ -65,9 +65,9 @@ public final class Constants
     public static final double OUTPUT_VOLTS = 1;
     public static final double HOME = 0;
     public static final double LEVEL1 = 26.895 - 6.5;
-    public static final double LEVEL2 = 37.562 - 6.5;
-    public static final double LEVEL3 = 52.572 - 6.5; 
-    public static final double LEVEL4= 78.415 -6.5;
+    public static final double LEVEL2 = 37.6415;
+    public static final double LEVEL3 = 56.0746; 
+    public static final double LEVEL4 = 82.7107;
     public static final double CORALSTA = 0;
 
 

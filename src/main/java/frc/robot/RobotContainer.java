@@ -140,7 +140,7 @@ public class RobotContainer
     funnelTrigger.whileFalse(new Intake(shooter));
 
     operatorXbox.rightTrigger().whileTrue(new ShootCoral(shooter, Constants.ShooterConstants.LeftMaxShooterSpeed,Constants.ShooterConstants.RightMaxShooterSpeed));
-
+    operatorXbox.rightBumper().whileTrue(new ShootCoral(shooter,Constants.ShooterConstants.L1LeftShooterSpeed,Constants.ShooterConstants.L1RightShooterSpeed ));
      
 
     // (Condition) ? Return-On-True : Return-on-False
@@ -201,9 +201,9 @@ public class RobotContainer
 
 
     }
-    testerXbox.povLeft().onTrue(new FunnelOut(climber, 0.2)); //flip funnel in or out
-    testerXbox.povRight().onTrue(new ClimberOut(climber, 1)); //flip climber in or out
-  }
+    //testerXbox.povLeft().onTrue(new FunnelOut(climber, 0.2)); //flip funnel in or out
+    //testerXbox.povRight().onTrue(new ClimberOut(climber, 1)); //flip climber in or out
+  
 
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
