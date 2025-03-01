@@ -145,7 +145,7 @@ public double getPositionInches() {
  *   second
  */
 public double getVelocityInchesPerSecond() {
-  return (encoder.getVelocity() / 60) * ElevatorConstants.inches_per_rotation;
+  return (encoder.getVelocity() / 60.0) * ElevatorConstants.inches_per_rotation;
 }
 
 /*
@@ -204,7 +204,7 @@ public Command moveToPosition(double height)
 
 //if the bottom limit switch is triggered zero the encoder
 public void zeroEncoder() {
-  encoder.setPosition(0);
+  encoder.setPosition(0.0);
   prevSetEncoder = true;
 }
 //adjust the output voltage to hold the elevator in place //TODO tune this
@@ -263,7 +263,7 @@ public void simulationPeriodic() {
   //update-every 20 milliseconds
   m_elevatorSim.update(0.02);
   double velocityMeterPerSec = m_elevatorSim.getVelocityMetersPerSecond();
-  double simRotations = Units.metersToInches(velocityMeterPerSec * 60) * ElevatorConstants.rotations_per_inch;
+  double simRotations = Units.metersToInches(velocityMeterPerSec * 60.0) * ElevatorConstants.rotations_per_inch;
   motorSim.iterate(simRotations,
           RoboRioSim.getVInVoltage(),
           0.020);
