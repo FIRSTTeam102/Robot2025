@@ -102,7 +102,7 @@ public final class Constants
     // feedforward */
 	  public static final double kG = 0.1056 * .01957;//effect of elevator gravity on neo 
     public static final double KV = .5; //for a neo
-
+  }
   public static class ShooterConstants{
     //CAN ID's
     public static final int RightMotorID = 33; 

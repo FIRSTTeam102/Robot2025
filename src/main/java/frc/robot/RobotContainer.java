@@ -50,7 +50,7 @@ public class RobotContainer
 
   final         CommandXboxController testerXbox = new CommandXboxController(5);
 
-  DigitalInput coralSensor1 = new DigitalInput(ShooterConstants.coralSensor1Back);
+  DigitalInput coralSensor1 = new DigitalInput(Constants.ShooterConstants.coralSensor1Back);
   Trigger funnelTrigger;
   
   // The robot's subsystems and commands are defined here...
@@ -184,7 +184,6 @@ public class RobotContainer
       operatorXbox.x().onTrue(elevator.setElevatorHeight(ElevatorConstants.LEVEL3));
       operatorXbox.y().onTrue(elevator.setElevatorHeight(ElevatorConstants.LEVEL4));
       //TODO if the right bumper is pressed send the Elevator back to zero - Coral station Level
-      operatorXbox.rightBumper().onTrue(elevator.setElevatorHeight(ElevatorConstants.CORALSTA));
       driverXbox.rightBumper().onTrue(Commands.none());
 
 
