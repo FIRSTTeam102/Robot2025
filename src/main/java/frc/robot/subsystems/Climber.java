@@ -5,10 +5,6 @@
 package frc.robot.subsystems;
 
 import com.revrobotics.spark.SparkLowLevel.MotorType;
-import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
-import com.revrobotics.AbsoluteEncoder;
-import com.revrobotics.RelativeEncoder;
-import com.revrobotics.spark.SparkAbsoluteEncoder;
 import com.revrobotics.spark.SparkMax;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -20,13 +16,9 @@ public class Climber extends SubsystemBase {
   private SparkMax climberMotor = new SparkMax(Constants.ClimberConstants.climberMotorID, MotorType.kBrushless);
   private static boolean isOut = false;
   private SparkMax funnelMotor = new SparkMax(Constants.ClimberConstants.funnelMotorID, MotorType.kBrushless);
-  private RelativeEncoder climbMotorEncoder = climberMotor.getEncoder();  //encoder for gear conversion.  Found in NEO
   private static boolean funnelOut = false; //checks if funnel is out
 
-    public Climber() {
-      climbMotorEncoder.setPositionConversionFactor(125);
-        //insert conversions here.
-    }
+    public Climber() {}
     
     public void setClimberMotorSpeed(double climberMotorSpeed){
       climberMotor.set(climberMotorSpeed);
@@ -37,7 +29,7 @@ public class Climber extends SubsystemBase {
     }
   
     public double getClimberEncoderPosition(){
-      return climberMotor.getAbsoluteEncoder().getPosition();
+      return (climberMotor.getAbsoluteEncoder().getPosition())/ Constants.ClimberConstants.gearboxConversion;  //divide by gearbox ratio to get the conversion to work
     }
 
     public double getFunnelEncoderPosition(){
