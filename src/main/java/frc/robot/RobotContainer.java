@@ -20,6 +20,9 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.DrivebaseConstants.TargetSide;
+import frc.robot.commands.Intake;
+import frc.robot.commands.MoveElevator;
+import frc.robot.commands.Shoot;
 import frc.robot.Constants.OperatorConstants;
 //import frc.robot.commands.swervedrive.drivebase.AbsoluteDriveAdv;
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
@@ -97,6 +100,16 @@ public class RobotContainer
     configureBindings();
     DriverStation.silenceJoystickConnectionWarning(true);
     NamedCommands.registerCommand("test", Commands.print("I EXIST"));
+    NamedCommands.registerCommand("Intake", new Intake());
+    NamedCommands.registerCommand("Shoot", new Shoot());
+    NamedCommands.registerCommand("ShootTrough", new Shoot()); //change the parameters for L1
+    NamedCommands.registerCommand("Go to L1",new MoveElevator());
+    NamedCommands.registerCommand("Go to L2",new MoveElevator()); //change parameters for L2
+    NamedCommands.registerCommand("Go to L3",new MoveElevator()); //change parameters for L3
+    NamedCommands.registerCommand("Go to L4",new MoveElevator()); //change parameters for L4
+
+
+
   }
 
   
