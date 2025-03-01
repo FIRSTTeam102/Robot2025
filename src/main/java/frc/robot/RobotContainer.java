@@ -193,17 +193,16 @@ public class RobotContainer
       operatorXbox.y().onTrue(elevator.setElevatorHeight(ElevatorConstants.LEVEL4));
       //TODO if the right bumper is pressed send the Elevator back to zero - Coral station Level
       driverXbox.rightBumper().onTrue(Commands.none());
+      testerXbox.povLeft().onTrue(new FunnelOut(climber, 0.2)); //flip funnel in or out
+      testerXbox.povRight().onTrue(new ClimberOut(climber, 1)); //flip climber in or out
+
+
+    }
 
 
 
     }
-
-
-
-    }
-    testerXbox.povLeft().onTrue(new FunnelOut(climber, 0.2)); //flip funnel in or out
-    testerXbox.povRight().onTrue(new ClimberOut(climber, 1)); //flip climber in or out
-  }
+    
 
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.

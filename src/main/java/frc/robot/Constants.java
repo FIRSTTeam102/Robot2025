@@ -130,7 +130,17 @@ public final class Constants
 
     public static final int climberInPosition = 0; //might need testing to find correct position or maybe it is just 0
     public static final int climberOutPosition = 60; //temporary needs testing to find correct position
-    public static final double funnelPosition = 0.9;
+    public static final double funnelOutPosition = 0.9; //temporary
+    public static final double funnelInPosition = 0.9; //temporary
+
+    public static final double climberKp =1;
+    public static final double climberKi =1;
+    public static final double climberKd =1;
+
+    public static final double funnelKp =1;
+    public static final double funnelKi =1;
+    public static final double funnelKd =1;
+
 
     public static final int gearboxConversion = 125;
   }

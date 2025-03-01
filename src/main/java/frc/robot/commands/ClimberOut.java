@@ -26,10 +26,10 @@ public class ClimberOut extends Command {
   @Override
   public void initialize() {
     if (Climber.getisOut()){
-      climber.setClimberMotorSpeed(-climberMotorSpeed); //runs motor backwards to bring back in if already out
+      climber.setClimberPosition(); //runs motor backwards to bring back in if already out
     }
     else{
-      climber.setClimberMotorSpeed(climberMotorSpeed);
+      climber.setClimberPosition();
     }
   }
 
@@ -40,7 +40,7 @@ public class ClimberOut extends Command {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    climber.setClimberMotorSpeed(0);
+    climber.stopClimber();
   }
 
   // Returns true when the command should end.
