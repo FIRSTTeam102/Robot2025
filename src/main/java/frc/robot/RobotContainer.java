@@ -143,7 +143,7 @@ public class RobotContainer
 
 
     }
-    testerXbox.povLeft().onTrue(new FunnelOut(climber, 1)); //flip funnel in or out
+    testerXbox.povLeft().onTrue(new FunnelOut(climber, 0.2)); //flip funnel in or out
     testerXbox.povRight().onTrue(new ClimberOut(climber, 1)); //flip climber in or out
   }
 
