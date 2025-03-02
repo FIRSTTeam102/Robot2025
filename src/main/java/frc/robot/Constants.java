@@ -52,7 +52,7 @@ public final class Constants
   }
   public static class VisionConstants
   {
-    public static final boolean DRIVEWITHVISION = false;
+    public static final boolean DRIVEWITHVISION = true;
   }
 
   //TODO get the DIO port for the limit switch
