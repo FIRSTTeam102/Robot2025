@@ -245,11 +245,11 @@ public void periodic()
   currRotations = encoder.getPosition();
   OutputCurrent = motor.getOutputCurrent();
 
-  System.out.print("value of limit swtich" + bottomlimitSwitch.get());
+ // System.out.println("value of limit swtich" + bottomlimitSwitch.get());
 
     //sets position(inces) to 0 if bottomLimistswitch is triggered 
     if(bottomLimitSwitchIsBeingPressed() && !prevSetEncoder){
-      System.out.print("reset height to 0");
+      System.out.println("reset height to 0");
       zeroEncoder();
     }
     if (!bottomLimitSwitchIsBeingPressed()){

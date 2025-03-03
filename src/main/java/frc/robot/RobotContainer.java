@@ -47,7 +47,6 @@ import swervelib.SwerveInputStream;
  */
 public class RobotContainer
 {
-
   // Replace with CommandPS4Controller or CommandJoystick if needed
   final         CommandXboxController driverXbox = new CommandXboxController(0);
   final         CommandXboxController operatorXbox = new CommandXboxController(1);
@@ -149,72 +148,78 @@ public class RobotContainer
       
     funnelTrigger.whileFalse(new Intake(shooter));
 
-    operatorXbox.rightTrigger().whileTrue(new ShootCoral(shooter, Constants.ShooterConstants.LeftMaxShooterSpeed,Constants.ShooterConstants.RightMaxShooterSpeed));
-    operatorXbox.rightBumper().whileTrue(new ShootCoral(shooter,Constants.ShooterConstants.L1LeftShooterSpeed,Constants.ShooterConstants.L1RightShooterSpeed ));
-     
-
-    // (Condition) ? Return-On-True : Return-on-False
-    
+   
 
     drivebase.setDefaultCommand(!RobotBase.isSimulation() ?
                                driveFieldOrientedAnglularVelocity :
                                driveFieldOrientedAnglularVelocitySim);
+    //Field vs Robot oriented drive is defined above - sumlator differences, but Test & other modes are the same
+
+    driverXbox.start().onTrue((Commands.runOnce(drivebase::zeroGyroWithAlliance)));
+    driverXbox.back().whileTrue(drivebase.centerModulesCommand());
+    driverXbox.leftBumper().whileTrue(Commands.runOnce(drivebase::lock, drivebase).repeatedly());
+    driverXbox.rightTrigger().whileTrue(driveRobotOrientAngularVelocity);
+    driverXbox.leftTrigger().whileTrue(drivePreciseCommand);
+    //TODO driverXbox.rightBumper().whileTrue(...) change center of rotation to left or right front corner
+    // depending on if left joystick x is left or right
+
+    //TODO driverXbox.a().onTrue(....) toggle robot between field & robot oriented, show on
+    // shuffleboard
+    //TODO alignToReef left - align to left score position using the nearest valid reef target seen
+    //TODO alignToReef right - align to right score position using the nearest valid reef targt seen
+
+      
+    // Levels L1, L2, L3, L4 in inches & set to a,b,x,y buttons per Drive team
+    //definitions
+    operatorXbox.leftBumper().onTrue(elevator.setElevatorHeight(ElevatorConstants.HOME));
+    operatorXbox.a().onTrue(elevator.setElevatorHeight(ElevatorConstants.LEVEL1));
+    operatorXbox.b().onTrue(elevator.setElevatorHeight(ElevatorConstants.LEVEL2));
+    operatorXbox.x().onTrue(elevator.setElevatorHeight(ElevatorConstants.LEVEL3));
+    operatorXbox.y().onTrue(elevator.setElevatorHeight(ElevatorConstants.LEVEL4)); 
+
+    //TODO calibrate scoring motor speeds - L1 bounces out
+    operatorXbox.rightTrigger().whileTrue(new ShootCoral(shooter, 
+                                Constants.ShooterConstants.LeftMaxShooterSpeed,
+                                Constants.ShooterConstants.RightMaxShooterSpeed));
+    operatorXbox.rightBumper().whileTrue(
+         new ShootCoral(shooter,Constants.ShooterConstants.L1LeftShooterSpeed,
+                                Constants.ShooterConstants.L1RightShooterSpeed ));
+    //TODO flick algae - flip funnel up andThen back
+    //TODO flip funnel - up for climb
+    //TODO extend climb arm out
+    //TODO retract climb arm in to start position
     
+
     //switch to Robot oriented driving while right trigger is held in both simulation & live robot
     if (Robot.isSimulation())
     {
       driverXbox.rightTrigger().whileTrue(driveRobotOrientAngularVelocitySim);
-    } else {
-    }
+    } 
 
     //Left operator joystick controls manual elevator control regardless of mode
 		elevator.setDefaultCommand(new ManualElevatorControl(elevator,  () -> operatorXbox.getLeftY() * -1));
 
-    //define the button to command bindings to run in test mode
+    //define the button to command bindings to run in test mode we don't want to run these
+    //by accident so we are putting them on a separate xbox controller. NOTE: sysid needs to
+    //be run in robot oriented mode
     if (DriverStation.isTest())
     {
-      //drivebase.setDefaultCommand(driveRobotOrientAngularVelocity);
-      driverXbox.a().whileTrue(drivebase.sysIdAngleMotorCommand());
-      driverXbox.b().whileTrue(drivebase.sysIdDriveMotorCommand());
- //     driverXbox.y().whileTrue(drivebase.driveToPose(
- //           drivebase.getScorePose(TargetSide.LEFT, 6)));
-      driverXbox.y().whileTrue(drivebase.driveToPose(drivebase.getScorePose(TargetSide.LEFT, 17)));       
-      driverXbox.x().onTrue(Commands.runOnce(drivebase::addFakeVisionReading));
-      driverXbox.start().onTrue((Commands.runOnce(drivebase::zeroGyro)));
-      driverXbox.back().whileTrue(drivebase.centerModulesCommand());
-      driverXbox.leftBumper().onTrue(drivebase.driveToDistanceCommand(1.0, 0.2));
-      
-    } else //not in test mode
-    { 
-      //Field vs Robot oriented drive is defined above - sumlator differences, but Test & other modes are the same
-
-      driverXbox.start().onTrue((Commands.runOnce(drivebase::zeroGyro)));
-      driverXbox.back().whileTrue(drivebase.centerModulesCommand());
-      driverXbox.leftBumper().whileTrue(Commands.runOnce(drivebase::lock, drivebase).repeatedly());
-      driverXbox.rightTrigger().whileTrue(driveRobotOrientAngularVelocity);
-      driverXbox.leftTrigger().whileTrue(drivePreciseCommand);
-
-      
-      //TODO make a constant for Levels L1, L2, L3, L4 in inches & set to a,b,x,y buttons per Drive team
-      //definitions
-      operatorXbox.leftBumper().onTrue(elevator.setElevatorHeight(ElevatorConstants.HOME));
-      operatorXbox.a().onTrue(elevator.setElevatorHeight(ElevatorConstants.LEVEL1));
-      operatorXbox.b().onTrue(elevator.setElevatorHeight(ElevatorConstants.LEVEL2));
-      operatorXbox.x().onTrue(elevator.setElevatorHeight(ElevatorConstants.LEVEL3));
-      operatorXbox.y().onTrue(elevator.setElevatorHeight(ElevatorConstants.LEVEL4));
-
-      
-      //TODO if the right bumper is pressed send the Elevator back to zero - Coral station Level
-
-
+      drivebase.setDefaultCommand(driveRobotOrientAngularVelocity);
+      testerXbox.a().whileTrue(drivebase.sysIdAngleMotorCommand());
+      testerXbox.b().whileTrue(drivebase.sysIdDriveMotorCommand());
+ 
+      testerXbox.y().whileTrue(drivebase.driveToPose(drivebase.getScorePose(TargetSide.LEFT, 17)));       
+      testerXbox.x().onTrue(Commands.runOnce(drivebase::addFakeVisionReading));
+      testerXbox.start().onTrue((Commands.runOnce(drivebase::zeroGyro)));
+      testerXbox.back().whileTrue(drivebase.centerModulesCommand());
+      testerXbox.leftBumper().onTrue(drivebase.driveToDistanceCommand(1.0, 0.2));
+      //testerXbox.povLeft().onTrue(new FunnelOut(climber, 0.2)); //flip funnel in or out
+      //testerXbox.povRight().onTrue(new ClimberOut(climber, 1)); //flip climber in or out
+  
+    }
+    
 
     }
-
-
-
-    }
-    //testerXbox.povLeft().onTrue(new FunnelOut(climber, 0.2)); //flip funnel in or out
-    //testerXbox.povRight().onTrue(new ClimberOut(climber, 1)); //flip climber in or out
   
 
   /**
