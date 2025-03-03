@@ -53,6 +53,9 @@ public final class Constants
   public static class VisionConstants
   {
     public static final boolean DRIVEWITHVISION = true;
+    public static final double oldCameraX = 11.97534;
+    public static final double oldCameraY = 11.256;
+
   }
 
   //TODO get the DIO port for the limit switch

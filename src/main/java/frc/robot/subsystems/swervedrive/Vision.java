@@ -22,6 +22,7 @@ import edu.wpi.first.networktables.NetworkTablesJNI;
 import edu.wpi.first.wpilibj.Alert;
 import edu.wpi.first.wpilibj.Alert.AlertType;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
+import frc.robot.Constants;
 import frc.robot.Robot;
 import java.awt.Desktop;
 import java.util.ArrayList;
@@ -290,9 +291,9 @@ public class Vision
      * Back Right Camera
      */
     BackRight("BackRight",
-             new Rotation3d(0, Math.toRadians(30), Math.toRadians(140)),
-             new Translation3d(Units.inchesToMeters(10.6488),
-                               Units.inchesToMeters(-11.957134),
+             new Rotation3d(0, Math.toRadians(30), Math.toRadians(160)),  //new camera needs 140
+             new Translation3d(Units.inchesToMeters(-Constants.VisionConstants.oldCameraX),
+                               Units.inchesToMeters(-Constants.VisionConstants.oldCameraY),
                                Units.inchesToMeters(7.503258)),
              VecBuilder.fill(4, 4, 8), VecBuilder.fill(0.5, 0.5, 1)),
     /**
@@ -309,9 +310,9 @@ public class Vision
      * Front Left Camera
      */
     FrontLeft("FrontLeft",
-              new Rotation3d(0, Math.toRadians(30), Math.toRadians(-40)),
-              new Translation3d(Units.inchesToMeters(10.6488),
-                                Units.inchesToMeters(11.957134),
+              new Rotation3d(0, Math.toRadians(30), Math.toRadians(-20)),  //new camera needs to be -40
+              new Translation3d(Units.inchesToMeters(Constants.VisionConstants.oldCameraX),
+                                Units.inchesToMeters(Constants.VisionConstants.oldCameraY),
                                 Units.inchesToMeters(7.503258)),
               VecBuilder.fill(4, 4, 8), VecBuilder.fill(0.5, 0.5, 1)),
     /*
