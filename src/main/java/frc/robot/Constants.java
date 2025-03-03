@@ -128,8 +128,13 @@ public final class Constants
     public static final int climberMotorID = 40; 
     public static final int funnelMotorID = 34; //temporary
 
+
+    //positions for the climber
     public static final int climberInPosition = 0; //might need testing to find correct position or maybe it is just 0
     public static final int climberOutPosition = 60; //temporary needs testing to find correct position
+
+
+    //positions for the funnel
     public static final double funnelOutPosition = 0.9; //temporary
     public static final double funnelInPosition = 0.9; //temporary
 
@@ -143,5 +148,10 @@ public final class Constants
 
 
     public static final int gearboxConversion = 125;
+
+    //range outputs for PID
+    public static final int maxClimberRotatations =1 ;  //temporary, number should be rotations of the GEARBOX.
+    public static final int maxFunnelRotatations =1 ;  //temporary, probably just 1 or less since the funnel is a 1:1 ratio
+
   }
 }
