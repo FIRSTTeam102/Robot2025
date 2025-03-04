@@ -38,6 +38,12 @@ public final class Constants
     // Hold time on motor brakes when disabled
     public static final double WHEEL_LOCK_TIME = 10.0; // seconds
     public enum TargetSide {LEFT, RIGHT};
+    //TODO verify robot camera offsets are correct with bumper so the 
+    //align to reef works correctly, the reef poles are 6.5 inches from the 
+    //center of the april tag
+    public static double ReefLeftXOffset = Units.inchesToMeters(6.5);
+    public static double ReefRightXOffset = Units.inchesToMeters(-6.5);
+    public static double ReefYDistance = Units.inchesToMeters(-11.5);
   }
 
   public static class OperatorConstants

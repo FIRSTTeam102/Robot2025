@@ -21,6 +21,7 @@ import edu.wpi.first.math.util.Units;
 import edu.wpi.first.networktables.NetworkTablesJNI;
 import edu.wpi.first.wpilibj.Alert;
 import edu.wpi.first.wpilibj.Alert.AlertType;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import frc.robot.Constants;
 import frc.robot.Robot;
@@ -121,7 +122,63 @@ public class Vision
     }
 
   }
+  /*
+   * isValidTargetFor Scoring: is this a valid target to score on?
+   * Target must be within a sight of the robot and a valid target
+   * for our alliance
+   */
+  public boolean isValidTargetForScoring(int targetAprilTag){
+    //look up the target & verify it is valid for our alliance
+    //Blue Alliance reef tags = 17, 18, 19, 20, 21, 22
+    //Red Alliance reef tags = 6, 7, 8, 9, 10, 11
+    var alliance = DriverStation.getAlliance();
+    if (!alliance.isPresent()){ return false;}
+      
+    if ((targetAprilTag >= 17 && targetAprilTag <= 22) && 
+          alliance.get() == DriverStation.Alliance.Blue){
+       return true;
+    }
+    if ((targetAprilTag >= 6 && targetAprilTag <= 11) && 
+          alliance.get() == DriverStation.Alliance.Red){
+        return true;
+    }
+    return false;
+  }
+  /*
+   * get best Reef Target from the front 2 cameras
+   * only return a target if it is on the same reef as our alliance
+   */
+  public int getBestReefTarget()
+  {
+    Optional<PhotonPipelineResult> result;
+    PhotonTrackedTarget target;
+    int frontLeftTarget = 0;
+    int frontRightTarget = 0;
 
+    for (Cameras camera : Cameras.values()){
+      if (camera.equals(Cameras.FrontLeft)){
+        result = camera.getBestResult();
+        if (result.isPresent()){
+          target = result.get().getBestTarget();
+          frontLeftTarget = target.getFiducialId();
+          if (isValidTargetForScoring(frontLeftTarget)){
+            return(frontLeftTarget);
+          }
+        }
+      }
+      if (camera.equals(Cameras.FrontRight)){
+        result = camera.getBestResult();
+        if (result.isPresent()){
+          target = result.get().getBestTarget();
+          frontRightTarget = target.getFiducialId();
+          if (isValidTargetForScoring(frontRightTarget)){
+            return(frontRightTarget);
+          }
+        }
+      }
+    }
+    return(0);
+  }
   /**
    * Update the pose estimation inside of {@link SwerveDrive} with all of the given poses.
    *
