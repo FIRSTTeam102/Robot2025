@@ -43,7 +43,7 @@ public final class Constants
     //center of the april tag
     public static double ReefLeftXOffset = Units.inchesToMeters(6.5);
     public static double ReefRightXOffset = Units.inchesToMeters(-6.5);
-    public static double ReefYDistance = Units.inchesToMeters(-11.5);
+    public static double ReefYDistance = Units.inchesToMeters(-19.5);                                                                                             
   }
 
   public static class OperatorConstants
@@ -91,8 +91,8 @@ public final class Constants
     public static final double secondsToMaxHeight = 2.0; //top speed goal
     public static final double maxRotationsPerMin = (maxHeight_rotations/secondsToMaxHeight) * 60;
     public static final double gear_ratio_to_1 = 25.0; //NEO gear ratio
-    public static final double motor_max_rpm = 3000.0;//maxRotationsPerMin * gear_ratio_to_1; //Goal of max height in 2 seconds
-    public static final double motor_max_accel = 500.0;//TODO tune this to achieve fast ramp up
+    public static final double motor_max_rpm = 750.0;//maxRotationsPerMin * gear_ratio_to_1; //Goal of max height in 2 seconds
+    public static final double motor_max_accel = 3000.0;//TODO tune this to achieve fast ramp up
 
     public static final double ElevatorDefaultToleranceInch = 0.5; //1 inch either way error in position
     public static final double ElevatorDefToleranceRotations = ElevatorDefaultToleranceInch /inches_per_rotation;
