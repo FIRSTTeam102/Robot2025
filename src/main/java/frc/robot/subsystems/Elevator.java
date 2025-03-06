@@ -84,7 +84,7 @@ public class Elevator extends SubsystemBase {
         // Set PID values for position control. We don't need to pass a closed loop
         // slot, as it will default to slot 0.
         .p(0.5)
-        .i(0.0001)
+        .i(0.00009)
         .d(0)
         .velocityFF(ElevatorConstants.kFF)
         .outputRange(-1*ElevatorConstants.maxHeight_rotations,ElevatorConstants.maxHeight_rotations)
