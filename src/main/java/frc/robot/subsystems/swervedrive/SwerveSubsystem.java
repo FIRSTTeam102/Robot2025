@@ -118,7 +118,7 @@ public class SwerveSubsystem extends SubsystemBase
                                                0.1); //Correct for skew that gets worse as angular velocity increases. Start with a coefficient of 0.1.
     swerveDrive.setModuleEncoderAutoSynchronize(false,
                                                 1); // Enable if you want to resynchronize your absolute encoders and motor encoders periodically when they are not moving.
-    swerveDrive.pushOffsetsToEncoders(); // Set the absolute encoder to be used over the internal encoder and push the offsets onto it. Throws warning if not possible
+    //deprecated swerveDrive.pushOffsetsToEncoders(); // Set the absolute encoder to be used over the internal encoder and push the offsets onto it. Throws warning if not possible
     if (visionDriveTest)
     {
       setupPhotonVision();
@@ -270,12 +270,12 @@ public class SwerveSubsystem extends SubsystemBase
   public Command alignToReefScore(int aprilTag, TargetSide scoringSide){
     Transform2d robotOffset;
     if (scoringSide == DrivebaseConstants.TargetSide.LEFT){
-      robotOffset = new Transform2d(DrivebaseConstants.ReefLeftXOffset,
-                        DrivebaseConstants.ReefYDistance,Rotation2d.kPi);
+      robotOffset = new Transform2d(DrivebaseConstants.ReefLeftYOffset,
+                        DrivebaseConstants.ReefLeftYOffset,Rotation2d.kPi);
     }
     else {
-      robotOffset = new Transform2d(DrivebaseConstants.ReefRightXOffset,
-                        DrivebaseConstants.ReefYDistance,Rotation2d.kPi);
+      robotOffset = new Transform2d(DrivebaseConstants.ReefXDistance,
+                        DrivebaseConstants.ReefRightYOffset,Rotation2d.kPi);
     }
     
     Pose2d newPose = Vision.getAprilTagPose(aprilTag, robotOffset);
