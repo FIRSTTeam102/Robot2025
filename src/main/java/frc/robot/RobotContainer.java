@@ -168,6 +168,7 @@ public class RobotContainer
     //TODO alignToReef left - align to left score position using the nearest valid reef target seen
     //TODO alignToReef right - align to right score position using the nearest valid reef targt seen
     driverXbox.a().whileTrue(drivebase.alignToReefScore(9,TargetSide.LEFT));
+    driverXbox.b().whileTrue(drivebase.alignToReefScore(11,TargetSide.RIGHT));
       
     // Levels L1, L2, L3, L4 in inches & set to a,b,x,y buttons per Drive team
     //definitions
@@ -221,7 +222,9 @@ public class RobotContainer
 
     }
   
-
+  public void ZeroGyro(){
+    drivebase.zeroGyro();
+  }
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
    *

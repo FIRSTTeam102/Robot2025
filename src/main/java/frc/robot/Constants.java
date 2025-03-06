@@ -41,9 +41,9 @@ public final class Constants
     //TODO verify robot camera offsets are correct with bumper so the 
     //align to reef works correctly, the reef poles are 6.5 inches from the 
     //center of the april tag
-    public static double ReefLeftXOffset = Units.inchesToMeters(6.5);
-    public static double ReefRightXOffset = Units.inchesToMeters(-6.5);
-    public static double ReefYDistance = Units.inchesToMeters(-19.5);                                                                                             
+    public static double ReefLeftYOffset = Units.inchesToMeters(-6.5);
+    public static double ReefRightYOffset = Units.inchesToMeters(6.5);
+    public static double ReefXDistance = Units.inchesToMeters(-19.5);                                                                                             
   }
 
   public static class OperatorConstants
