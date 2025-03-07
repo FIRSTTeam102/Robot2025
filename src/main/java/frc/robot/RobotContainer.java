@@ -231,8 +231,7 @@ public class RobotContainer
       drivebase.setDefaultCommand(driveRobotOrientAngularVelocity);
       testerXbox.a().whileTrue(drivebase.sysIdAngleMotorCommand());
       testerXbox.b().whileTrue(drivebase.sysIdDriveMotorCommand());
- 
-      testerXbox.y().whileTrue(drivebase.driveToPose(drivebase.getScorePose(TargetSide.LEFT, 17)));       
+        
       testerXbox.x().onTrue(Commands.runOnce(drivebase::addFakeVisionReading));
       testerXbox.start().onTrue((Commands.runOnce(drivebase::zeroGyro)));
       testerXbox.back().whileTrue(drivebase.centerModulesCommand());

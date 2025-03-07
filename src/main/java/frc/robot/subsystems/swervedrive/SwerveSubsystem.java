@@ -239,29 +239,7 @@ public class SwerveSubsystem extends SubsystemBase
     PathfindingCommand.warmupCommand().schedule();
   }
  
-  /*
-  *  getScorePose: look up the pose2d to drive to in order to align to the target
-  *  NOT USE = this method looks up values in a constant table, but the reefs are equal
-  *  distance from the center of the tag & we want the front bumper to be parallel with the
-  *  reef
-  */
-  public Pose2d getScorePose(TargetSide scoringSide, int bestTargetID){
-    //look up the scoring position based on the april tag and either left or right of
-    //the tag to score on the reef
-
-    for (int pos = 0; pos < ScoringPositionConstants.scoringPositions.length; pos++){
-      if (ScoringPositionConstants.scoringPositions[pos].aprilTagId() == bestTargetID &&
-          ScoringPositionConstants.scoringPositions[pos].scoreSide() == scoringSide){
-
-            ScoringPosConst driveTo = ScoringPositionConstants.scoringPositions[pos];
-            //use the scoring position record to create a new Pose2d to drive to
-            return(new Pose2d(new Translation2d(driveTo.xPos(),driveTo.yPos()),
-                              Rotation2d.fromDegrees(driveTo.angleOffset())));
-
-      }
-    }
-    return(new Pose2d());
-  }
+ 
   /*
    * driveToReefScore - takes an aprilTagID and a target side
    *   to make testing in the simulator easier when there is no live
