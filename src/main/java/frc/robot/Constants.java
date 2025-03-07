@@ -139,19 +139,19 @@ public final class Constants
     public static final double funnelInPosition = 0.9; //temporary
 
     public static final double climberKp =1;
-    public static final double climberKi =1;
-    public static final double climberKd =1;
+    public static final double climberKi =0;
+    public static final double climberKd =0;
 
     public static final double funnelKp =1;
-    public static final double funnelKi =1;
-    public static final double funnelKd =1;
+    public static final double funnelKi =0;
+    public static final double funnelKd =0;
 
 
     public static final int gearboxConversion = 125;
 
     //range outputs for PID
     public static final int maxClimberRotatations =1 ;  //temporary, number should be rotations of the GEARBOX.
-    public static final int maxFunnelRotatations =1 ;  //temporary, probably just 1 or less since the funnel is a 1:1 ratio
+    public static final double maxFunnelRotatations =0.5 ;  //temporary, probably just 1 or less since the funnel is a 1:1 ratio
 
   }
 }

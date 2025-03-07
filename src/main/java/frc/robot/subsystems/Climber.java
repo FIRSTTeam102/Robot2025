@@ -35,23 +35,11 @@ public class Climber extends SubsystemBase {
         // Configure onboard PID with closed-loop control
         climberConfig
             .closedLoop
-            .feedbackSensor(FeedbackSensor.kAbsoluteEncoder) // Use integrated NEO encoder
+            .feedbackSensor(FeedbackSensor.kPrimaryEncoder) // Use integrated NEO encoder
             .p(Constants.ClimberConstants.climberKp)
             .i(Constants.ClimberConstants.climberKi)
             .d(Constants.ClimberConstants.climberKd)
             .outputRange(-1.0, 1.0); // Limit output
-
-        // Apply config and persist settings
-        climberMotor.configure(climberConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
-
-        // Configure onboard PID with closed-loop control
-        climberConfig
-            .closedLoop
-            .feedbackSensor(FeedbackSensor.kAbsoluteEncoder) // Use integrated NEO encoder
-            .p(Constants.ClimberConstants.climberKp)
-            .i(Constants.ClimberConstants.climberKi)
-            .d(Constants.ClimberConstants.climberKd)
-            .outputRange(-Constants.ClimberConstants.maxClimberRotatations, Constants.ClimberConstants.maxClimberRotatations); // Limit output
 
         // Apply config and persist settings
         climberMotor.configure(climberConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
@@ -60,25 +48,16 @@ public class Climber extends SubsystemBase {
 //Set up funnel motor config
 
 funnelConfig.idleMode(IdleMode.kCoast);
-funnelConfig.encoder.positionConversionFactor(1); // Converts encoder units to real-world values
+funnelConfig.encoder.positionConversionFactor(3); // Converts encoder units to real-world values
 
         // Configure onboard PID with closed-loop control
         funnelConfig
             .closedLoop
-            .feedbackSensor(FeedbackSensor.kAbsoluteEncoder) // Use integrated NEO encoder
+            .feedbackSensor(FeedbackSensor.kPrimaryEncoder) // Use integrated NEO encoder
             .p(Constants.ClimberConstants.funnelKp)
             .i(Constants.ClimberConstants.funnelKi)
             .d(Constants.ClimberConstants.funnelKd)
             .outputRange(-Constants.ClimberConstants.maxFunnelRotatations, Constants.ClimberConstants.maxFunnelRotatations); // Limit output
-
-        // Configure onboard PID with closed-loop control
-        funnelConfig
-            .closedLoop
-            .feedbackSensor(FeedbackSensor.kAbsoluteEncoder) // Use integrated NEO encoder
-            .p(Constants.ClimberConstants.climberKp)
-            .i(Constants.ClimberConstants.climberKi)
-            .d(Constants.ClimberConstants.climberKd)
-            .outputRange(-1.0, 1.0); // Limit output
 
         // Apply config and persist settings
         funnelMotor.configure(funnelConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
