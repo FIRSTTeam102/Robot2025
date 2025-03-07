@@ -69,12 +69,13 @@ public class Elevator extends SubsystemBase {
 
       config.encoder.positionConversionFactor(1);
 
-      config.closedLoop
+     // config.closedLoop
+      config.closedLoopRampRate(0.5);
         //tell the pid loop how fast to move the motor to achieve position goal
-        .maxMotion
+       /**  .maxMotion
           .maxVelocity(ElevatorConstants.motor_max_rpm)
           .maxAcceleration(ElevatorConstants.motor_max_accel)
-          .allowedClosedLoopError(ElevatorConstants.ElevatorDefToleranceRotations);
+          .allowedClosedLoopError(ElevatorConstants.ElevatorDefToleranceRotations); */
         //set the feedback sensor to the alternate encoder - rev shaft encoder plugged in
         //to the sparkmax via the alternate encoder adaptor
       config.closedLoop
@@ -82,8 +83,8 @@ public class Elevator extends SubsystemBase {
 
         // Set PID values for position control. We don't need to pass a closed loop
         // slot, as it will default to slot 0.
-        .p(0.1)
-        .i(0)
+        .p(0.5)
+        .i(0.00009)
         .d(0)
         .velocityFF(ElevatorConstants.kFF)
         .outputRange(-1*ElevatorConstants.maxHeight_rotations,ElevatorConstants.maxHeight_rotations)
@@ -145,7 +146,7 @@ public double getPositionInches() {
  *   second
  */
 public double getVelocityInchesPerSecond() {
-  return (encoder.getVelocity() / 60) * ElevatorConstants.inches_per_rotation;
+  return (encoder.getVelocity() / 60.0) * ElevatorConstants.inches_per_rotation;
 }
 
 /*
@@ -170,7 +171,8 @@ public void moveToSetPosition (double height) {
     // preventing us from going over the top or through the floor
     closedLoopController.setReference(
             MathUtil.clamp(rotationGoal,0,ElevatorConstants.maxHeight_rotations), 
-                     SparkBase.ControlType.kMAXMotionPositionControl,ClosedLoopSlot.kSlot0,
+                     //SparkBase.ControlType.kMAXMotionPositionControl,ClosedLoopSlot.kSlot0,
+                     SparkBase.ControlType.kPosition,ClosedLoopSlot.kSlot0,
                      ElevatorConstants.KV);
 
 }
@@ -204,7 +206,7 @@ public Command moveToPosition(double height)
 
 //if the bottom limit switch is triggered zero the encoder
 public void zeroEncoder() {
-  encoder.setPosition(0);
+  encoder.setPosition(0.0);
   prevSetEncoder = true;
 }
 //adjust the output voltage to hold the elevator in place //TODO tune this
@@ -245,11 +247,11 @@ public void periodic()
   currRotations = encoder.getPosition();
   OutputCurrent = motor.getOutputCurrent();
 
-  System.out.print("value of limit swtich" + bottomlimitSwitch.get());
+ // System.out.println("value of limit swtich" + bottomlimitSwitch.get());
 
     //sets position(inces) to 0 if bottomLimistswitch is triggered 
     if(bottomLimitSwitchIsBeingPressed() && !prevSetEncoder){
-      System.out.print("reset height to 0");
+      System.out.println("reset height to 0");
       zeroEncoder();
     }
     if (!bottomLimitSwitchIsBeingPressed()){
@@ -263,7 +265,7 @@ public void simulationPeriodic() {
   //update-every 20 milliseconds
   m_elevatorSim.update(0.02);
   double velocityMeterPerSec = m_elevatorSim.getVelocityMetersPerSecond();
-  double simRotations = Units.metersToInches(velocityMeterPerSec * 60) * ElevatorConstants.rotations_per_inch;
+  double simRotations = Units.metersToInches(velocityMeterPerSec * 60.0) * ElevatorConstants.rotations_per_inch;
   motorSim.iterate(simRotations,
           RoboRioSim.getVInVoltage(),
           0.020);

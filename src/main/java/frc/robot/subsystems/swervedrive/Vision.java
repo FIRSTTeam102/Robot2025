@@ -21,7 +21,9 @@ import edu.wpi.first.math.util.Units;
 import edu.wpi.first.networktables.NetworkTablesJNI;
 import edu.wpi.first.wpilibj.Alert;
 import edu.wpi.first.wpilibj.Alert.AlertType;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
+import frc.robot.Constants;
 import frc.robot.Robot;
 import java.awt.Desktop;
 import java.util.ArrayList;
@@ -120,7 +122,63 @@ public class Vision
     }
 
   }
+  /*
+   * isValidTargetFor Scoring: is this a valid target to score on?
+   * Target must be within a sight of the robot and a valid target
+   * for our alliance
+   */
+  public boolean isValidTargetForScoring(int targetAprilTag){
+    //look up the target & verify it is valid for our alliance
+    //Blue Alliance reef tags = 17, 18, 19, 20, 21, 22
+    //Red Alliance reef tags = 6, 7, 8, 9, 10, 11
+    var alliance = DriverStation.getAlliance();
+    if (!alliance.isPresent()){ return false;}
+      
+    if ((targetAprilTag >= 17 && targetAprilTag <= 22) && 
+          alliance.get() == DriverStation.Alliance.Blue){
+       return true;
+    }
+    if ((targetAprilTag >= 6 && targetAprilTag <= 11) && 
+          alliance.get() == DriverStation.Alliance.Red){
+        return true;
+    }
+    return false;
+  }
+  /*
+   * get best Reef Target from the front 2 cameras
+   * only return a target if it is on the same reef as our alliance
+   */
+  public int getBestReefTarget()
+  {
+    Optional<PhotonPipelineResult> result;
+    PhotonTrackedTarget target;
+    int frontLeftTarget = 0;
+    int frontRightTarget = 0;
 
+    for (Cameras camera : Cameras.values()){
+      if (camera.equals(Cameras.FrontLeft)){
+        result = camera.getBestResult();
+        if (result.isPresent()){
+          target = result.get().getBestTarget();
+          frontLeftTarget = target.getFiducialId();
+          if (isValidTargetForScoring(frontLeftTarget)){
+            return(frontLeftTarget);
+          }
+        }
+      }
+      if (camera.equals(Cameras.FrontRight)){
+        result = camera.getBestResult();
+        if (result.isPresent()){
+          target = result.get().getBestTarget();
+          frontRightTarget = target.getFiducialId();
+          if (isValidTargetForScoring(frontRightTarget)){
+            return(frontRightTarget);
+          }
+        }
+      }
+    }
+    return(0);
+  }
   /**
    * Update the pose estimation inside of {@link SwerveDrive} with all of the given poses.
    *
@@ -290,38 +348,38 @@ public class Vision
      * Back Right Camera
      */
     BackRight("BackRight",
-             new Rotation3d(0, Math.toRadians(-24.094), Math.toRadians(30)),
-             new Translation3d(Units.inchesToMeters(12.056),
-                               Units.inchesToMeters(10.981),
-                               Units.inchesToMeters(8.44)),
+             new Rotation3d(0, Math.toRadians(30), Math.toRadians(160)),  //new camera needs 140
+             new Translation3d(Units.inchesToMeters(-Constants.VisionConstants.oldCameraX),
+                               Units.inchesToMeters(-Constants.VisionConstants.oldCameraY),
+                               Units.inchesToMeters(7.503258)),
              VecBuilder.fill(4, 4, 8), VecBuilder.fill(0.5, 0.5, 1)),
     /**
     /**
      * Back Left Camera
      */
     BackLeft("BackLeft",
-             new Rotation3d(0, Math.toRadians(-24.094), Math.toRadians(30)),
-             new Translation3d(Units.inchesToMeters(12.056),
-                               Units.inchesToMeters(10.981),
-                               Units.inchesToMeters(8.44)),
+             new Rotation3d(0, Math.toRadians(30), Math.toRadians(220)),
+             new Translation3d(Units.inchesToMeters(-10.6488),
+                               Units.inchesToMeters(11.957134),
+                               Units.inchesToMeters(7.503258)),
              VecBuilder.fill(4, 4, 8), VecBuilder.fill(0.5, 0.5, 1)),
     /**
      * Front Left Camera
      */
     FrontLeft("FrontLeft",
-              new Rotation3d(0, Math.toRadians(-24.094), Math.toRadians(-30)),
-              new Translation3d(Units.inchesToMeters(12.056),
-                                Units.inchesToMeters(-10.981),
-                                Units.inchesToMeters(8.44)),
+              new Rotation3d(0, Math.toRadians(30), Math.toRadians(-20)),  //new camera needs to be -40
+              new Translation3d(Units.inchesToMeters(Constants.VisionConstants.oldCameraX),
+                                Units.inchesToMeters(Constants.VisionConstants.oldCameraY),
+                                Units.inchesToMeters(7.503258)),
               VecBuilder.fill(4, 4, 8), VecBuilder.fill(0.5, 0.5, 1)),
     /*
     Front Right Camera*
      */
     FrontRight("FrontRight",
-               new Rotation3d(0, Units.degreesToRadians(20), 20),
-               new Translation3d(Units.inchesToMeters(-7.435273),
-                                 Units.inchesToMeters(-7.435273),
-                                 Units.inchesToMeters(4)),
+               new Rotation3d(0, Math.toRadians(30), Math.toRadians(40)),
+               new Translation3d(Units.inchesToMeters(10.6488),
+                                 Units.inchesToMeters(-11.957134),
+                                 Units.inchesToMeters(7.503258)),
                VecBuilder.fill(4, 4, 8), VecBuilder.fill(0.5, 0.5, 1));
 
     /**

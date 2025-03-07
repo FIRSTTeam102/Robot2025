@@ -19,7 +19,7 @@ import swervelib.math.Matter;
 public final class Constants
 {
 
-  public static final double ROBOT_MASS = (148 - 20.3) * 0.453592; // 32lbs * kg per pound
+  public static final double ROBOT_MASS = (148.0 - 20.3) * 0.453592; // 32lbs * kg per pound
   public static final Matter CHASSIS    = new Matter(new Translation3d(0, 0, Units.inchesToMeters(8)), ROBOT_MASS);
   public static final double LOOP_TIME  = 0.13; //s, 20ms + 110ms sprk max velocity lag
   public static final double MAX_SPEED  = Units.feetToMeters(14.5);
@@ -34,10 +34,18 @@ public final class Constants
 
   public static final class DrivebaseConstants
   {
-
+    public static double DriveFastScale = 0.8
+    ;
+    public static double DrivePrecisionScale = 0.2;
     // Hold time on motor brakes when disabled
-    public static final double WHEEL_LOCK_TIME = 10; // seconds
+    public static final double WHEEL_LOCK_TIME = 10.0; // seconds
     public enum TargetSide {LEFT, RIGHT};
+    // robot camera offsets need to be correct with bumper so the 
+    //align to reef works correctly, the reef poles are 6.5 inches from the 
+    //center of the april tag
+    public static double ReefLeftYOffset = Units.inchesToMeters(-6.5);
+    public static double ReefRightYOffset = Units.inchesToMeters(6.5);
+    public static double ReefXDistance = Units.inchesToMeters(-19.5);                                                                                             
   }
 
   public static class OperatorConstants
@@ -47,57 +55,60 @@ public final class Constants
     public static final double DEADBAND        = 0.1;
     public static final double LEFT_Y_DEADBAND = 0.1;
     public static final double RIGHT_X_DEADBAND = 0.3;
-    public static final double TURN_CONSTANT    = 6;
+    public static final double TURN_CONSTANT    = 6.0;
     
   }
   public static class VisionConstants
   {
-    public static final boolean DRIVEWITHVISION = false;
+    public static final boolean DRIVEWITHVISION = true;
+    public static final double oldCameraX = 11.97534;
+    public static final double oldCameraY = 11.256;
+
   }
 
   //TODO get the DIO port for the limit switch
   public static final class ElevatorConstants {
 
-    public static final double NATIVE_UNITS_PER_ROTATION = 8192;
+    public static final double NATIVE_UNITS_PER_ROTATION = 8192.0;
     public static final int LIMIT_SWITCH_PORT = 0;
     public static final int ELEVATOR_MOTOR_ID = 30;
     public static final double JStick_Speed_Mult = 0.6;
-    public static final double OUTPUT_VOLTS = 1;
-    public static final double HOME = 0;
-    public static final double LEVEL1 = 26.895 - 6.5;
-    public static final double LEVEL2 = 37.562 - 6.5;
-    public static final double LEVEL3 = 52.572 - 6.5; 
-    public static final double LEVEL4= 78.415 -6.5;
-    public static final double CORALSTA = 0;
+    public static final double OUTPUT_VOLTS = 1.0;
+    public static final double HOME = 0.00
+    ;
+    public static final double LEVEL1 = 26.479;
+    public static final double LEVEL2 = 37.6415;
+    public static final double LEVEL3 = 56.0746; 
+    public static final double LEVEL4 = 82.7107;
 
 
 // The encoder is directly mounted to the elevator shaft - 1 rotation = 1 full rotation of the chain
 // sprocket. The diameter of the sprocket is 2", so the circumference = 2 pi. This is a 3 stage elevator &
 // the shooter is attached to the 3rd stage, so it moves at 3x the rate of the chain distance
-    public static final double inches_per_rotation = 2 * Math.PI * 3;
-    public static final double maxHeight_inches = 80;
-    public static final double carriageMass = 23; //lbs shooter + elevator carriage + chain 
+    public static final double inches_per_rotation = 2.0 * Math.PI * 3.0;
+    public static final double maxHeight_inches = 80.0; 
+    public static final double carriageMass = 23.0; //lbs shooter + elevator carriage + chain 
     //multiplied maxHeight Rotations by native units to get max native units
     public static final double maxHeight_rotations = (maxHeight_inches/inches_per_rotation);
-    public static final double rotations_per_inch = 1/inches_per_rotation;
-    public static final double secondsToMaxHeight = 2; //top speed goal
+    public static final double rotations_per_inch = 1.0/inches_per_rotation;
+    public static final double secondsToMaxHeight = 2.0; //top speed goal
     public static final double maxRotationsPerMin = (maxHeight_rotations/secondsToMaxHeight) * 60;
-    public static final double gear_ratio_to_1 = 25; //NEO gear ratio
-    public static final double motor_max_rpm = 3000;//maxRotationsPerMin * gear_ratio_to_1; //Goal of max height in 2 seconds
-    public static final double motor_max_accel = 500;//TODO tune this to achieve fast ramp up
+    public static final double gear_ratio_to_1 = 25.0; //NEO gear ratio
+    public static final double motor_max_rpm = 1000.0;//maxRotationsPerMin * gear_ratio_to_1; //Goal of max height in 2 seconds
+    public static final double motor_max_accel = 3000.0;//TODO tune this to achieve fast ramp up
 
-    public static final double ElevatorDefaultToleranceInch = 0.5; //1 inch either way error in position
+    public static final double ElevatorDefaultToleranceInch = 0.2; //1 inch either way error in position
     public static final double ElevatorDefToleranceRotations = ElevatorDefaultToleranceInch /inches_per_rotation;
     
 
     //PID values - determined using Rev hardware client & graphing velocity
     public static double kP = 0.00025; 
-    public static double kI = 0;
-    public static double kD = 0; 
+    public static double kI = 0.0;
+    public static double kD = 0.0; 
     public static double kIz = 0.1; 
     public static double kFF = 0.002114; //velocity feed forward = 1/kv = 1/473 per neo docs 
-    public static double kMaxOutput = 1; 
-    public static double kMinOutput = -1;
+    public static double kMaxOutput = 1.0; 
+    public static double kMinOutput = -1.0;
     
     // feedforward */
 	  public static final double kG = 0.1056 * .01957;//effect of elevator gravity on neo 
@@ -112,12 +123,12 @@ public final class Constants
     public static final int coralSensor1Back = 1;
 
     //shooter speeds
-    public static final double LeftMaxShooterSpeed = -0.3;
-    public static final double RightMaxShooterSpeed = 0.3;
+    public static final double LeftMaxShooterSpeed = -0.15;
+    public static final double RightMaxShooterSpeed = 0.15;
 
 
     public static final double L1LeftShooterSpeed = -0.3;
-    public static final double L1RightShooterSpeed = 0;
+    public static final double L1RightShooterSpeed = -0.1;
 
     public static final double leftIntakeSpeed = 0.05;
     public static final double rightIntakeSpeed = -0.05;

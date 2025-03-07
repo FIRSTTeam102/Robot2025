@@ -44,6 +44,7 @@ public class Robot extends LoggedRobot
   @Override
   public void robotInit()
   {
+    Logger.recordMetadata("ProjectName", "MyProject"); // Set a metadata value
     Logger.addDataReceiver(new NT4Publisher()); // Publish data to NetworkTables
     Logger.start();
 
@@ -106,6 +107,7 @@ public class Robot extends LoggedRobot
   public void autonomousInit()
   {
     m_robotContainer.setMotorBrake(true);
+    m_robotContainer.ZeroGyro();
     m_autonomousCommand = m_robotContainer.getAutonomousCommand();
 
     // schedule the autonomous command (example)
