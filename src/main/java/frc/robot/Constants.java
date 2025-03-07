@@ -34,11 +34,13 @@ public final class Constants
 
   public static final class DrivebaseConstants
   {
-
+    public static double DriveFastScale = 0.8
+    ;
+    public static double DrivePrecisionScale = 0.2;
     // Hold time on motor brakes when disabled
     public static final double WHEEL_LOCK_TIME = 10.0; // seconds
     public enum TargetSide {LEFT, RIGHT};
-    //TODO verify robot camera offsets are correct with bumper so the 
+    // robot camera offsets need to be correct with bumper so the 
     //align to reef works correctly, the reef poles are 6.5 inches from the 
     //center of the april tag
     public static double ReefLeftYOffset = Units.inchesToMeters(-6.5);
@@ -121,8 +123,8 @@ public final class Constants
     public static final int coralSensor1Back = 1;
 
     //shooter speeds
-    public static final double LeftMaxShooterSpeed = -0.3;
-    public static final double RightMaxShooterSpeed = 0.3;
+    public static final double LeftMaxShooterSpeed = -0.15;
+    public static final double RightMaxShooterSpeed = 0.15;
 
 
     public static final double L1LeftShooterSpeed = -0.3;

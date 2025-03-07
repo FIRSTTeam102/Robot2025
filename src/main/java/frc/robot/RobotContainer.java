@@ -21,6 +21,7 @@ import edu.wpi.first.wpilibj2.command.Commands;
 
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import frc.robot.Constants.DrivebaseConstants;
 import frc.robot.Constants.ElevatorConstants;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.ManualElevatorControl;
@@ -90,7 +91,7 @@ public class RobotContainer
 
                                                             .withControllerRotationAxis(()->driverXbox.getRightX() * 1)
                                                             .deadband(OperatorConstants.DEADBAND)
-                                                            .scaleTranslation(0.5)
+                                                            .scaleTranslation(DrivebaseConstants.DrivePrecisionScale)
                                                             .allianceRelativeControl(true);
 
   /**
@@ -109,7 +110,7 @@ public class RobotContainer
                                                                .robotRelative(false)
                                                                .withControllerRotationAxis(() -> driverXbox.getRightX() * -1)
                                                                .deadband(OperatorConstants.DEADBAND)
-                                                               .scaleTranslation(1)
+                                                               .scaleTranslation(DrivebaseConstants.DriveFastScale)
                                                                .allianceRelativeControl(true);
   SwerveInputStream driveRobotAngularVelocitySim =  driveAngularVelocitySim.copy().robotRelative(true)
                                                                 .allianceRelativeControl(false);                        
@@ -119,7 +120,7 @@ public class RobotContainer
   //Robot oriented default commands are used in TEST mode as the defaults - so no need to hold trigger
   Command driveRobotOrientAngularVelocity = drivebase.driveRobotOriented(driveRobotOriented); 
   Command driveRobotOrientAngularVelocitySim = drivebase.driveRobotOriented(driveRobotAngularVelocitySim);
-  //Command drivePreciseCommand = drivebase.driveFieldOriented(drivePreciseMode);
+  Command drivePreciseCommand = drivebase.driveFieldOriented(drivePreciseMode);
   
 
   /**
@@ -164,16 +165,16 @@ public class RobotContainer
                   drivebase.driveFieldOriented(driveAngularVelocity
                      .robotRelative(()->driverXbox.getRightTriggerAxis()>0.5 ? true:false)
                      .allianceRelativeControl(()->driverXbox.getRightTriggerAxis()>0.5 ? false:true)
-                     .scaleTranslation(1)
+                     .scaleTranslation(DrivebaseConstants.DriveFastScale)
                   ));
                                 
     //Field vs Robot oriented drive is defined above - sumlator differences, but Test & other modes are the same
 
     driverXbox.start().onTrue((Commands.runOnce(drivebase::zeroGyro)));
     driverXbox.back().whileTrue(drivebase.centerModulesCommand());
-    driverXbox.leftBumper().whileTrue(drivebase.alignToReefScore(TargetSide.LEFT));
-    driverXbox.rightBumper().whileTrue(drivebase.alignToReefScore(TargetSide.RIGHT));
-    //driverXbox.leftTrigger().whileTrue(drivebase.drivePreciseCommand());
+   // driverXbox.leftBumper().whileTrue(drivebase.alignToReefScore(TargetSide.LEFT));
+    //driverXbox.rightBumper().whileTrue(drivebase.alignToReefScore(TargetSide.RIGHT));
+    driverXbox.leftTrigger().whileTrue(drivePreciseCommand);
     
     //TODO ???? right bumper used - driverXbox.rightBumper().whileTrue(...) change center of rotation to left or right front corner
     // depending on if left joystick x is left or right
