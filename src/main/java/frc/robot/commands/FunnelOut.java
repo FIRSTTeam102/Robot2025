@@ -14,10 +14,8 @@ import frc.robot.Constants;
 public class FunnelOut extends Command {
 
   private double funnelPosition;
-  private double funnelPosition;
   private Climber climber;
   /** Creates a new FunnelOut. */
-  public FunnelOut(Climber climber, double funnelPosition) {
   public FunnelOut(Climber climber, double funnelPosition) {
     this.climber = climber;
     this.funnelPosition = funnelPosition;

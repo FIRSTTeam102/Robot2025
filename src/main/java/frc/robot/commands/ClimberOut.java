@@ -13,10 +13,8 @@ import frc.robot.Constants;
 public class ClimberOut extends Command {
 
   private double climberMotorPosition;
-  private double climberMotorPosition;
   private Climber climber;
   /** Creates a new ClimberOut. */
-  public ClimberOut(Climber climber, double climberMotorPosition) {
   public ClimberOut(Climber climber, double climberMotorPosition) {
     this.climber = climber;
     this.climberMotorPosition = climberMotorPosition;
@@ -29,8 +27,6 @@ public class ClimberOut extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-      climber.setClimberPosition(climberMotorPosition); //runs motor backwards to bring back in if already out
-    }
       climber.setClimberPosition(climberMotorPosition); //runs motor backwards to bring back in if already out
     }
 
@@ -48,19 +44,10 @@ public class ClimberOut extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if ((climber.getClimberEncoderPosition()>(Constants.ClimberConstants.climberInPosition) && Climber.getisClimberOut()) || (climber.getClimberEncoderPosition()<Constants.ClimberConstants.climberOutPosition && !Climber.getisClimberOut())){ //if climber is in will end command when position is out or if climber is out will end command when position is in
-      climber.toggleIsOut();
-   return false;
-    }
-    else{
-      return true;
-    }
-  }
     if (MathUtil.isNear(climberMotorPosition, climber.getClimberEncoderPosition(), 5))
-       return true;
-      
-   else{
-    return false;
+       return true;   
+    else{
+      return false;
+    }
   }
-}
 }
