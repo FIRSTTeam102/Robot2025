@@ -157,26 +157,39 @@ public class Vision
 
     for (Cameras camera : Cameras.values()){
       if (camera.equals(Cameras.FrontLeft)){
+        System.out.println("Vision:GetBestReefTarget: Check FrontLeft Camera");
         result = camera.getBestResult();
         if (result.isPresent()){
+          System.out.println("   Left Camera found a result target");
           target = result.get().getBestTarget();
-          frontLeftTarget = target.getFiducialId();
-          if (isValidTargetForScoring(frontLeftTarget)){
-            return(frontLeftTarget);
+          if (target != null){
+            System.out.println("   Left Camera found a best target getting ID");
+            frontLeftTarget = target.getFiducialId();
+            if (isValidTargetForScoring(frontLeftTarget)){
+              System.out.println("  Return frontLeftTarget ID:" + frontLeftTarget);
+              return(frontLeftTarget);
+            }
           }
         }
       }
       if (camera.equals(Cameras.FrontRight)){
+        System.out.println("Vision:GetBestReefTarget: Check FrontRight Camera");
         result = camera.getBestResult();
         if (result.isPresent()){
+          System.out.println("  Right Camera found a result target");
           target = result.get().getBestTarget();
-          frontRightTarget = target.getFiducialId();
-          if (isValidTargetForScoring(frontRightTarget)){
-            return(frontRightTarget);
+          if (target != null){
+            System.out.println("  Right found best target, getting ID");
+            frontRightTarget = target.getFiducialId();
+            if (isValidTargetForScoring(frontRightTarget)){
+              System.out.println("  Return frontRightTarget ID:" + frontRightTarget);
+              return(frontRightTarget);
+            }
           }
         }
       }
     }
+    System.out.println("Vision:GetBestReefTarget: NO APRIL TAG TARGET FOUND return 0");
     return(0);
   }
   /**
