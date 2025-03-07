@@ -14,10 +14,13 @@ import frc.robot.Constants;
 public class FunnelOut extends Command {
 
   private double funnelPosition;
+  private double funnelPosition;
   private Climber climber;
   /** Creates a new FunnelOut. */
   public FunnelOut(Climber climber, double funnelPosition) {
+  public FunnelOut(Climber climber, double funnelPosition) {
     this.climber = climber;
+    this.funnelPosition = funnelPosition;
     this.funnelPosition = funnelPosition;
 
     addRequirements(climber);
@@ -28,6 +31,7 @@ public class FunnelOut extends Command {
   @Override
   public void initialize() {
     climber.setFunnelPosition(funnelPosition);
+    climber.setFunnelPosition(funnelPosition);
     }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -37,6 +41,8 @@ public class FunnelOut extends Command {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
+    climber.stopFunnel(); 
+    climber.toggleFunnelIsOut();; 
     climber.stopFunnel(); 
     climber.toggleFunnelIsOut();; 
   }
