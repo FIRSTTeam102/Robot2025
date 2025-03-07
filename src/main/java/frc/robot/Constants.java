@@ -61,8 +61,8 @@ public final class Constants
   public static class VisionConstants
   {
     public static final boolean DRIVEWITHVISION = true;
-    public static final double oldCameraX = 11.97534;
-    public static final double oldCameraY = 11.256;
+    public static final double oldCameraX = 10.6488; // Old val  11.97534
+    public static final double oldCameraY = 11.957134; // old val 11.256
 
   }
 
@@ -134,15 +134,34 @@ public final class Constants
     public static final double rightIntakeSpeed = -0.05;
 
   }
-
   public static class ClimberConstants {
     public static final int climberMotorID = 40; 
     public static final int funnelMotorID = 34; //temporary
 
+
+    //positions for the climber
     public static final int climberInPosition = 0; //might need testing to find correct position or maybe it is just 0
     public static final int climberOutPosition = 60; //temporary needs testing to find correct position
-    public static final double funnelPosition = 0.9;
+
+
+    //positions for the funnel
+    public static final double funnelOutPosition = 0.9; //temporary
+    public static final double funnelInPosition = 0.9; //temporary
+
+    public static final double climberKp =1;
+    public static final double climberKi =0;
+    public static final double climberKd =0;
+
+    public static final double funnelKp =1;
+    public static final double funnelKi =0;
+    public static final double funnelKd =0;
+
 
     public static final int gearboxConversion = 125;
+
+    //range outputs for PID
+    public static final int maxClimberRotatations =1 ;  //temporary, number should be rotations of the GEARBOX.
+    public static final double maxFunnelRotatations =0.5 ;  //temporary, probably just 1 or less since the funnel is a 1:1 ratio
+
   }
 }

@@ -67,6 +67,8 @@ public class RobotContainer
 
   private final Elevator elevator = new Elevator();
 
+  double TranslationScale = driverXbox.getLeftTriggerAxis()>0.5?0.5:1.0;
+  boolean inversion = driverXbox.getLeftTriggerAxis()>0.5?false:true;
   
 
                                                                         
@@ -82,8 +84,10 @@ public class RobotContainer
 
                                                             .withControllerRotationAxis(()->driverXbox.getRightX() * 1)
                                                             .deadband(OperatorConstants.DEADBAND)
-                                                            .scaleTranslation(1)
-                                                            .allianceRelativeControl(true);
+                                                            .scaleTranslation(TranslationScale)
+                                                            .scaleRotation(TranslationScale)
+                                                            .allianceRelativeControl(inversion)
+                                                            .robotRelative(!inversion);
 
   SwerveInputStream drivePreciseMode = SwerveInputStream.of(drivebase.getSwerveDrive(),
                                                                 () -> driverXbox.getLeftY() * -1,
@@ -99,7 +103,6 @@ public class RobotContainer
    */
   SwerveInputStream driveRobotOriented = driveAngularVelocity.copy().robotRelative(true)
                                                              .allianceRelativeControl(false);
-                                                          
 
   // create an input stream for simulation - check keyboard translation window in
   //the simulator to adjust keyboard to joystick bindings
@@ -158,14 +161,16 @@ public class RobotContainer
 
     drivebase.setDefaultCommand(RobotBase.isSimulation() ?
                   drivebase.driveFieldOriented(driveAngularVelocitySim
-                      .robotRelative(()->driverXbox.getRightTriggerAxis()>0.5 ? true:false)
-                      .allianceRelativeControl(()->driverXbox.getRightTriggerAxis()>0.5 ?false:true)
-                      .scaleTranslation(1.0)
+                  .robotRelative(!inversion)
+                  .allianceRelativeControl(inversion)
+                  .scaleTranslation(TranslationScale)
+                  .scaleRotation(TranslationScale)
                   ) :
                   drivebase.driveFieldOriented(driveAngularVelocity
-                     .robotRelative(()->driverXbox.getRightTriggerAxis()>0.5 ? true:false)
-                     .allianceRelativeControl(()->driverXbox.getRightTriggerAxis()>0.5 ? false:true)
-                     .scaleTranslation(DrivebaseConstants.DriveFastScale)
+                     //.robotRelative(!inversion)
+                     //.allianceRelativeControl(inversion)
+                     //.scaleTranslation(TranslationScale)
+                     //.scaleRotation(TranslationScale)
                   ));
                                 
     //Field vs Robot oriented drive is defined above - sumlator differences, but Test & other modes are the same
