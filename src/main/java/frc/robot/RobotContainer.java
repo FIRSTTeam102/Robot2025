@@ -219,6 +219,10 @@ public class RobotContainer
     //be run in robot oriented mode
     if (DriverStation.isTest())
     {
+
+
+
+
       drivebase.setDefaultCommand(driveRobotOrientAngularVelocity);
       testerXbox.a().whileTrue(drivebase.sysIdAngleMotorCommand());
       testerXbox.b().whileTrue(drivebase.sysIdDriveMotorCommand());
@@ -235,10 +239,12 @@ public class RobotContainer
     
 
     }
+
   
   public void ZeroGyro(){
     drivebase.zeroGyro();
   }
+
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
    *

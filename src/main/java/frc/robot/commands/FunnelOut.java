@@ -11,12 +11,12 @@ import frc.robot.Constants;
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
 public class FunnelOut extends Command {
 
-  private double funnelMotorSpeed;
+  private double funnelPosition;
   private Climber climber;
   /** Creates a new FunnelOut. */
-  public FunnelOut(Climber climber, double funnelMotorSpeed) {
+  public FunnelOut(Climber climber, double funnelPosition) {
     this.climber = climber;
-    this.funnelMotorSpeed = funnelMotorSpeed;
+    this.funnelPosition = funnelPosition;
 
     addRequirements(climber);
     // Use addRequirements() here to declare subsystem dependencies.
@@ -25,7 +25,7 @@ public class FunnelOut extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    climber.setFunnelMotorSpeed(funnelMotorSpeed);
+    climber.setFunnelPosition(funnelPosition);
     }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -35,14 +35,14 @@ public class FunnelOut extends Command {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    climber.setFunnelMotorSpeed(0); 
-    climber.togglefunnelOut(); 
+    climber.stopFunnel(); 
+    climber.toggleFunnelIsOut();; 
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if (climber.getFunnelEncoderPosition()>=Constants.ClimberConstants.funnelPosition){
+    if (climber.getFunnelEncoderPosition()>=Constants.ClimberConstants.funnelOutPosition){
       return true;
     }
     else{
