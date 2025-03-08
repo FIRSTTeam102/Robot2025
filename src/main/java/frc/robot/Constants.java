@@ -135,8 +135,8 @@ public final class Constants
 
   }
   public static class ClimberConstants {
-    public static final int climberMotorID = 40; 
-    public static final int funnelMotorID = 34; //temporary
+    public static final int climberMotorID = 31; 
+    public static final int funnelMotorID = 40; //temporary
 
 
     //positions for the climber
