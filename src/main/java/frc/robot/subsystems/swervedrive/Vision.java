@@ -362,29 +362,29 @@ public class Vision
      * Back Right Camera
      */
     BackRight("BackRight",
-             new Rotation3d(0, Math.toRadians(30), Math.toRadians(160)),  //new camera needs 140
-             new Translation3d(Units.inchesToMeters(-Constants.VisionConstants.oldCameraX),
-                               Units.inchesToMeters(-Constants.VisionConstants.oldCameraY),
-                               Units.inchesToMeters(7.503258)),
+             new Rotation3d(0, Math.toRadians(30), Math.toRadians(140)),  //new camera needs 140
+             new Translation3d(Units.inchesToMeters(-10.6488),
+                               Units.inchesToMeters(-11.957134),
+                               Units.inchesToMeters(6.03258)),
              VecBuilder.fill(4, 4, 8), VecBuilder.fill(0.5, 0.5, 1)),
     /**
     /**
      * Back Left Camera
      */
     BackLeft("BackLeft",
-             new Rotation3d(0, Math.toRadians(30), Math.toRadians(220)),
+             new Rotation3d(0, Math.toRadians(30), Math.toRadians(230)),
              new Translation3d(Units.inchesToMeters(-10.6488),
                                Units.inchesToMeters(11.957134),
-                               Units.inchesToMeters(7.503258)),
+                               Units.inchesToMeters(6.03258)),
              VecBuilder.fill(4, 4, 8), VecBuilder.fill(0.5, 0.5, 1)),
     /**
      * Front Left Camera
      */
     FrontLeft("FrontLeft",
-              new Rotation3d(0, Math.toRadians(30), Math.toRadians(-20)),  //new camera needs to be -40
-              new Translation3d(Units.inchesToMeters(Constants.VisionConstants.oldCameraX),
-                                Units.inchesToMeters(Constants.VisionConstants.oldCameraY),
-                                Units.inchesToMeters(7.503258)),
+              new Rotation3d(0, Math.toRadians(30), Math.toRadians(-28)),  //new camera needs to be -40
+              new Translation3d(Units.inchesToMeters(10.6488),
+                                Units.inchesToMeters(11.957134),
+                                Units.inchesToMeters(6.03258)),
               VecBuilder.fill(4, 4, 8), VecBuilder.fill(0.5, 0.5, 1)),
     /*
     Front Right Camera*
@@ -393,7 +393,7 @@ public class Vision
                new Rotation3d(0, Math.toRadians(30), Math.toRadians(40)),
                new Translation3d(Units.inchesToMeters(10.6488),
                                  Units.inchesToMeters(-11.957134),
-                                 Units.inchesToMeters(7.503258)),
+                                 Units.inchesToMeters(6.03258)),
                VecBuilder.fill(4, 4, 8), VecBuilder.fill(0.5, 0.5, 1));
 
     /**

@@ -1,3 +1,4 @@
+
 // Copyright (c) FIRST and other WPILib contributors.
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
@@ -78,7 +79,7 @@ public class RobotContainer
                                                                 () -> driverXbox.getLeftY() * -1,
                                                                 () -> driverXbox.getLeftX() * -1)
 
-                                                            .withControllerRotationAxis(()->driverXbox.getRightX() * 1)
+                                                            .withControllerRotationAxis(()->driverXbox.getRightX() * -1)
                                                             .deadband(OperatorConstants.DEADBAND)
                                                             .scaleTranslation(1.0)
                                                             .scaleRotation(0.5)
@@ -155,7 +156,7 @@ public class RobotContainer
 
   //Drive in precise mode when left trigger is pressed
    driverXbox.leftTrigger().onTrue(Commands.runOnce(
-               ()->driveAngularVelocity.scaleTranslation(0.5)
+               ()->driveAngularVelocity.scaleTranslation(0.3)
                                        .scaleRotation(0.3)
                                        ))
                            .onFalse(Commands.runOnce(
@@ -181,8 +182,8 @@ public class RobotContainer
 
     //TODO driverXbox.a().onTrue(....) toggle robot between field & robot oriented, show on
     // shuffleboard
-    driverXbox.a().whileTrue(drivebase.alignToReefScore(9,TargetSide.LEFT));
-    driverXbox.b().whileTrue(drivebase.alignToReefScore(11,TargetSide.RIGHT));
+    driverXbox.a().whileTrue(drivebase.alignToReefScore(17,TargetSide.LEFT));
+    driverXbox.b().whileTrue(drivebase.alignToReefScore(18,TargetSide.RIGHT));
       
     // Levels L1, L2, L3, L4 in inches & set to a,b,x,y buttons per Drive team
     //definitions
@@ -241,7 +242,7 @@ public class RobotContainer
 
   
   public void ZeroGyro(){
-    drivebase.zeroGyro();
+    drivebase.zeroGyroWithAlliance();
   }
 
   /**
