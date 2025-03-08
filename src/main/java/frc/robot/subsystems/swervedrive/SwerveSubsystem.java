@@ -268,7 +268,7 @@ public class SwerveSubsystem extends SubsystemBase
   {
     //ask vision for the best reef target in view from the front
     //cameras
-    int aprilTag = vision.getBestReefTarget();
+    int aprilTag = vision.getCurrentReefTarget();
     
 
     //If we got a valid april tag target, then drive to an offset from that

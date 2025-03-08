@@ -30,6 +30,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Supplier;
+
+import org.littletonrobotics.junction.AutoLogOutput;
 import org.photonvision.EstimatedRobotPose;
 import org.photonvision.PhotonCamera;
 import org.photonvision.PhotonPoseEstimator;
@@ -76,6 +78,12 @@ public class Vision
    */
   private             Field2d             field2d;
 
+  @AutoLogOutput
+  private int loggedtargetID;
+
+
+
+
 
   /**
    * Constructor for the Vision class.
@@ -87,6 +95,7 @@ public class Vision
   {
     this.currentPose = currentPose;
     this.field2d = field;
+    
 
     if (Robot.isSimulation())
     {
@@ -100,6 +109,10 @@ public class Vision
 
       openSimCameraViews();
     }
+  }
+
+  public int getCurrentReefTarget(){
+    return(loggedtargetID);
   }
 
   /**
@@ -169,7 +182,8 @@ public class Vision
    */
   public int getBestReefTarget()
   {
-    int targetID = 0;
+     int targetID = 0;
+     
 
     for (Cameras camera : Cameras.values()){
       if (camera.equals(Cameras.FrontLeft)){
@@ -668,5 +682,9 @@ public class Vision
 
 
   }
+  public void periodic(){
+    loggedtargetID = getBestReefTarget();
+  }
 
 }
+
