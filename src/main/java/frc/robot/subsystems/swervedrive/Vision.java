@@ -144,48 +144,49 @@ public class Vision
     }
     return false;
   }
+  //find the latest targets april tag id from the camera
+  //if no target return 0
+  public int getCamerasTargetID(Cameras camera){
+    PhotonTrackedTarget target;
+
+    System.out.println("Vision:getCamerasTargetID: Check Camera");
+    var results = camera.getLatestResult();
+    if (!results.isEmpty()){
+      var result = results.orElse(null);
+      if (result != null){
+         System.out.println("   Camera found a result target");
+         target = result.getBestTarget();
+         System.out.println("   Camera found a best target getting ID");
+         return(target.getFiducialId());
+      }
+    }
+    return(0);
+  }
   /*
    * get best Reef Target from the front 2 cameras
    * only return a target if it is on the same reef as our alliance
    */
   public int getBestReefTarget()
   {
-    Optional<PhotonPipelineResult> result;
-    PhotonTrackedTarget target;
-    int frontLeftTarget = 0;
-    int frontRightTarget = 0;
+    int targetID = 0;
 
     for (Cameras camera : Cameras.values()){
       if (camera.equals(Cameras.FrontLeft)){
+
         System.out.println("Vision:GetBestReefTarget: Check FrontLeft Camera");
-        result = camera.getBestResult();
-        if (result.isPresent()){
-          System.out.println("   Left Camera found a result target");
-          target = result.get().getBestTarget();
-          if (target != null){
-            System.out.println("   Left Camera found a best target getting ID");
-            frontLeftTarget = target.getFiducialId();
-            if (isValidTargetForScoring(frontLeftTarget)){
-              System.out.println("  Return frontLeftTarget ID:" + frontLeftTarget);
-              return(frontLeftTarget);
-            }
-          }
+        targetID = getCamerasTargetID(camera);
+        
+        if (isValidTargetForScoring(targetID)){
+          System.out.println("  Return frontLeftTarget ID:" + targetID);
+          return(targetID);
         }
       }
       if (camera.equals(Cameras.FrontRight)){
         System.out.println("Vision:GetBestReefTarget: Check FrontRight Camera");
-        result = camera.getBestResult();
-        if (result.isPresent()){
-          System.out.println("  Right Camera found a result target");
-          target = result.get().getBestTarget();
-          if (target != null){
-            System.out.println("  Right found best target, getting ID");
-            frontRightTarget = target.getFiducialId();
-            if (isValidTargetForScoring(frontRightTarget)){
-              System.out.println("  Return frontRightTarget ID:" + frontRightTarget);
-              return(frontRightTarget);
-            }
-          }
+        targetID = getCamerasTargetID(camera);
+        if (isValidTargetForScoring(targetID)){
+          System.out.println("  Return frontRightTarget ID:" + targetID);
+          return(targetID);
         }
       }
     }
