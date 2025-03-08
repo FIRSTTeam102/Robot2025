@@ -67,10 +67,6 @@ public class RobotContainer
 
   private final Elevator elevator = new Elevator();
 
-  //double TranslationScale = driverXbox.getLeftTriggerAxis()>0.5?0.5:1.0;
- // boolean driveRobotOrient = driverXbox.getRightTriggerAxis()>0.5?false:true;
-  
-
                                                                         
   private final Climber climber = new Climber();
   /**
@@ -89,14 +85,6 @@ public class RobotContainer
                                                             .allianceRelativeControl(true)
                                                             .robotRelative(false);
 
-  SwerveInputStream drivePreciseMode = SwerveInputStream.of(drivebase.getSwerveDrive(),
-                                                                () -> driverXbox.getLeftY() * -1,
-                                                                () -> driverXbox.getLeftX() * -1)
-
-                                                            .withControllerRotationAxis(()->driverXbox.getRightX() * 1)
-                                                            .deadband(OperatorConstants.DEADBAND)
-                                                            .scaleTranslation(DrivebaseConstants.DrivePrecisionScale)
-                                                            .allianceRelativeControl(true);
 
   /**
    * Clone's the angular velocity input stream and converts it to a robotRelative input stream.
@@ -123,7 +111,6 @@ public class RobotContainer
   //Robot oriented default commands are used in TEST mode as the defaults - so no need to hold trigger
   Command driveRobotOrientAngularVelocity = drivebase.driveRobotOriented(driveRobotOriented); 
   Command driveRobotOrientAngularVelocitySim = drivebase.driveRobotOriented(driveRobotAngularVelocitySim);
-  Command drivePreciseCommand = drivebase.driveFieldOriented(drivePreciseMode);
   
 
   /**
@@ -151,14 +138,8 @@ public class RobotContainer
       
     funnelTrigger.whileFalse(new Intake(shooter));
 
-   
-/*in order to get robot oriented & precise driving temporarily change
-* the driveFieldOrientedAngularVelocity input stream if triggers are pressed
- */
-//    drivebase.setDefaultCommand(!RobotBase.isSimulation() ?
-//                              driveFieldOrientedAnglularVelocity :
-//                               driveFieldOrientedAnglularVelocitySim);
-
+   //default drive mode is field oriented w/ left joystick controlling speed & direction
+   //right joystick controls top rotation w/ angular velocity (X axis of right joy stick)
     drivebase.setDefaultCommand(RobotBase.isSimulation() ?
                   drivebase.driveFieldOriented(driveAngularVelocitySim  ) :
                   drivebase.driveFieldOriented(driveAngularVelocity ));
@@ -167,15 +148,34 @@ public class RobotContainer
 
     driverXbox.start().onTrue((Commands.runOnce(drivebase::zeroGyro)));
     driverXbox.back().whileTrue(drivebase.centerModulesCommand());
-   // driverXbox.leftBumper().whileTrue(drivebase.alignToReefScore(TargetSide.LEFT));
-    //driverXbox.rightBumper().whileTrue(drivebase.alignToReefScore(TargetSide.RIGHT));
+  
+  //to change attributes of the default command drive inputstream, just change the 
+  //stream attributes that are feeding into the default drive command. The attribute immediately
+  //changes and is in effect until it is changed back
+
+  //Drive in precise mode when left trigger is pressed
    driverXbox.leftTrigger().onTrue(Commands.runOnce(
                ()->driveAngularVelocity.scaleTranslation(0.5)
-                                       .scaleRotation(0.3)))
+                                       .scaleRotation(0.3)
+                                       ))
                            .onFalse(Commands.runOnce(
                 ()->driveAngularVelocity.scaleTranslation(1.0)
                                         .scaleRotation(0.5)));
-    
+                                        
+  //Enable robotRelative driving if the right trigger is pressed.
+    driverXbox.rightTrigger().onTrue(Commands.runOnce(
+                ()->driveAngularVelocity.robotRelative(true)
+                                        .allianceRelativeControl(false)
+                                        ))
+                              .onFalse(Commands.runOnce(
+                ()->driveAngularVelocity.robotRelative(false)
+                                        .allianceRelativeControl(true)
+                              ));
+
+    // driverXbox.leftBumper().whileTrue(drivebase.alignToReefScore(TargetSide.LEFT));
+    //driverXbox.rightBumper().whileTrue(drivebase.alignToReefScore(TargetSide.RIGHT));
+
+
     //TODO ???? right bumper used - driverXbox.rightBumper().whileTrue(...) change center of rotation to left or right front corner
     // depending on if left joystick x is left or right
 
