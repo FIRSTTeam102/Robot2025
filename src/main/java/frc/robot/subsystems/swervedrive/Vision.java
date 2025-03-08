@@ -153,7 +153,8 @@ public class Vision
     var results = camera.getLatestResult();
     if (!results.isEmpty()){
       var result = results.orElse(null);
-      if (result != null){
+      if (result == null) return(0);
+      if (result.hasTargets()){
          System.out.println("   Camera found a result target");
          target = result.getBestTarget();
          System.out.println("   Camera found a best target getting ID");
