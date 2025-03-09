@@ -34,10 +34,18 @@ public final class Constants
 
   public static final class DrivebaseConstants
   {
-
+    public static double DriveFastScale = 0.8
+    ;
+    public static double DrivePrecisionScale = 0.2;
     // Hold time on motor brakes when disabled
     public static final double WHEEL_LOCK_TIME = 10.0; // seconds
     public enum TargetSide {LEFT, RIGHT};
+    // robot camera offsets need to be correct with bumper so the 
+    //align to reef works correctly, the reef poles are 6.5 inches from the 
+    //center of the april tag
+    public static double ReefLeftYOffset = Units.inchesToMeters(-7.5);
+    public static double ReefRightYOffset = Units.inchesToMeters(7.5);
+    public static double ReefXDistance = Units.inchesToMeters(14.0);                                                                                             
   }
 
   public static class OperatorConstants
@@ -53,8 +61,8 @@ public final class Constants
   public static class VisionConstants
   {
     public static final boolean DRIVEWITHVISION = true;
-    public static final double oldCameraX = 11.97534;
-    public static final double oldCameraY = 11.256;
+    public static final double oldCameraX = 10.6488; // Old val  11.97534
+    public static final double oldCameraY = 11.957134; // old val 11.256
 
   }
 
@@ -66,8 +74,9 @@ public final class Constants
     public static final int ELEVATOR_MOTOR_ID = 30;
     public static final double JStick_Speed_Mult = 0.6;
     public static final double OUTPUT_VOLTS = 1.0;
-    public static final double HOME = 0.0;
-    public static final double LEVEL1 = 26.895 - 6.5;
+    public static final double HOME = 0.00
+    ;
+    public static final double LEVEL1 = 26.479;
     public static final double LEVEL2 = 37.6415;
     public static final double LEVEL3 = 56.0746; 
     public static final double LEVEL4 = 82.7107;
@@ -85,10 +94,10 @@ public final class Constants
     public static final double secondsToMaxHeight = 2.0; //top speed goal
     public static final double maxRotationsPerMin = (maxHeight_rotations/secondsToMaxHeight) * 60;
     public static final double gear_ratio_to_1 = 25.0; //NEO gear ratio
-    public static final double motor_max_rpm = 3000.0;//maxRotationsPerMin * gear_ratio_to_1; //Goal of max height in 2 seconds
-    public static final double motor_max_accel = 500.0;//TODO tune this to achieve fast ramp up
+    public static final double motor_max_rpm = 1000.0;//maxRotationsPerMin * gear_ratio_to_1; //Goal of max height in 2 seconds
+    public static final double motor_max_accel = 3000.0;//TODO tune this to achieve fast ramp up
 
-    public static final double ElevatorDefaultToleranceInch = 0.5; //1 inch either way error in position
+    public static final double ElevatorDefaultToleranceInch = 0.2; //1 inch either way error in position
     public static final double ElevatorDefToleranceRotations = ElevatorDefaultToleranceInch /inches_per_rotation;
     
 
@@ -114,26 +123,45 @@ public final class Constants
     public static final int coralSensor1Back = 1;
 
     //shooter speeds
-    public static final double LeftMaxShooterSpeed = -0.3;
-    public static final double RightMaxShooterSpeed = 0.3;
+    public static final double LeftMaxShooterSpeed = -0.15;
+    public static final double RightMaxShooterSpeed = 0.15;
 
 
     public static final double L1LeftShooterSpeed = -0.3;
-    public static final double L1RightShooterSpeed = 0.0;
+    public static final double L1RightShooterSpeed = -0.1;
 
     public static final double leftIntakeSpeed = 0.05;
     public static final double rightIntakeSpeed = -0.05;
 
   }
-
   public static class ClimberConstants {
-    public static final int climberMotorID = 40; 
-    public static final int funnelMotorID = 34; //temporary
+    public static final int climberMotorID = 31; 
+    public static final int funnelMotorID = 40; //temporary
 
+
+    //positions for the climber
     public static final int climberInPosition = 0; //might need testing to find correct position or maybe it is just 0
     public static final int climberOutPosition = 60; //temporary needs testing to find correct position
-    public static final double funnelPosition = 0.9;
+
+
+    //positions for the funnel
+    public static final double funnelOutPosition = 0.9; //temporary
+    public static final double funnelInPosition = 0.9; //temporary
+
+    public static final double climberKp =1;
+    public static final double climberKi =0;
+    public static final double climberKd =0;
+
+    public static final double funnelKp =1;
+    public static final double funnelKi =0;
+    public static final double funnelKd =0;
+
 
     public static final int gearboxConversion = 125;
+
+    //range outputs for PID
+    public static final int maxClimberRotatations =1 ;  //temporary, number should be rotations of the GEARBOX.
+    public static final double maxFunnelRotatations =0.5 ;  //temporary, probably just 1 or less since the funnel is a 1:1 ratio
+
   }
 }

@@ -1,3 +1,4 @@
+
 // Copyright (c) FIRST and other WPILib contributors.
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
@@ -24,6 +25,7 @@ import edu.wpi.first.wpilibj2.command.Commands;
 
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import frc.robot.Constants.DrivebaseConstants;
 import frc.robot.Constants.ElevatorConstants;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.ManualElevatorControl;
@@ -51,7 +53,6 @@ import swervelib.SwerveInputStream;
 public class RobotContainer
 {
   private final SendableChooser<Command> autoChooser;
-
   // Replace with CommandPS4Controller or CommandJoystick if needed
   final         CommandXboxController driverXbox = new CommandXboxController(0);
   final         CommandXboxController operatorXbox = new CommandXboxController(1);
@@ -71,8 +72,6 @@ public class RobotContainer
 
   private final Elevator elevator = new Elevator();
 
-  
-
                                                                         
   private final Climber climber = new Climber();
   /**
@@ -84,26 +83,19 @@ public class RobotContainer
                                                                 () -> driverXbox.getLeftY() * -1,
                                                                 () -> driverXbox.getLeftX() * -1)
 
-                                                            .withControllerRotationAxis(()->driverXbox.getRightX() * 1)
+                                                            .withControllerRotationAxis(()->driverXbox.getRightX() * -1)
                                                             .deadband(OperatorConstants.DEADBAND)
-                                                            .scaleTranslation(1)
-                                                            .allianceRelativeControl(true);
+                                                            .scaleTranslation(1.0)
+                                                            .scaleRotation(0.5)
+                                                            .allianceRelativeControl(true)
+                                                            .robotRelative(false);
 
-  SwerveInputStream drivePreciseMode = SwerveInputStream.of(drivebase.getSwerveDrive(),
-                                                                () -> driverXbox.getLeftY() * -1,
-                                                                () -> driverXbox.getLeftX() * -1)
-
-                                                            .withControllerRotationAxis(()->driverXbox.getRightX() * 1)
-                                                            .deadband(OperatorConstants.DEADBAND)
-                                                            .scaleTranslation(0.5)
-                                                            .allianceRelativeControl(true);
 
   /**
    * Clone's the angular velocity input stream and converts it to a robotRelative input stream.
    */
   SwerveInputStream driveRobotOriented = driveAngularVelocity.copy().robotRelative(true)
                                                              .allianceRelativeControl(false);
-                                                          
 
   // create an input stream for simulation - check keyboard translation window in
   //the simulator to adjust keyboard to joystick bindings
@@ -111,21 +103,19 @@ public class RobotContainer
   SwerveInputStream driveAngularVelocitySim = SwerveInputStream.of(drivebase.getSwerveDrive(),
                                                                    () -> -driverXbox.getLeftY(),
                                                                    () -> -driverXbox.getLeftX())
+                                                               .robotRelative(false)
                                                                .withControllerRotationAxis(() -> driverXbox.getRightX() * -1)
                                                                .deadband(OperatorConstants.DEADBAND)
-                                                               .scaleTranslation(0.8)
+                                                               .scaleTranslation(DrivebaseConstants.DriveFastScale)
                                                                .allianceRelativeControl(true);
   SwerveInputStream driveRobotAngularVelocitySim =  driveAngularVelocitySim.copy().robotRelative(true)
                                                                 .allianceRelativeControl(false);                        
   //
   //set up the field & robot oriented drive commands using the input streams, so we are able to get the
   //current joystick values (or keyboard values in simulation)
-  Command driveFieldOrientedAnglularVelocity = drivebase.driveFieldOriented(driveAngularVelocity);
-  Command driveFieldOrientedAnglularVelocitySim = drivebase.driveFieldOriented(driveAngularVelocitySim);
-
+  //Robot oriented default commands are used in TEST mode as the defaults - so no need to hold trigger
   Command driveRobotOrientAngularVelocity = drivebase.driveRobotOriented(driveRobotOriented); 
   Command driveRobotOrientAngularVelocitySim = drivebase.driveRobotOriented(driveRobotAngularVelocitySim);
-  Command drivePreciseCommand = drivebase.driveFieldOriented(drivePreciseMode);
   
 
   /**
@@ -164,73 +154,111 @@ public class RobotContainer
       
     funnelTrigger.whileFalse(new Intake(shooter));
 
-    operatorXbox.rightTrigger().whileTrue(new ShootCoral(shooter, Constants.ShooterConstants.LeftMaxShooterSpeed,Constants.ShooterConstants.RightMaxShooterSpeed));
-    operatorXbox.rightBumper().whileTrue(new ShootCoral(shooter,Constants.ShooterConstants.L1LeftShooterSpeed,Constants.ShooterConstants.L1RightShooterSpeed ));
-     
+   //default drive mode is field oriented w/ left joystick controlling speed & direction
+   //right joystick controls top rotation w/ angular velocity (X axis of right joy stick)
+    drivebase.setDefaultCommand(RobotBase.isSimulation() ?
+                  drivebase.driveFieldOriented(driveAngularVelocitySim  ) :
+                  drivebase.driveFieldOriented(driveAngularVelocity ));
+                                
+    //Field vs Robot oriented drive is defined above - sumlator differences, but Test & other modes are the same
 
-    // (Condition) ? Return-On-True : Return-on-False
+    driverXbox.start().onTrue((Commands.runOnce(drivebase::zeroGyro)));
+    driverXbox.back().whileTrue(drivebase.centerModulesCommand());
+  
+  //to change attributes of the default command drive inputstream, just change the 
+  //stream attributes that are feeding into the default drive command. The attribute immediately
+  //changes and is in effect until it is changed back
+
+  //Drive in precise mode when left trigger is pressed
+   driverXbox.leftTrigger().onTrue(Commands.runOnce(
+               ()->driveAngularVelocity.scaleTranslation(0.1)
+                                       .scaleRotation(0.3)
+                                       ))
+                           .onFalse(Commands.runOnce(
+                ()->driveAngularVelocity.scaleTranslation(1.0)
+                                        .scaleRotation(0.5)));
+                                        
+  //Enable robotRelative driving if the right trigger is pressed.
+    driverXbox.rightTrigger().onTrue(Commands.runOnce(
+                ()->driveAngularVelocity.robotRelative(true)
+                                        .allianceRelativeControl(false)
+                                        ))
+                              .onFalse(Commands.runOnce(
+                ()->driveAngularVelocity.robotRelative(false)
+                                        .allianceRelativeControl(true)
+                              ));
+
+    driverXbox.leftBumper().whileTrue(drivebase.alignToReefScore(TargetSide.LEFT));
+    driverXbox.rightBumper().whileTrue(drivebase.alignToReefScore(TargetSide.RIGHT));
+
+
+    //TODO ???? right bumper used - driverXbox.rightBumper().whileTrue(...) change center of rotation to left or right front corner
+    // depending on if left joystick x is left or right
+
+    //TODO driverXbox.a().onTrue(....) toggle robot between field & robot oriented, show on
+    // shuffleboard
+    driverXbox.a().whileTrue(drivebase.alignToReefScore(17,TargetSide.LEFT));
+    driverXbox.b().whileTrue(drivebase.alignToReefScore(18,TargetSide.RIGHT));
+      
+    // Levels L1, L2, L3, L4 in inches & set to a,b,x,y buttons per Drive team
+    //definitions
+    operatorXbox.leftBumper().onTrue(elevator.setElevatorHeight(ElevatorConstants.HOME));
+    operatorXbox.a().onTrue(elevator.setElevatorHeight(ElevatorConstants.LEVEL1));
+    operatorXbox.b().onTrue(elevator.setElevatorHeight(ElevatorConstants.LEVEL2));
+    operatorXbox.x().onTrue(elevator.setElevatorHeight(ElevatorConstants.LEVEL3));
+    operatorXbox.y().onTrue(elevator.setElevatorHeight(ElevatorConstants.LEVEL4)); 
+
+    //TODO calibrate scoring motor speeds - L1 bounces out
+    operatorXbox.rightTrigger().whileTrue(new ShootCoral(shooter, 
+                                Constants.ShooterConstants.LeftMaxShooterSpeed,
+                                Constants.ShooterConstants.RightMaxShooterSpeed));
+    operatorXbox.rightBumper().whileTrue(
+         new ShootCoral(shooter,Constants.ShooterConstants.L1LeftShooterSpeed,
+                                Constants.ShooterConstants.L1RightShooterSpeed ));
+    //TODO flick algae - flip funnel up andThen back
+    //TODO flip funnel - up for climb
+    //TODO extend climb arm out
+    //TODO retract climb arm in to start position
     
 
-    drivebase.setDefaultCommand(!RobotBase.isSimulation() ?
-                               driveFieldOrientedAnglularVelocity :
-                               driveFieldOrientedAnglularVelocitySim);
-    
     //switch to Robot oriented driving while right trigger is held in both simulation & live robot
     if (Robot.isSimulation())
     {
       driverXbox.rightTrigger().whileTrue(driveRobotOrientAngularVelocitySim);
-    } else {
-    }
+    } 
 
     //Left operator joystick controls manual elevator control regardless of mode
 		elevator.setDefaultCommand(new ManualElevatorControl(elevator,  () -> operatorXbox.getLeftY() * -1));
 
-    //define the button to command bindings to run in test mode
+    //define the button to command bindings to run in test mode we don't want to run these
+    //by accident so we are putting them on a separate xbox controller. NOTE: sysid needs to
+    //be run in robot oriented mode
     if (DriverStation.isTest())
     {
-      //drivebase.setDefaultCommand(driveRobotOrientAngularVelocity);
-      driverXbox.a().whileTrue(drivebase.sysIdAngleMotorCommand());
-      driverXbox.b().whileTrue(drivebase.sysIdDriveMotorCommand());
- //     driverXbox.y().whileTrue(drivebase.driveToPose(
- //           drivebase.getScorePose(TargetSide.LEFT, 6)));
-      driverXbox.y().whileTrue(drivebase.driveToPose(drivebase.getScorePose(TargetSide.LEFT, 17)));       
-      driverXbox.x().onTrue(Commands.runOnce(drivebase::addFakeVisionReading));
-      driverXbox.start().onTrue((Commands.runOnce(drivebase::zeroGyro)));
-      driverXbox.back().whileTrue(drivebase.centerModulesCommand());
-      driverXbox.leftBumper().onTrue(drivebase.driveToDistanceCommand(1.0, 0.2));
-      
-    } else //not in test mode
-    { 
-      //Field vs Robot oriented drive is defined above - sumlator differences, but Test & other modes are the same
-
-      driverXbox.start().onTrue((Commands.runOnce(drivebase::zeroGyro)));
-      driverXbox.back().whileTrue(drivebase.centerModulesCommand());
-      driverXbox.leftBumper().whileTrue(Commands.runOnce(drivebase::lock, drivebase).repeatedly());
-      driverXbox.rightTrigger().whileTrue(driveRobotOrientAngularVelocity);
-      driverXbox.leftTrigger().whileTrue(drivePreciseCommand);
-
-      
-      //TODO make a constant for Levels L1, L2, L3, L4 in inches & set to a,b,x,y buttons per Drive team
-      //definitions
-      operatorXbox.leftBumper().onTrue(elevator.setElevatorHeight(ElevatorConstants.HOME));
-      operatorXbox.a().onTrue(elevator.setElevatorHeight(ElevatorConstants.LEVEL1));
-      operatorXbox.b().onTrue(elevator.setElevatorHeight(ElevatorConstants.LEVEL2));
-      operatorXbox.x().onTrue(elevator.setElevatorHeight(ElevatorConstants.LEVEL3));
-      operatorXbox.y().onTrue(elevator.setElevatorHeight(ElevatorConstants.LEVEL4));
-
-      
-      //TODO if the right bumper is pressed send the Elevator back to zero - Coral station Level
 
 
 
-    }
 
-
-
-    }
-    //testerXbox.povLeft().onTrue(new FunnelOut(climber, 0.2)); //flip funnel in or out
-    //testerXbox.povRight().onTrue(new ClimberOut(climber, 1)); //flip climber in or out
+      drivebase.setDefaultCommand(driveRobotOrientAngularVelocity);
+      testerXbox.a().whileTrue(drivebase.sysIdAngleMotorCommand());
+      testerXbox.b().whileTrue(drivebase.sysIdDriveMotorCommand());
+        
+      testerXbox.x().onTrue(Commands.runOnce(drivebase::addFakeVisionReading));
+      testerXbox.start().onTrue((Commands.runOnce(drivebase::zeroGyro)));
+      testerXbox.back().whileTrue(drivebase.centerModulesCommand());
+      testerXbox.leftBumper().onTrue(drivebase.driveToDistanceCommand(1.0, 0.2));
+      //testerXbox.povLeft().onTrue(new FunnelOut(climber, 0.2)); //flip funnel in or out
+      //testerXbox.povRight().onTrue(new ClimberOut(climber, 1)); //flip climber in or out
   
+    }
+    
+
+    }
+
+  
+  public void ZeroGyro(){
+    drivebase.zeroGyroWithAlliance();
+  }
 
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.

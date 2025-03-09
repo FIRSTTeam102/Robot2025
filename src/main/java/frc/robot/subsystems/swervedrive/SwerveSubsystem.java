@@ -23,6 +23,7 @@ import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.geometry.Pose2d;
 //import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
@@ -37,6 +38,7 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Config;
 import frc.robot.Constants;
+import frc.robot.Constants.DrivebaseConstants;
 import frc.robot.Constants.VisionConstants;
 import frc.robot.Constants.DrivebaseConstants.TargetSide;
 import frc.robot.subsystems.swervedrive.Vision.Cameras;
@@ -116,7 +118,7 @@ public class SwerveSubsystem extends SubsystemBase
                                                0.1); //Correct for skew that gets worse as angular velocity increases. Start with a coefficient of 0.1.
     swerveDrive.setModuleEncoderAutoSynchronize(false,
                                                 1); // Enable if you want to resynchronize your absolute encoders and motor encoders periodically when they are not moving.
-    swerveDrive.pushOffsetsToEncoders(); // Set the absolute encoder to be used over the internal encoder and push the offsets onto it. Throws warning if not possible
+    //deprecated swerveDrive.pushOffsetsToEncoders(); // Set the absolute encoder to be used over the internal encoder and push the offsets onto it. Throws warning if not possible
     if (visionDriveTest)
     {
       setupPhotonVision();
@@ -236,74 +238,45 @@ public class SwerveSubsystem extends SubsystemBase
     // IF USING CUSTOM PATHFINDER ADD BEFORE THIS LINE
     PathfindingCommand.warmupCommand().schedule();
   }
+ 
+ 
   /*
-   * isValidTargetFor Scoring: is this a valid target to score on?
-   * Target must be within a sight of the robot and a valid target
-   * for our alliance
+   * driveToReefScore - takes an aprilTagID and a target side
+   *   to make testing in the simulator easier when there is no live
+   *   vision.
    */
-  public boolean isValidTargetForScoring(PhotonTrackedTarget bestTarget){
-    //look up the target & verify it is valid for our alliance
-    //Blue Alliance reef tags = 17, 18, 19, 20, 21, 22
-    //Red Alliance reef tags = 6, 7, 8, 9, 10, 11
-    int targetAprilTag = bestTarget.getFiducialId();
-    var alliance = DriverStation.getAlliance();
-    if (!alliance.isPresent()){ return false;}
-      
-    if ((targetAprilTag >= 17 && targetAprilTag <= 22) && 
-          alliance.get() == DriverStation.Alliance.Blue){
-       return true;
+  public Command alignToReefScore(int aprilTag, TargetSide scoringSide){
+    Transform2d robotOffset;
+    if (scoringSide == DrivebaseConstants.TargetSide.LEFT){
+      robotOffset = new Transform2d(DrivebaseConstants.ReefLeftYOffset,
+                        DrivebaseConstants.ReefLeftYOffset,Rotation2d.kPi);
     }
-    if ((targetAprilTag >= 6 && targetAprilTag <= 11) && 
-          alliance.get() == DriverStation.Alliance.Red){
-        return true;
+    else {
+      robotOffset = new Transform2d(DrivebaseConstants.ReefXDistance,
+                        DrivebaseConstants.ReefRightYOffset,Rotation2d.kPi);
     }
-    return false;
-  }
-  /*
-  *  getScorePose: look up the pose2d to drive to in order to align to the target
-  */
-  public Pose2d getScorePose(TargetSide scoringSide, int bestTargetID){
-    //look up the scoring position based on the april tag and either left or right of
-    //the tag to score on the reef
-
-    for (int pos = 0; pos < ScoringPositionConstants.scoringPositions.length; pos++){
-      if (ScoringPositionConstants.scoringPositions[pos].aprilTagId() == bestTargetID &&
-          ScoringPositionConstants.scoringPositions[pos].scoreSide() == scoringSide){
-
-            ScoringPosConst driveTo = ScoringPositionConstants.scoringPositions[pos];
-            //use the scoring position record to create a new Pose2d to drive to
-            return(new Pose2d(new Translation2d(driveTo.xPos(),driveTo.yPos()),
-                              Rotation2d.fromDegrees(driveTo.angleOffset())));
-
-      }
-    }
-    return(new Pose2d());
+    
+    Pose2d newPose = Vision.getAprilTagPose(aprilTag, robotOffset);
+    return(driveToPose(newPose));
   }
   /*
    * align to Score - align to either the left or right of the april tag on the coral reef. 
-   * make sure the returned target is a valid tag for our alliance
+   * make sure the returned target is a valid tag for our alliance - This method
+   * uses live vision to deterion the april tag target in view of the cameras
    */
-  public Command alignToReefScore(Cameras cam, TargetSide scoringSide)
+  public Command alignToReefScore(TargetSide scoringSide)
   {
-    //find best target on the reef that we currently see
-    Optional<PhotonPipelineResult> pipelineResult =   cam.getBestResult();
-    if (pipelineResult.isPresent()){
-        var result = pipelineResult.get();
-        if (result.hasTargets())
-        {
-          PhotonTrackedTarget bestTarget = result.getBestTarget();
-          
-          //verify that target is valid for scoring
-          if (isValidTargetForScoring(bestTarget)){
-            //determine scoring position Pose2D on either the LEFT or RIGHT of the
-            //target to autogenerate a pathplanner path to set up for scoring
+    //ask vision for the best reef target in view from the front
+    //cameras
+    int aprilTag = vision.getCurrentReefTarget();
+    
 
-            return (driveToPose(getScorePose(scoringSide, bestTarget.getFiducialId())));
-          }
-        }
-      }
-    //if anything is wrong with this target do nothing
-     return Commands.none(); 
+    //If we got a valid april tag target, then drive to an offset from that
+    //target based on our robot dimensions
+    if (aprilTag > 0){
+      return(alignToReefScore(aprilTag,scoringSide));
+    }
+    return(Commands.none());
   }
   /**
    * Aim the robot at the target returned by PhotonVision.
