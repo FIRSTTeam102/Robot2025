@@ -1,0 +1,4 @@
+# Ignore everything in this directory
+#  This was only made too allow me to commit the choreo folder.
+# Except this file
+!.gitignore
