@@ -79,7 +79,7 @@ public class Vision
   private             Field2d             field2d;
 
   @AutoLogOutput
-  private int loggedtargetID;
+  private int targetID;
 
 
 
@@ -112,7 +112,7 @@ public class Vision
   }
 
   public int getCurrentReefTarget(){
-    return(loggedtargetID);
+    return(targetID);
   }
 
   /**
@@ -182,8 +182,6 @@ public class Vision
    */
   public int getBestReefTarget()
   {
-     int targetID = 0;
-     loggedtargetID = targetID;
 
     for (Cameras camera : Cameras.values()){
       if (camera.equals(Cameras.FrontLeft)){
