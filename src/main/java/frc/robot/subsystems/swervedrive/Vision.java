@@ -183,7 +183,7 @@ public class Vision
   public int getBestReefTarget()
   {
      int targetID = 0;
-     
+     loggedtargetID = targetID;
 
     for (Cameras camera : Cameras.values()){
       if (camera.equals(Cameras.FrontLeft)){
@@ -682,9 +682,5 @@ public class Vision
 
 
   }
-  public void periodic(){
-    loggedtargetID = getBestReefTarget();
-  }
-
 }
 
