@@ -78,6 +78,8 @@ public class Vision
    */
   private             Field2d             field2d;
 
+  @AutoLogOutput
+  int targetID;
  
   /**
    * Constructor for the Vision class.
@@ -172,7 +174,6 @@ public class Vision
    */
   public int getBestReefTarget()
   {
-    int targetID;
     for (Cameras camera : Cameras.values()){
       if (camera.equals(Cameras.FrontLeft)){
 
@@ -365,7 +366,7 @@ public class Vision
      * Back Right Camera
      */
     BackRight("BackRight",
-             new Rotation3d(0, Math.toRadians(30), Math.toRadians(140)),  //new camera needs 140
+             new Rotation3d(0, Math.toRadians(30), Math.toRadians(106)),  //new camera needs 140
              new Translation3d(Units.inchesToMeters(-10.6488),
                                Units.inchesToMeters(-11.957134),
                                Units.inchesToMeters(6.03258)),
@@ -375,7 +376,7 @@ public class Vision
      * Back Left Camera
      */
     BackLeft("BackLeft",
-             new Rotation3d(0, Math.toRadians(30), Math.toRadians(230)),
+             new Rotation3d(0, Math.toRadians(30), Math.toRadians(201)),
              new Translation3d(Units.inchesToMeters(-10.6488),
                                Units.inchesToMeters(11.957134),
                                Units.inchesToMeters(6.03258)),
@@ -393,7 +394,7 @@ public class Vision
     Front Right Camera*
      */
     FrontRight("FrontRight",
-               new Rotation3d(0, Math.toRadians(30), Math.toRadians(40)),
+               new Rotation3d(0, Math.toRadians(30), Math.toRadians(21)),
                new Translation3d(Units.inchesToMeters(10.6488),
                                  Units.inchesToMeters(-11.957134),
                                  Units.inchesToMeters(6.03258)),

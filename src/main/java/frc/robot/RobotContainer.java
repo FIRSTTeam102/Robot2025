@@ -171,7 +171,7 @@ public class RobotContainer
 
   //Drive in precise mode when left trigger is pressed
    driverXbox.leftTrigger().onTrue(Commands.runOnce(
-               ()->driveAngularVelocity.scaleTranslation(0.1)
+               ()->driveAngularVelocity.scaleTranslation(0.2)
                                        .scaleRotation(0.3)
                                        ))
                            .onFalse(Commands.runOnce(
@@ -190,6 +190,7 @@ public class RobotContainer
 
     driverXbox.leftBumper().whileTrue(drivebase.alignToReefScore(TargetSide.LEFT));
     driverXbox.rightBumper().whileTrue(drivebase.alignToReefScore(TargetSide.RIGHT));
+    
 
 
     //TODO ???? right bumper used - driverXbox.rightBumper().whileTrue(...) change center of rotation to left or right front corner
