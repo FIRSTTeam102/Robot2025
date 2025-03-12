@@ -30,15 +30,34 @@
           }
         },
         {
-          "type": "named",
+          "type": "race",
           "data": {
-            "name": "Shoot"
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "Shoot"
+                }
+              },
+              {
+                "type": "wait",
+                "data": {
+                  "waitTime": 1.0
+                }
+              }
+            ]
           }
         },
         {
           "type": "named",
           "data": {
             "name": "Go to L2"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "coral station test"
           }
         }
       ]
