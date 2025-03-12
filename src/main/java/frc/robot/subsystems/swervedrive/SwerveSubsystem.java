@@ -246,19 +246,39 @@ public class SwerveSubsystem extends SubsystemBase
    *   vision.
    */
   public Command alignToReefScore(int aprilTag, TargetSide scoringSide){
+    System.out.println("Command Started");
+
     Transform2d robotOffset;
+    System.out.println("chechking for Target");
+
     if (scoringSide == DrivebaseConstants.TargetSide.LEFT){
       robotOffset = new Transform2d(DrivebaseConstants.ReefLeftYOffset,
                         DrivebaseConstants.ReefLeftYOffset,Rotation2d.kPi);
+              System.out.println("we have target on Left");
     }
     else {
       robotOffset = new Transform2d(DrivebaseConstants.ReefXDistance,
                         DrivebaseConstants.ReefRightYOffset,Rotation2d.kPi);
+                      System.out.println("we have target on Right");
+
     }
     
     Pose2d newPose = Vision.getAprilTagPose(aprilTag, robotOffset);
-    return(driveToPose(newPose));
+    System.out.println("got apriltag pose"); 
+
+    return driveToPose(newPose);
+    
+
+   /* return run(() -> {
+      System.out.println("about to drive to pose");
+      driveToPose(newPose);
+      System.out.println("driving to Pose");
+
+    });
+  */
   }
+
+  
   /*
    * align to Score - align to either the left or right of the april tag on the coral reef. 
    * make sure the returned target is a valid tag for our alliance - This method
@@ -271,12 +291,15 @@ public class SwerveSubsystem extends SubsystemBase
        //cameras
        //int aprilTag = vision.getCurrentReefTarget();
        int aprilTag = vision.getBestReefTarget();
+       System.out.println("aligntoReefscore" + aprilTag);
     
        //If we got a valid april tag target, then drive to an offset from that
        //target based on our robot dimensions
        if (aprilTag > 0){
           alignToReefScore(aprilTag,scoringSide);
+          System.out.println("supposed to be moving");
        }
+       
       });
   }
   /**
@@ -324,18 +347,28 @@ public class SwerveSubsystem extends SubsystemBase
    */
   public Command driveToPose(Pose2d pose)
   {
+    System.out.println("Starting drive command");
 // Create the constraints to use while pathfinding
     PathConstraints constraints = new PathConstraints(
+      
         swerveDrive.getMaximumChassisVelocity(), 4.0,
         swerveDrive.getMaximumChassisAngularVelocity(), Units.degreesToRadians(720));
+        System.out.println("PathConstraints");
+        
 
 // Since AutoBuilder is configured, we can use it to build pathfinding commands
+System.out.println("starting pathfinding");
+
     return AutoBuilder.pathfindToPose(
+        
         pose,
         constraints,
         edu.wpi.first.units.Units.MetersPerSecond.of(0) // Goal end velocity in meters/sec
                                      );
+                                     
+
   }
+
 
   /**
    * Drive with {@link SwerveSetpointGenerator} from 254, implemented by PathPlanner.

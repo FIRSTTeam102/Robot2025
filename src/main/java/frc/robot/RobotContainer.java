@@ -39,6 +39,7 @@ import frc.robot.subsystems.Shooter;
 
 
 import frc.robot.commands.ClimberOut;
+import frc.robot.commands.ClimberOutSetSpeed;
 import frc.robot.commands.FunnelOut;
 import frc.robot.subsystems.Climber;
 //import frc.robot.commands.swervedrive.drivebase.AbsoluteDriveAdv;
@@ -217,6 +218,9 @@ public class RobotContainer
     operatorXbox.rightBumper().whileTrue(
          new ShootCoral(shooter,Constants.ShooterConstants.L1LeftShooterSpeed,
                                 Constants.ShooterConstants.L1RightShooterSpeed ));
+    
+    operatorXbox.povRight().whileTrue(new ClimberOutSetSpeed(climber, 1));
+    operatorXbox.povLeft().whileTrue(new ClimberOutSetSpeed(climber, -1));
     //TODO flick algae - flip funnel up andThen back
     //TODO flip funnel - up for climb
     //TODO extend climb arm out
