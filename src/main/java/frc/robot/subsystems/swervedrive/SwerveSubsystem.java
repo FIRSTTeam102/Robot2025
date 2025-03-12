@@ -264,12 +264,21 @@ public class SwerveSubsystem extends SubsystemBase
     }
     
     Pose2d newPose = Vision.getAprilTagPose(aprilTag, robotOffset);
-    return run(() -> {
+    System.out.println("got apriltag pose"); 
+
+    return driveToPose(newPose);
+    
+
+   /* return run(() -> {
+      System.out.println("about to drive to pose");
       driveToPose(newPose);
       System.out.println("driving to Pose");
 
     });
+  */
   }
+
+  
   /*
    * align to Score - align to either the left or right of the april tag on the coral reef. 
    * make sure the returned target is a valid tag for our alliance - This method
@@ -338,18 +347,28 @@ public class SwerveSubsystem extends SubsystemBase
    */
   public Command driveToPose(Pose2d pose)
   {
+    System.out.println("Starting drive command");
 // Create the constraints to use while pathfinding
     PathConstraints constraints = new PathConstraints(
+      
         swerveDrive.getMaximumChassisVelocity(), 4.0,
         swerveDrive.getMaximumChassisAngularVelocity(), Units.degreesToRadians(720));
+        System.out.println("PathConstraints");
+        
 
 // Since AutoBuilder is configured, we can use it to build pathfinding commands
+System.out.println("starting pathfinding");
+
     return AutoBuilder.pathfindToPose(
+        
         pose,
         constraints,
         edu.wpi.first.units.Units.MetersPerSecond.of(0) // Goal end velocity in meters/sec
                                      );
+                                     
+
   }
+
 
   /**
    * Drive with {@link SwerveSetpointGenerator} from 254, implemented by PathPlanner.
