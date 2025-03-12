@@ -78,13 +78,7 @@ public class Vision
    */
   private             Field2d             field2d;
 
-  @AutoLogOutput
-  private int targetID;
-
-
-
-
-
+ 
   /**
    * Constructor for the Vision class.
    *
@@ -110,11 +104,7 @@ public class Vision
       openSimCameraViews();
     }
   }
-
-  public int getCurrentReefTarget(){
-    return(targetID);
-  }
-
+  
   /**
    * Calculates a target pose relative to an AprilTag on the field.
    *
@@ -182,7 +172,7 @@ public class Vision
    */
   public int getBestReefTarget()
   {
-
+    int targetID;
     for (Cameras camera : Cameras.values()){
       if (camera.equals(Cameras.FrontLeft)){
 

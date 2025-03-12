@@ -88,7 +88,7 @@ public class SwerveSubsystem extends SubsystemBase
   private final boolean             visionDriveTest     = VisionConstants.DRIVEWITHVISION;
   /**
    * PhotonVision class to keep an accurate odometry.
-   */
+   */ 
   private       Vision              vision;
 
   /**
@@ -151,7 +151,7 @@ public class SwerveSubsystem extends SubsystemBase
     vision = new Vision(swerveDrive::getPose, swerveDrive.field);
   }
 
-  @Override
+ @Override
   public void periodic()
   {
     // When vision is enabled we must manually update odometry in SwerveDrive
@@ -266,17 +266,18 @@ public class SwerveSubsystem extends SubsystemBase
    */
   public Command alignToReefScore(TargetSide scoringSide)
   {
-    //ask vision for the best reef target in view from the front
-    //cameras
-    int aprilTag = vision.getCurrentReefTarget();
+    return run(() -> {
+       //ask vision for the best reef target in view from the front
+       //cameras
+       //int aprilTag = vision.getCurrentReefTarget();
+       int aprilTag = vision.getBestReefTarget();
     
-
-    //If we got a valid april tag target, then drive to an offset from that
-    //target based on our robot dimensions
-    if (aprilTag > 0){
-      return(alignToReefScore(aprilTag,scoringSide));
-    }
-    return(Commands.none());
+       //If we got a valid april tag target, then drive to an offset from that
+       //target based on our robot dimensions
+       if (aprilTag > 0){
+          alignToReefScore(aprilTag,scoringSide);
+       }
+      });
   }
   /**
    * Aim the robot at the target returned by PhotonVision.
