@@ -286,7 +286,7 @@ public class SwerveSubsystem extends SubsystemBase
    */
   public Command alignToReefScore(TargetSide scoringSide)
   {
-    return run(() -> {
+    //return run(() -> {
        //ask vision for the best reef target in view from the front
        //cameras
        //int aprilTag = vision.getCurrentReefTarget();
@@ -297,13 +297,15 @@ public class SwerveSubsystem extends SubsystemBase
        //target based on our robot dimensions
        if (aprilTag > 0){
           Command alllign = alignToReefScore(aprilTag,scoringSide);
-          alllign.initialize();
+          //alllign.initialize();
           //while (!alllign.isFinished())
-            alllign.execute();
+          //  alllign.execute();
           System.out.println("supposed to be moving");
+          return alllign;
        }
+       return null;
        
-      });
+      //}); 
   }
   /**
    * Aim the robot at the target returned by PhotonVision.
