@@ -271,7 +271,7 @@ public class SwerveSubsystem extends SubsystemBase
 
    /* return run(() -> {
       System.out.println("about to drive to pose");
-      driveToPose(newPose);
+      driveToPose(newPose); 
       System.out.println("driving to Pose");
 
     });
@@ -296,7 +296,10 @@ public class SwerveSubsystem extends SubsystemBase
        //If we got a valid april tag target, then drive to an offset from that
        //target based on our robot dimensions
        if (aprilTag > 0){
-          alignToReefScore(aprilTag,scoringSide);
+          Command alllign = alignToReefScore(aprilTag,scoringSide);
+          alllign.initialize();
+          //while (!alllign.isFinished())
+            alllign.execute();
           System.out.println("supposed to be moving");
        }
        
