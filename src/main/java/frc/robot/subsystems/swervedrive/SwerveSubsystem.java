@@ -6,6 +6,7 @@ package frc.robot.subsystems.swervedrive;
 
 import static edu.wpi.first.units.Units.Meter;
 
+import com.fasterxml.jackson.annotation.ObjectIdGenerators.None;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.commands.PathPlannerAuto;
 import com.pathplanner.lib.commands.PathfindingCommand;
@@ -35,6 +36,7 @@ import edu.wpi.first.wpilibj.Timer;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Config;
 import frc.robot.Constants;
@@ -264,12 +266,21 @@ public class SwerveSubsystem extends SubsystemBase
     }
     
     Pose2d newPose = Vision.getAprilTagPose(aprilTag, robotOffset);
-    return run(() -> {
-      driveToPose(newPose);
+    System.out.println("got apriltag pose"); 
+
+    return driveToPose(newPose);
+    
+
+   /* return run(() -> {
+      System.out.println("about to drive to pose");
+      driveToPose(newPose); 
       System.out.println("driving to Pose");
 
     });
+  */
   }
+
+  
   /*
    * align to Score - align to either the left or right of the april tag on the coral reef. 
    * make sure the returned target is a valid tag for our alliance - This method
@@ -277,7 +288,7 @@ public class SwerveSubsystem extends SubsystemBase
    */
   public Command alignToReefScore(TargetSide scoringSide)
   {
-    return run(() -> {
+    //return run(() -> {
        //ask vision for the best reef target in view from the front
        //cameras
        //int aprilTag = vision.getCurrentReefTarget();
@@ -287,11 +298,16 @@ public class SwerveSubsystem extends SubsystemBase
        //If we got a valid april tag target, then drive to an offset from that
        //target based on our robot dimensions
        if (aprilTag > 0){
-          alignToReefScore(aprilTag,scoringSide);
+          Command alllign = alignToReefScore(aprilTag,scoringSide);
+          //alllign.initialize();
+          //while (!alllign.isFinished())
+          //  alllign.execute();
           System.out.println("supposed to be moving");
+          return alllign;
        }
+       return new InstantCommand();
        
-      });
+      //}); 
   }
   /**
    * Aim the robot at the target returned by PhotonVision.
@@ -338,18 +354,28 @@ public class SwerveSubsystem extends SubsystemBase
    */
   public Command driveToPose(Pose2d pose)
   {
+    System.out.println("Starting drive command");
 // Create the constraints to use while pathfinding
     PathConstraints constraints = new PathConstraints(
+      
         swerveDrive.getMaximumChassisVelocity(), 4.0,
         swerveDrive.getMaximumChassisAngularVelocity(), Units.degreesToRadians(720));
+        System.out.println("PathConstraints");
+        
 
 // Since AutoBuilder is configured, we can use it to build pathfinding commands
+System.out.println("starting pathfinding");
+
     return AutoBuilder.pathfindToPose(
+        
         pose,
         constraints,
         edu.wpi.first.units.Units.MetersPerSecond.of(0) // Goal end velocity in meters/sec
                                      );
+                                     
+
   }
+
 
   /**
    * Drive with {@link SwerveSetpointGenerator} from 254, implemented by PathPlanner.
