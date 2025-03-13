@@ -3,9 +3,6 @@ package frc.robot.subsystems;
 
 import com.revrobotics.spark.SparkClosedLoopController;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
-
-import org.littletonrobotics.junction.AutoLogOutput;
-
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.SparkBase.ControlType;
@@ -26,7 +23,6 @@ public class Climber extends SubsystemBase {
     private SparkClosedLoopController climberClosedLoopController = climberMotor.getClosedLoopController();
     private SparkMaxConfig climberConfig = new SparkMaxConfig();
     private static boolean isOut = false;
-    @AutoLogOutput
     private double ClimbEncoderPosition = climberEncoder.getPosition();
 
     private SparkMax funnelMotor = new SparkMax(Constants.ClimberConstants.funnelMotorID, MotorType.kBrushless);

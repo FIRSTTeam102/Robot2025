@@ -152,9 +152,9 @@ public final class Constants
     public static final double climberKi =0;
     public static final double climberKd =0;
 
-    public static final double funnelKp =1;
+    public static final double funnelKp =0.2;
     public static final double funnelKi =0;
-    public static final double funnelKd =0;
+    public static final double funnelKd =0.0001 ;
 
 
     public static final int gearboxConversion = 125;

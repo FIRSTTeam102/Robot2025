@@ -221,6 +221,9 @@ public class RobotContainer
     
     operatorXbox.povRight().whileTrue(new ClimberOutSetSpeed(climber, 1));
     operatorXbox.povLeft().whileTrue(new ClimberOutSetSpeed(climber, -1));
+    operatorXbox.povUp().onTrue(new FunnelOut(climber, 0));
+    operatorXbox.povDown().onTrue(new FunnelOut(climber, -1));
+
     //TODO flick algae - flip funnel up andThen back
     //TODO flip funnel - up for climb
     //TODO extend climb arm out

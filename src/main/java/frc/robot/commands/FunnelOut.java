@@ -19,7 +19,6 @@ public class FunnelOut extends Command {
   public FunnelOut(Climber climber, double funnelPosition) {
     this.climber = climber;
     this.funnelPosition = funnelPosition;
-    this.funnelPosition = funnelPosition;
 
     addRequirements(climber);
     // Use addRequirements() here to declare subsystem dependencies.
@@ -28,7 +27,6 @@ public class FunnelOut extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    climber.setFunnelPosition(funnelPosition);
     climber.setFunnelPosition(funnelPosition);
     }
 
@@ -40,9 +38,7 @@ public class FunnelOut extends Command {
   @Override
   public void end(boolean interrupted) {
     climber.stopFunnel(); 
-    climber.toggleFunnelIsOut();; 
-    climber.stopFunnel(); 
-    climber.toggleFunnelIsOut();; 
+    climber.toggleFunnelIsOut();;  
   }
 
   // Returns true when the command should end.
