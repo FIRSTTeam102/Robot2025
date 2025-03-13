@@ -247,7 +247,7 @@ public class SwerveSubsystem extends SubsystemBase
    *   to make testing in the simulator easier when there is no live
    *   vision.
    */
-  public Command alignToReefScore(int aprilTag, TargetSide scoringSide){
+  public void alignToReefScore(int aprilTag, TargetSide scoringSide){
     System.out.println("Command Started");
 
     Transform2d robotOffset;
@@ -268,16 +268,7 @@ public class SwerveSubsystem extends SubsystemBase
     Pose2d newPose = Vision.getAprilTagPose(aprilTag, robotOffset);
     System.out.println("got apriltag pose"); 
 
-    return driveToPose(newPose);
-    
-
-   /* return run(() -> {
-      System.out.println("about to drive to pose");
-      driveToPose(newPose); 
-      System.out.println("driving to Pose");
-
-    });
-  */
+    driveToPose(newPose);
   }
 
   
@@ -288,7 +279,7 @@ public class SwerveSubsystem extends SubsystemBase
    */
   public Command alignToReefScore(TargetSide scoringSide)
   {
-    //return run(() -> {
+    return run(() -> {
        //ask vision for the best reef target in view from the front
        //cameras
        //int aprilTag = vision.getCurrentReefTarget();
@@ -298,16 +289,14 @@ public class SwerveSubsystem extends SubsystemBase
        //If we got a valid april tag target, then drive to an offset from that
        //target based on our robot dimensions
        if (aprilTag > 0){
-          Command alllign = alignToReefScore(aprilTag,scoringSide);
+          alignToReefScore(aprilTag,scoringSide);
           //alllign.initialize();
           //while (!alllign.isFinished())
           //  alllign.execute();
           System.out.println("supposed to be moving");
-          return alllign;
        }
-       return new InstantCommand();
        
-      //}); 
+      }); 
   }
   /**
    * Aim the robot at the target returned by PhotonVision.
