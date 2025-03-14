@@ -286,7 +286,8 @@ public class SwerveSubsystem extends SubsystemBase
    * make sure the returned target is a valid tag for our alliance - This method
    * uses live vision to deterion the april tag target in view of the cameras
    */
-  public Command alignToReefScore(TargetSide scoringSide)
+  int aprilTag = 0;
+  public  Command alignToReefScore(TargetSide scoringSide)
   {
     System.out.println("Command align2 Started");
 
