@@ -286,18 +286,24 @@ public class SwerveSubsystem extends SubsystemBase
    * make sure the returned target is a valid tag for our alliance - This method
    * uses live vision to deterion the april tag target in view of the cameras
    */
-  public Command alignToReefScore(TargetSide scoringSide)
+  int aprilTag = 0;
+  public  Command alignToReefScore(TargetSide scoringSide)
   {
+      return run(() -> {
+        aprilTag = vision.getBestReefTarget();
+
+
+      }).andThen(alignToReefScore(aprilTag, scoringSide));
     //return run(() -> {
        //ask vision for the best reef target in view from the front
        //cameras
        //int aprilTag = vision.getCurrentReefTarget();
-       int aprilTag = vision.getBestReefTarget();
-       System.out.println("aligntoReefscore" + aprilTag);
+       //int aprilTag = vision.getBestReefTarget();
+       //System.out.println("aligntoReefscore" + aprilTag);
     
        //If we got a valid april tag target, then drive to an offset from that
        //target based on our robot dimensions
-       if (aprilTag > 0){
+       /* if (aprilTag > 0){
           Command alllign = alignToReefScore(aprilTag,scoringSide);
           //alllign.initialize();
           //while (!alllign.isFinished())
@@ -305,7 +311,7 @@ public class SwerveSubsystem extends SubsystemBase
           System.out.println("supposed to be moving");
           return alllign;
        }
-       return new InstantCommand();
+       return new InstantCommand(); */
        
       //}); 
   }
