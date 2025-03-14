@@ -254,7 +254,7 @@ public class SwerveSubsystem extends SubsystemBase
     System.out.println("chechking for Target");
 
     if (scoringSide == DrivebaseConstants.TargetSide.LEFT){
-      robotOffset = new Transform2d(DrivebaseConstants.ReefLeftYOffset,
+      robotOffset = new Transform2d(DrivebaseConstants.ReefXDistance,
                         DrivebaseConstants.ReefLeftYOffset,Rotation2d.kPi);
               System.out.println("we have target on Left");
     }
