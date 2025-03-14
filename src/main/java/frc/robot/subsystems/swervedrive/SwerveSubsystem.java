@@ -80,6 +80,9 @@ public class SwerveSubsystem extends SubsystemBase
   @AutoLogOutput
   private Pose2d swervePose;
 
+  @AutoLogOutput
+  private int  currAprilTagTarget;
+
  /**
    * AprilTag field layout.
    */
@@ -163,6 +166,7 @@ public class SwerveSubsystem extends SubsystemBase
       vision.updatePoseEstimation(swerveDrive);
       swervePose = swerveDrive.getPose();
     }
+    currAprilTagTarget = vision.getBestReefTarget();
   }
 
   @Override
@@ -248,10 +252,10 @@ public class SwerveSubsystem extends SubsystemBase
    *   vision.
    */
   public Command alignToReefScore(int aprilTag, TargetSide scoringSide){
-    System.out.println("Command Started");
+    System.out.println("Command align1 Started");
 
     Transform2d robotOffset;
-    System.out.println("chechking for Target");
+    System.out.println("align 1 chechking for Target");
 
     if (scoringSide == DrivebaseConstants.TargetSide.LEFT){
       robotOffset = new Transform2d(DrivebaseConstants.ReefLeftYOffset,
@@ -266,18 +270,14 @@ public class SwerveSubsystem extends SubsystemBase
     }
     
     Pose2d newPose = Vision.getAprilTagPose(aprilTag, robotOffset);
-    System.out.println("got apriltag pose"); 
-
-    return driveToPose(newPose);
+    System.out.println("align1: got apriltag pose"); 
     
-
-   /* return run(() -> {
-      System.out.println("about to drive to pose");
+    return run(() -> {
+      System.out.println("align1: about to drive to pose" + aprilTag);
       driveToPose(newPose); 
-      System.out.println("driving to Pose");
+      System.out.println("align1: driving to Pose");
 
     });
-  */
   }
 
   
@@ -288,26 +288,27 @@ public class SwerveSubsystem extends SubsystemBase
    */
   public Command alignToReefScore(TargetSide scoringSide)
   {
-    //return run(() -> {
-       //ask vision for the best reef target in view from the front
-       //cameras
-       //int aprilTag = vision.getCurrentReefTarget();
-       int aprilTag = vision.getBestReefTarget();
-       System.out.println("aligntoReefscore" + aprilTag);
-    
-       //If we got a valid april tag target, then drive to an offset from that
-       //target based on our robot dimensions
-       if (aprilTag > 0){
-          Command alllign = alignToReefScore(aprilTag,scoringSide);
-          //alllign.initialize();
-          //while (!alllign.isFinished())
-          //  alllign.execute();
-          System.out.println("supposed to be moving");
-          return alllign;
-       }
-       return new InstantCommand();
-       
-      //}); 
+    System.out.println("Command align2 Started");
+
+    Transform2d robotOffset;
+    System.out.println("align2: chechking for Target");
+
+    if (scoringSide == DrivebaseConstants.TargetSide.LEFT){
+      robotOffset = new Transform2d(DrivebaseConstants.ReefLeftYOffset,
+                        DrivebaseConstants.ReefLeftYOffset,Rotation2d.kPi);
+              System.out.println("we have target on Left");
+    }
+    else {
+      robotOffset = new Transform2d(DrivebaseConstants.ReefXDistance,
+                        DrivebaseConstants.ReefRightYOffset,Rotation2d.kPi);
+                      System.out.println("we have target on Right");
+
+    }
+    return run(() -> {
+      System.out.println("align2: about to drive to pose" + currAprilTagTarget);
+      driveToPose(Vision.getAprilTagPose(currAprilTagTarget, robotOffset)); 
+      System.out.println("align2: driving to Pose");
+    });
   }
   /**
    * Aim the robot at the target returned by PhotonVision.

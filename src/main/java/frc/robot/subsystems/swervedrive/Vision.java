@@ -154,15 +154,15 @@ public class Vision
   public int getCamerasTargetID(Cameras camera){
     PhotonTrackedTarget target;
 
-    System.out.println("Vision:getCamerasTargetID: Check Camera");
+    //System.out.println("Vision:getCamerasTargetID: Check Camera");
     var results = camera.getLatestResult();
     if (!results.isEmpty()){
       var result = results.orElse(null);
       if (result == null) return(0);
       if (result.hasTargets()){
-         System.out.println("   Camera found a result target");
+         //System.out.println("   Camera found a result target");
          target = result.getBestTarget();
-         System.out.println("   Camera found a best target getting ID");
+         //System.out.println("   Camera found a best target getting ID");
          return(target.getFiducialId());
       }
     }
@@ -177,7 +177,7 @@ public class Vision
     for (Cameras camera : Cameras.values()){
       if (camera.equals(Cameras.FrontLeft)){
 
-        System.out.println("Vision:GetBestReefTarget: Check FrontLeft Camera");
+        //System.out.println("Vision:GetBestReefTarget: Check FrontLeft Camera");
         targetID = getCamerasTargetID(camera);
         
         if (isValidTargetForScoring(targetID)){
@@ -186,7 +186,7 @@ public class Vision
         }
       }
       if (camera.equals(Cameras.FrontRight)){
-        System.out.println("Vision:GetBestReefTarget: Check FrontRight Camera");
+        //System.out.println("Vision:GetBestReefTarget: Check FrontRight Camera");
         targetID = getCamerasTargetID(camera);
         if (isValidTargetForScoring(targetID)){
           System.out.println("  Return frontRightTarget ID:" + targetID);
