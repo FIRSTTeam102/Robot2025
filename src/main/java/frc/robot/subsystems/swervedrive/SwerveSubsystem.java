@@ -257,7 +257,8 @@ public class SwerveSubsystem extends SubsystemBase
    *   to make testing in the simulator easier when there is no live
    *   vision.
    */
-  public Command alignToReefScore(int aprilTag, TargetSide scoringSide){
+  /* === Commenting out two-parameter Align ===
+    public Command alignToReefScore(int aprilTag, TargetSide scoringSide){
     System.out.println("Command align1 Started");
 
     Transform2d robotOffset;
@@ -284,7 +285,8 @@ public class SwerveSubsystem extends SubsystemBase
       System.out.println("align1: driving to Pose");
 
     });
-  }
+  } 
+   */
 
   
   /*
