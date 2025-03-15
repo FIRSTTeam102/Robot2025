@@ -26,6 +26,7 @@ import frc.robot.Constants.ElevatorConstants;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.ClimberOutSetSpeed;
 import frc.robot.commands.Intake;
+import frc.robot.commands.IntakeAuto;
 import frc.robot.commands.ManualElevatorControl;
 import frc.robot.commands.ShootCoral;
 import frc.robot.subsystems.Climber;
@@ -119,7 +120,7 @@ public class RobotContainer
     configureBindings();
     DriverStation.silenceJoystickConnectionWarning(true);
     NamedCommands.registerCommand("test", Commands.print("I EXIST"));
-    NamedCommands.registerCommand("Intake", new Intake(shooter));
+    NamedCommands.registerCommand("Intake", new IntakeAuto(shooter));
     NamedCommands.registerCommand("Shoot", new ShootCoral(shooter, Constants.ShooterConstants.LeftMaxShooterSpeed, Constants.ShooterConstants.RightMaxShooterSpeed));
     NamedCommands.registerCommand("ShootTrough", new ShootCoral(shooter, Constants.ShooterConstants.L1LeftShooterSpeed,Constants.ShooterConstants.L1RightShooterSpeed)); //change the parameters for L1
     NamedCommands.registerCommand("Go to L1",elevator.setElevatorHeight(ElevatorConstants.LEVEL1));

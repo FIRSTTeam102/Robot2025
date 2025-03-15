@@ -1,0 +1,43 @@
+{
+  "version": "2025.0",
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Center cage to LB side"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "LB side to L station"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "L station to LF side LF2"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "LF side to L station.0"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "L station to LF side LF1"
+          }
+        }
+      ]
+    }
+  },
+  "resetOdom": true,
+  "folder": null,
+  "choreoAuto": true
+}
