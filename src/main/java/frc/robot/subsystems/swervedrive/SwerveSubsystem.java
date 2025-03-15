@@ -314,8 +314,8 @@ public class SwerveSubsystem extends SubsystemBase
     }
     return run(() -> {
       int tagID = getCurrAprilTagTarget();
+      System.out.println("align2: about to drive to pose" + tagID);
       if (tagID >0){
-        System.out.println("align2: about to drive to pose" + tagID);
         Pose2d targetPose = Vision.getAprilTagPose(tagID, robotOffset);
         driveToPose(targetPose); 
         System.out.println("align2: driving to Pose");
