@@ -79,7 +79,7 @@ public final class Constants
     public static final double LEVEL1 = 26.479;
     public static final double LEVEL2 = 37.6415;
     public static final double LEVEL3 = 56.0746; 
-    public static final double LEVEL4 = 82.7107;
+    public static final double LEVEL4 = 80.7107;
 
 
 // The encoder is directly mounted to the elevator shaft - 1 rotation = 1 full rotation of the chain
@@ -123,8 +123,8 @@ public final class Constants
     public static final int coralSensor1Back = 1;
 
     //shooter speeds
-    public static final double LeftMaxShooterSpeed = -0.09;
-    public static final double RightMaxShooterSpeed = 0.09;
+    public static final double LeftMaxShooterSpeed = -0.2;
+    public static final double RightMaxShooterSpeed = 0.2;
 
 
     public static final double L1LeftShooterSpeed = -0.3;

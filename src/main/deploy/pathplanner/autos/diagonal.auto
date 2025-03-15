@@ -7,7 +7,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Straight"
+            "pathName": "New Path"
           }
         },
         {
@@ -21,24 +21,18 @@
           "data": {
             "commands": [
               {
-                "type": "wait",
-                "data": {
-                  "waitTime": 1.5
-                }
-              },
-              {
                 "type": "named",
                 "data": {
                   "name": "Shoot"
                 }
+              },
+              {
+                "type": "wait",
+                "data": {
+                  "waitTime": 1.5
+                }
               }
             ]
-          }
-        },
-        {
-          "type": "wait",
-          "data": {
-            "waitTime": 1.5
           }
         },
         {
