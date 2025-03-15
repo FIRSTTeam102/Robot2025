@@ -5,22 +5,9 @@
     "data": {
       "commands": [
         {
-          "type": "parallel",
+          "type": "path",
           "data": {
-            "commands": [
-              {
-                "type": "path",
-                "data": {
-                  "pathName": "Straight"
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "Go to L2"
-                }
-              }
-            ]
+            "pathName": "Straight"
           }
         },
         {
