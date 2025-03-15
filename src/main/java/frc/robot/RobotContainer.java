@@ -198,7 +198,7 @@ public class RobotContainer
     operatorXbox.b().onTrue(elevator.setElevatorHeight(ElevatorConstants.LEVEL2));
     operatorXbox.x().onTrue(elevator.setElevatorHeight(ElevatorConstants.LEVEL3));
     operatorXbox.y().onTrue(elevator.setElevatorHeight(ElevatorConstants.LEVEL4)); 
-    operatorXbox.povRight().whileTrue(new ClimberOutSetSpeed(climber, 1));
+    operatorXbox.povRight().whileTrue(new ClimberOutSetSpeed(climber,1));
     operatorXbox.povLeft().whileTrue(new ClimberOutSetSpeed(climber, -1));
     
     operatorXbox.rightTrigger().whileTrue(new ShootCoral(shooter, 

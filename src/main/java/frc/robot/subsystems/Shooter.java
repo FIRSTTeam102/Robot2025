@@ -28,7 +28,7 @@ public class Shooter extends SubsystemBase {
   private SparkMax LeftMotor = new SparkMax(Constants.ShooterConstants.LeftMotorID, MotorType.kBrushless);
   private DigitalInput coralSensor2 = new DigitalInput(Constants.ShooterConstants.coralSensor2Front);
  // private DigitalInput coralSensor1 = new DigitalInput(Constants.ShooterConstants.coralSensor1Back);
-
+@AutoLogOutput
   public boolean hasCoral = false;
 
   BooleanPublisher backCoralSensorPublisher;
