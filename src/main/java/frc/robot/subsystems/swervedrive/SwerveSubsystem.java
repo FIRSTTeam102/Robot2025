@@ -155,7 +155,13 @@ public class SwerveSubsystem extends SubsystemBase
   {
     vision = new Vision(swerveDrive::getPose, swerveDrive.field);
   }
-
+  /*
+   * return the current reef april tag target that vision sees.
+   * if no target is in view it will return 0
+   */
+  public int getCurrAprilTagTarget(){
+    return(currAprilTagTarget);
+  }
  @Override
   public void periodic()
   {
@@ -286,7 +292,6 @@ public class SwerveSubsystem extends SubsystemBase
    * make sure the returned target is a valid tag for our alliance - This method
    * uses live vision to deterion the april tag target in view of the cameras
    */
-  int aprilTag = 0;
   public  Command alignToReefScore(TargetSide scoringSide)
   {
     System.out.println("Command align2 Started");
@@ -306,9 +311,13 @@ public class SwerveSubsystem extends SubsystemBase
 
     }
     return run(() -> {
-      System.out.println("align2: about to drive to pose" + currAprilTagTarget);
-      driveToPose(Vision.getAprilTagPose(currAprilTagTarget, robotOffset)); 
-      System.out.println("align2: driving to Pose");
+      int tagID = getCurrAprilTagTarget();
+      if (tagID >0){
+        System.out.println("align2: about to drive to pose" + tagID);
+        Pose2d targetPose = Vision.getAprilTagPose(tagID, robotOffset);
+        driveToPose(targetPose); 
+        System.out.println("align2: driving to Pose");
+      }
     });
   }
   /**
