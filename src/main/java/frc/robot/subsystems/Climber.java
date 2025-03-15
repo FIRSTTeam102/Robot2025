@@ -23,6 +23,7 @@ public class Climber extends SubsystemBase {
     private SparkClosedLoopController climberClosedLoopController = climberMotor.getClosedLoopController();
     private SparkMaxConfig climberConfig = new SparkMaxConfig();
     private static boolean isOut = false;
+    private double ClimbEncoderPosition = climberEncoder.getPosition();
 
     private SparkMax funnelMotor = new SparkMax(Constants.ClimberConstants.funnelMotorID, MotorType.kBrushless);
     private RelativeEncoder funnelEncoder = funnelMotor.getEncoder();
@@ -79,6 +80,10 @@ funnelConfig.encoder.positionConversionFactor(3); // Converts encoder units to r
     /** Stops funnel motor */
     public void stopFunnel() {
         funnelMotor.stopMotor();
+    }
+
+    public void setClimberSpeed(double speed){
+        climberMotor.set(speed);
     }
 
     /** Gets current climber position */

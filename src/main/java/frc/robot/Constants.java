@@ -34,9 +34,9 @@ public final class Constants
 
   public static final class DrivebaseConstants
   {
-    public static double DriveFastScale = 0.8
+    public static double DriveFastScale = 1
     ;
-    public static double DrivePrecisionScale = 0.2;
+    public static double DrivePrecisionScale = 0.35;
     // Hold time on motor brakes when disabled
     public static final double WHEEL_LOCK_TIME = 10.0; // seconds
     public enum TargetSide {LEFT, RIGHT};
@@ -60,7 +60,7 @@ public final class Constants
   }
   public static class VisionConstants
   {
-    public static final boolean DRIVEWITHVISION = true;
+    public static final boolean DRIVEWITHVISION = false;
     public static final double oldCameraX = 10.6488; // Old val  11.97534
     public static final double oldCameraY = 11.957134; // old val 11.256
 
@@ -123,8 +123,8 @@ public final class Constants
     public static final int coralSensor1Back = 1;
 
     //shooter speeds
-    public static final double LeftMaxShooterSpeed = -0.15;
-    public static final double RightMaxShooterSpeed = 0.15;
+    public static final double LeftMaxShooterSpeed = -0.09;
+    public static final double RightMaxShooterSpeed = 0.09;
 
 
     public static final double L1LeftShooterSpeed = -0.3;
@@ -152,9 +152,9 @@ public final class Constants
     public static final double climberKi =0;
     public static final double climberKd =0;
 
-    public static final double funnelKp =1;
+    public static final double funnelKp =0.15;
     public static final double funnelKi =0;
-    public static final double funnelKd =0;
+    public static final double funnelKd =0.05;
 
 
     public static final int gearboxConversion = 125;

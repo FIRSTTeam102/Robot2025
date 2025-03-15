@@ -10,10 +10,6 @@ import java.io.File;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
 
-//import edu.wpi.first.math.MathUtil;
-import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Filesystem;
@@ -22,25 +18,19 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
-
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.DrivebaseConstants;
+import frc.robot.Constants.DrivebaseConstants.TargetSide;
 import frc.robot.Constants.ElevatorConstants;
 import frc.robot.Constants.OperatorConstants;
-import frc.robot.commands.ManualElevatorControl;
-import frc.robot.subsystems.Elevator;
-import frc.robot.Constants.DrivebaseConstants.TargetSide;
-import frc.robot.Constants.OperatorConstants;
-import frc.robot.Constants.ShooterConstants;
+import frc.robot.commands.ClimberOutSetSpeed;
 import frc.robot.commands.Intake;
+import frc.robot.commands.ManualElevatorControl;
 import frc.robot.commands.ShootCoral;
-import frc.robot.subsystems.Shooter;
-
-
-import frc.robot.commands.ClimberOut;
-import frc.robot.commands.FunnelOut;
 import frc.robot.subsystems.Climber;
+import frc.robot.subsystems.Elevator;
+import frc.robot.subsystems.Shooter;
 //import frc.robot.commands.swervedrive.drivebase.AbsoluteDriveAdv;
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
 import swervelib.SwerveInputStream;
@@ -129,7 +119,6 @@ public class RobotContainer
     configureBindings();
     DriverStation.silenceJoystickConnectionWarning(true);
     NamedCommands.registerCommand("test", Commands.print("I EXIST"));
-    NamedCommands.registerCommand("test", Commands.print("I EXIST"));
     NamedCommands.registerCommand("Intake", new Intake(shooter));
     NamedCommands.registerCommand("Shoot", new ShootCoral(shooter, Constants.ShooterConstants.LeftMaxShooterSpeed, Constants.ShooterConstants.RightMaxShooterSpeed));
     NamedCommands.registerCommand("ShootTrough", new ShootCoral(shooter, Constants.ShooterConstants.L1LeftShooterSpeed,Constants.ShooterConstants.L1RightShooterSpeed)); //change the parameters for L1
@@ -172,11 +161,11 @@ public class RobotContainer
 
   //Drive in precise mode when left trigger is pressed
    driverXbox.leftTrigger().onTrue(Commands.runOnce(
-               ()->driveAngularVelocity.scaleTranslation(0.2)
+               ()->driveAngularVelocity.scaleTranslation(Constants.DrivebaseConstants.DrivePrecisionScale)
                                        .scaleRotation(0.3)
                                        ))
                            .onFalse(Commands.runOnce(
-                ()->driveAngularVelocity.scaleTranslation(1.0)
+                ()->driveAngularVelocity.scaleTranslation(Constants.DrivebaseConstants.DriveFastScale)
                                         .scaleRotation(0.5)));
                                         
   //Enable robotRelative driving if the right trigger is pressed.
@@ -209,14 +198,17 @@ public class RobotContainer
     operatorXbox.b().onTrue(elevator.setElevatorHeight(ElevatorConstants.LEVEL2));
     operatorXbox.x().onTrue(elevator.setElevatorHeight(ElevatorConstants.LEVEL3));
     operatorXbox.y().onTrue(elevator.setElevatorHeight(ElevatorConstants.LEVEL4)); 
-
-    //TODO calibrate scoring motor speeds - L1 bounces out
+    operatorXbox.povRight().whileTrue(new ClimberOutSetSpeed(climber, 1));
+    operatorXbox.povLeft().whileTrue(new ClimberOutSetSpeed(climber, -1));
+    
     operatorXbox.rightTrigger().whileTrue(new ShootCoral(shooter, 
                                 Constants.ShooterConstants.LeftMaxShooterSpeed,
                                 Constants.ShooterConstants.RightMaxShooterSpeed));
     operatorXbox.rightBumper().whileTrue(
          new ShootCoral(shooter,Constants.ShooterConstants.L1LeftShooterSpeed,
                                 Constants.ShooterConstants.L1RightShooterSpeed ));
+
+                                
     //TODO flick algae - flip funnel up andThen back
     //TODO flip funnel - up for climb
     //TODO extend climb arm out
@@ -269,8 +261,8 @@ public class RobotContainer
    */
   public Command getAutonomousCommand()
   {
-    // An example command will be run in autonomous
-    return drivebase.getAutonomousCommand("New Auto");
+    return autoChooser.getSelected();//TODO this line may be what is breaking the whole thing
+    //return drivebase.getAutonomousCommand("New Auto");
   }
 
   public void setDriveMode()
