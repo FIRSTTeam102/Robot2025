@@ -60,7 +60,7 @@ public final class Constants
   }
   public static class VisionConstants
   {
-    public static final boolean DRIVEWITHVISION = false;
+    public static final boolean DRIVEWITHVISION = true;
     public static final double oldCameraX = 10.6488; // Old val  11.97534
     public static final double oldCameraY = 11.957134; // old val 11.256
 
