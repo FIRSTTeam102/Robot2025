@@ -248,7 +248,7 @@ public class SwerveSubsystem extends SubsystemBase
   public Command alignToReefScore(int aprilTag, TargetSide scoringSide){
     Transform2d robotOffset;
     if (scoringSide == DrivebaseConstants.TargetSide.LEFT){
-      robotOffset = new Transform2d(DrivebaseConstants.ReefLeftYOffset,
+      robotOffset = new Transform2d(DrivebaseConstants.ReefXDistance,
                         DrivebaseConstants.ReefLeftYOffset,Rotation2d.kPi);
     }
     else {
