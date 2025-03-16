@@ -51,7 +51,7 @@ public class Climber extends SubsystemBase {
 
 //Set up funnel motor config
 
-funnelConfig.idleMode(IdleMode.kCoast);
+funnelConfig.idleMode(IdleMode.kBrake);
 funnelConfig.encoder.positionConversionFactor(3); // Converts encoder units to real-world values
 
         // Configure onboard PID with closed-loop control
@@ -117,6 +117,9 @@ funnelConfig.encoder.positionConversionFactor(3); // Converts encoder units to r
       funnelClosedLoopController.setReference(position,ControlType.kPosition);  
      }
 
+     public void setFunnelVelocity(double speed){
+        funnelMotor.set(speed);
+     }
     @Override
     public void periodic() {
         // This method will be called once per scheduler run
