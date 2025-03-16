@@ -271,7 +271,7 @@ public class RobotContainer
   public Command getAutonomousCommand()
   {
     //return autoChooser.getSelected();//TODO this line may be what is breaking the whole thing
-    return drivebase.getAutonomousCommand("1 piece straight");
+    return drivebase.getAutonomousCommand("Diagonal 2");
   }
 
   public void setDriveMode()
