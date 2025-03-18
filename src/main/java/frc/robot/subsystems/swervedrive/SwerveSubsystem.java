@@ -48,6 +48,7 @@ import java.util.Arrays;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.DoubleSupplier;
+import java.util.function.IntSupplier;
 import java.util.function.Supplier;
 import org.json.simple.parser.ParseException;
 import org.littletonrobotics.junction.AutoLogOutput;
@@ -77,6 +78,10 @@ public class SwerveSubsystem extends SubsystemBase
  //log the current swervePose
   @AutoLogOutput
   private Pose2d swervePose;
+
+  //log the current Reef April Tag Target
+  @AutoLogOutput
+   private int currAprilTagTarget = 0;
 
  /**
    * AprilTag field layout.
@@ -150,7 +155,12 @@ public class SwerveSubsystem extends SubsystemBase
   {
     vision = new Vision(swerveDrive::getPose, swerveDrive.field);
   }
-
+  /*
+   * return the currentAprilTagTarget
+   */
+  public int getCurrentReefTarget(){
+    return currAprilTagTarget;
+  }
  @Override
   public void periodic()
   {
@@ -160,6 +170,9 @@ public class SwerveSubsystem extends SubsystemBase
       swerveDrive.updateOdometry();
       vision.updatePoseEstimation(swerveDrive);
       swervePose = swerveDrive.getPose();
+      //only ask the cameras for the best reef target if we are using vision, otherwise
+      //it will be 0
+      currAprilTagTarget = vision.getBestReefTarget();
     }
   }
 
@@ -245,7 +258,7 @@ public class SwerveSubsystem extends SubsystemBase
    *   to make testing in the simulator easier when there is no live
    *   vision.
    */
-  public Command alignToReefScore(int aprilTag, TargetSide scoringSide){
+  public Command alignToReefScore(IntSupplier aprilTag, TargetSide scoringSide){
     Transform2d robotOffset;
     if (scoringSide == DrivebaseConstants.TargetSide.LEFT){
       robotOffset = new Transform2d(DrivebaseConstants.ReefXDistance,
@@ -255,9 +268,11 @@ public class SwerveSubsystem extends SubsystemBase
       robotOffset = new Transform2d(DrivebaseConstants.ReefXDistance,
                         DrivebaseConstants.ReefRightYOffset,Rotation2d.kPi);
     }
-    
-    Pose2d newPose = Vision.getAprilTagPose(aprilTag, robotOffset);
-    return(driveToPose(newPose));
+    if (aprilTag.getAsInt() > 0){
+      Pose2d newPose = Vision.getAprilTagPose(aprilTag.getAsInt(), robotOffset);
+      return(driveToPose(newPose));
+    }
+    else return(Commands.none());
   }
   /*
    * align to Score - align to either the left or right of the april tag on the coral reef. 
@@ -267,16 +282,12 @@ public class SwerveSubsystem extends SubsystemBase
   public Command alignToReefScore(TargetSide scoringSide)
   {
     return run(() -> {
-       //ask vision for the best reef target in view from the front
-       //cameras
-       //int aprilTag = vision.getCurrentReefTarget();
-       int aprilTag = vision.getBestReefTarget();
-    
+       
        //If we got a valid april tag target, then drive to an offset from that
        //target based on our robot dimensions
-       if (aprilTag > 0){
-          alignToReefScore(aprilTag,scoringSide);
-       }
+       
+          alignToReefScore(()->getCurrentReefTarget(),scoringSide);
+       
       });
   }
   /**
