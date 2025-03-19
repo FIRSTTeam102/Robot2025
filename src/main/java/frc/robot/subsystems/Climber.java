@@ -12,7 +12,7 @@ import com.revrobotics.spark.config.SparkMaxConfig;
 import com.revrobotics.spark.config.ClosedLoopConfig.FeedbackSensor;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 
-
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
@@ -51,7 +51,7 @@ public class Climber extends SubsystemBase {
 
 //Set up funnel motor config
 
-funnelConfig.idleMode(IdleMode.kCoast);
+funnelConfig.idleMode(IdleMode.kBrake);
 funnelConfig.encoder.positionConversionFactor(3); // Converts encoder units to real-world values
 
         // Configure onboard PID with closed-loop control
@@ -117,6 +117,16 @@ funnelConfig.encoder.positionConversionFactor(3); // Converts encoder units to r
       funnelClosedLoopController.setReference(position,ControlType.kPosition);  
      }
 
+     public void setFunnelVelocity(double speed){
+        funnelMotor.set(speed);
+     }
+
+    public Command flickFunnel(double position) {
+        return run(() ->{
+            setFunnelPosition(position);
+            
+        });
+    }
     @Override
     public void periodic() {
         // This method will be called once per scheduler run
