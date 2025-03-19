@@ -12,7 +12,7 @@ import com.revrobotics.spark.config.SparkMaxConfig;
 import com.revrobotics.spark.config.ClosedLoopConfig.FeedbackSensor;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 
-
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
@@ -120,6 +120,13 @@ funnelConfig.encoder.positionConversionFactor(3); // Converts encoder units to r
      public void setFunnelVelocity(double speed){
         funnelMotor.set(speed);
      }
+
+    public Command flickFunnel(double position) {
+        return run(() ->{
+            setFunnelPosition(position);
+            
+        });
+    }
     @Override
     public void periodic() {
         // This method will be called once per scheduler run
