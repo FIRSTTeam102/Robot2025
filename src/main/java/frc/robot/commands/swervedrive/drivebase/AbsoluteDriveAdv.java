@@ -75,8 +75,8 @@ public class AbsoluteDriveAdv extends Command
   @Override
   public void execute()
   {
-    double headingX = 0;
-    double headingY = 0;
+    double headingX = 0.0;
+    double headingY = 0.0;
 
     // These are written to allow combinations for 45 angles
     // Face Away from Drivers

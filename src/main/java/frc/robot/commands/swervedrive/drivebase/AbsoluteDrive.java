@@ -78,13 +78,13 @@ public class AbsoluteDrive extends Command
     // Prevent Movement After Auto
     if (initRotation)
     {
-      if (headingHorizontal.getAsDouble() == 0 && headingVertical.getAsDouble() == 0)
+      if (headingHorizontal.getAsDouble() == 0 && headingVertical.getAsDouble() == 0.0)
       {
         // Get the curretHeading
         Rotation2d firstLoopHeading = swerve.getHeading();
 
         // Set the Current Heading to the desired Heading
-        desiredSpeeds = swerve.getTargetSpeeds(0, 0, firstLoopHeading.getSin(), firstLoopHeading.getCos());
+        desiredSpeeds = swerve.getTargetSpeeds(0.0, 0.0, firstLoopHeading.getSin(), firstLoopHeading.getCos());
       }
       //Dont Init Rotation Again
       initRotation = false;

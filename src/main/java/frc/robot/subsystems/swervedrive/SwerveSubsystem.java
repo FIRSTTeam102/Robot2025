@@ -23,20 +23,24 @@ import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.geometry.Pose2d;
 //import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DriverStation;
-//import edu.wpi.first.wpilibj.DriverStation.Alliance;
+
 import edu.wpi.first.wpilibj.Timer;
+
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Config;
 import frc.robot.Constants;
+import frc.robot.Constants.DrivebaseConstants;
 import frc.robot.Constants.VisionConstants;
+import frc.robot.Constants.DrivebaseConstants.TargetSide;
 import frc.robot.subsystems.swervedrive.Vision.Cameras;
 import java.io.File;
 import java.io.IOException;
@@ -48,6 +52,8 @@ import java.util.function.Supplier;
 import org.json.simple.parser.ParseException;
 import org.littletonrobotics.junction.AutoLogOutput;
 import org.photonvision.targeting.PhotonPipelineResult;
+import org.photonvision.targeting.PhotonTrackedTarget;
+
 import swervelib.SwerveController;
 import swervelib.SwerveDrive;
 import swervelib.SwerveDriveTest;
@@ -58,6 +64,8 @@ import swervelib.parser.SwerveParser;
 import swervelib.telemetry.SwerveDriveTelemetry;
 import swervelib.telemetry.SwerveDriveTelemetry.TelemetryVerbosity;
 
+
+
 public class SwerveSubsystem extends SubsystemBase
 {
 
@@ -65,12 +73,14 @@ public class SwerveSubsystem extends SubsystemBase
    * Swerve drive object.
    */
   private final SwerveDrive         swerveDrive;
-  /**
-   * AprilTag field layout.
-   */
+
+ //log the current swervePose
   @AutoLogOutput
   private Pose2d swervePose;
 
+ /**
+   * AprilTag field layout.
+   */
  // private final AprilTagFieldLayout aprilTagFieldLayout = AprilTagFieldLayout.loadField(AprilTagFields.k2025Reefscape);
   /**
    * Enable vision odometry updates while driving.
@@ -78,7 +88,7 @@ public class SwerveSubsystem extends SubsystemBase
   private final boolean             visionDriveTest     = VisionConstants.DRIVEWITHVISION;
   /**
    * PhotonVision class to keep an accurate odometry.
-   */
+   */ 
   private       Vision              vision;
 
   /**
@@ -108,7 +118,7 @@ public class SwerveSubsystem extends SubsystemBase
                                                0.1); //Correct for skew that gets worse as angular velocity increases. Start with a coefficient of 0.1.
     swerveDrive.setModuleEncoderAutoSynchronize(false,
                                                 1); // Enable if you want to resynchronize your absolute encoders and motor encoders periodically when they are not moving.
-    swerveDrive.pushOffsetsToEncoders(); // Set the absolute encoder to be used over the internal encoder and push the offsets onto it. Throws warning if not possible
+    //deprecated swerveDrive.pushOffsetsToEncoders(); // Set the absolute encoder to be used over the internal encoder and push the offsets onto it. Throws warning if not possible
     if (visionDriveTest)
     {
       setupPhotonVision();
@@ -141,7 +151,7 @@ public class SwerveSubsystem extends SubsystemBase
     vision = new Vision(swerveDrive::getPose, swerveDrive.field);
   }
 
-  @Override
+ @Override
   public void periodic()
   {
     // When vision is enabled we must manually update odometry in SwerveDrive
@@ -228,8 +238,47 @@ public class SwerveSubsystem extends SubsystemBase
     // IF USING CUSTOM PATHFINDER ADD BEFORE THIS LINE
     PathfindingCommand.warmupCommand().schedule();
   }
-
-
+ 
+ 
+  /*
+   * driveToReefScore - takes an aprilTagID and a target side
+   *   to make testing in the simulator easier when there is no live
+   *   vision.
+   */
+  public Command alignToReefScore(int aprilTag, TargetSide scoringSide){
+    Transform2d robotOffset;
+    if (scoringSide == DrivebaseConstants.TargetSide.LEFT){
+      robotOffset = new Transform2d(DrivebaseConstants.ReefXDistance,
+                        DrivebaseConstants.ReefLeftYOffset,Rotation2d.kPi);
+    }
+    else {
+      robotOffset = new Transform2d(DrivebaseConstants.ReefXDistance,
+                        DrivebaseConstants.ReefRightYOffset,Rotation2d.kPi);
+    }
+    
+    Pose2d newPose = Vision.getAprilTagPose(aprilTag, robotOffset);
+    return(driveToPose(newPose));
+  }
+  /*
+   * align to Score - align to either the left or right of the april tag on the coral reef. 
+   * make sure the returned target is a valid tag for our alliance - This method
+   * uses live vision to deterion the april tag target in view of the cameras
+   */
+  public Command alignToReefScore(TargetSide scoringSide)
+  {
+    return run(() -> {
+       //ask vision for the best reef target in view from the front
+       //cameras
+       //int aprilTag = vision.getCurrentReefTarget();
+       int aprilTag = vision.getBestReefTarget();
+    
+       //If we got a valid april tag target, then drive to an offset from that
+       //target based on our robot dimensions
+       if (aprilTag > 0){
+          alignToReefScore(aprilTag,scoringSide);
+       }
+      });
+  }
   /**
    * Aim the robot at the target returned by PhotonVision.
    *
@@ -239,6 +288,7 @@ public class SwerveSubsystem extends SubsystemBase
   {
 
     return run(() -> {
+      
       Optional<PhotonPipelineResult> resultO = camera.getBestResult();
       if (resultO.isPresent())
       {
@@ -248,7 +298,7 @@ public class SwerveSubsystem extends SubsystemBase
           drive(getTargetSpeeds(0,
                                 0,
                                 Rotation2d.fromDegrees(result.getBestTarget()
-                                                             .getYaw()))); // Not sure if this will work, more math may be required.
+                                                             .getYaw()))); 
         }
       }
     });
