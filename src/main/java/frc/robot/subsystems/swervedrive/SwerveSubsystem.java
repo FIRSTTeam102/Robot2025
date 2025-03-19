@@ -260,6 +260,7 @@ public class SwerveSubsystem extends SubsystemBase
    */
   public Command alignToReefScore(IntSupplier aprilTag, TargetSide scoringSide){
     Transform2d robotOffset;
+    int aprilTagID = aprilTag.getAsInt();
     if (scoringSide == DrivebaseConstants.TargetSide.LEFT){
       robotOffset = new Transform2d(DrivebaseConstants.ReefXDistance,
                         DrivebaseConstants.ReefLeftYOffset,Rotation2d.kPi);
@@ -268,11 +269,14 @@ public class SwerveSubsystem extends SubsystemBase
       robotOffset = new Transform2d(DrivebaseConstants.ReefXDistance,
                         DrivebaseConstants.ReefRightYOffset,Rotation2d.kPi);
     }
-    if (aprilTag.getAsInt() > 0){
-      Pose2d newPose = Vision.getAprilTagPose(aprilTag.getAsInt(), robotOffset);
+    if (aprilTagID > 0 && vision.isValidTargetForScoring(aprilTagID)){
+      Pose2d newPose = Vision.getAprilTagPose(aprilTagID, robotOffset);
       return(driveToPose(newPose));
     }
-    else return(Commands.none());
+    else {
+      System.out.println("No Valid April Tag target " + aprilTagID);
+      return(Commands.none());
+    }
   }
   /*
    * align to Score - align to either the left or right of the april tag on the coral reef. 
