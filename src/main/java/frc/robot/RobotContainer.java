@@ -179,9 +179,9 @@ public class RobotContainer
                 ()->driveAngularVelocity.robotRelative(false)
                                         .allianceRelativeControl(true)
                               ));
-
-    driverXbox.leftBumper().whileTrue(new RunCommand(()->drivebase.alignToReefScore(()->drivebase.getCurrentReefTarget(),TargetSide.LEFT),drivebase));
-    driverXbox.rightBumper().whileTrue(new RunCommand(()->drivebase.alignToReefScore(()->drivebase.getCurrentReefTarget(),TargetSide.RIGHT),drivebase));
+    //AutoAlign that uses vision to find the target to drive to
+    driverXbox.leftBumper().whileTrue(drivebase.alignToReefScore(TargetSide.LEFT));
+    driverXbox.rightBumper().whileTrue(drivebase.alignToReefScore(TargetSide.RIGHT));
     
 
 
@@ -190,17 +190,16 @@ public class RobotContainer
 
     //TODO driverXbox.a().onTrue(....) toggle robot between field & robot oriented, show on
     // shuffleboard
-    //driverXbox.a().whileTrue(drivebase.alignToReefScore(17,TargetSide.LEFT));
-    //driverXbox.b().whileTrue(drivebase.alignToReefScore(18,TargetSide.RIGHT));
+   
     //hardcoded auto align 
-    driverXbox.x().and(driverXbox.leftBumper()).whileTrue(drivebase.alignToReefScore(()->20,TargetSide.LEFT));
-    driverXbox.x().and(driverXbox.rightBumper()).whileTrue(drivebase.alignToReefScore(()->20,TargetSide.RIGHT));
+    driverXbox.x().and(driverXbox.leftBumper()).whileTrue(drivebase.alignToReefScore(20,TargetSide.LEFT));
+    driverXbox.x().and(driverXbox.rightBumper()).whileTrue(drivebase.alignToReefScore(20,TargetSide.RIGHT));
 
-    driverXbox.y().and(driverXbox.leftBumper()).whileTrue(drivebase.alignToReefScore(()->21,TargetSide.LEFT));
-    driverXbox.y().and(driverXbox.rightBumper()).whileTrue(drivebase.alignToReefScore(()->21,TargetSide.RIGHT));
+    driverXbox.y().and(driverXbox.leftBumper()).whileTrue(drivebase.alignToReefScore(21,TargetSide.LEFT));
+    driverXbox.y().and(driverXbox.rightBumper()).whileTrue(drivebase.alignToReefScore(21,TargetSide.RIGHT));
 
-    driverXbox.b().and(driverXbox.leftBumper()).whileTrue(drivebase.alignToReefScore(()->22,TargetSide.LEFT));
-    driverXbox.b().and(driverXbox.rightBumper()).whileTrue(drivebase.alignToReefScore(()->22,TargetSide.RIGHT));
+    driverXbox.b().and(driverXbox.leftBumper()).whileTrue(drivebase.alignToReefScore(22,TargetSide.LEFT));
+    driverXbox.b().and(driverXbox.rightBumper()).whileTrue(drivebase.alignToReefScore(22,TargetSide.RIGHT));
     // Levels L1, L2, L3, L4 in inches & set to a,b,x,y buttons per Drive team
     //definitions
     operatorXbox.leftBumper().onTrue(elevator.setElevatorHeight(ElevatorConstants.HOME));
