@@ -385,7 +385,7 @@ public class Vision
      * Front Left Camera
      */
     FrontLeft("FrontLeft",
-              new Rotation3d(0, Math.toRadians(30), Math.toRadians(-19.35)),  //correct yaw offset
+              new Rotation3d(0, Math.toRadians(12.5), Math.toRadians(-35.65)),  //correct yaw offset
               new Translation3d(Units.inchesToMeters(10.6488),
                                 Units.inchesToMeters(11.957134),
                                 Units.inchesToMeters(6.03258)),
@@ -394,7 +394,7 @@ public class Vision
     Front Right Camera*
      */
     FrontRight("FrontRight",
-               new Rotation3d(0, Math.toRadians(30), Math.toRadians(28.52)), //correct yaw offset
+               new Rotation3d(0, Math.toRadians(12.5), Math.toRadians(33)), //correct yaw offset
                new Translation3d(Units.inchesToMeters(10.6488),
                                  Units.inchesToMeters(-11.957134),
                                  Units.inchesToMeters(6.03258)),
