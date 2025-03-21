@@ -172,7 +172,7 @@ public class SwerveSubsystem extends SubsystemBase
       //only ask the cameras for the best reef target if we are using vision, otherwise
       //it will be 0
       currAprilTagTarget = vision.getBestReefTarget();
-     
+      DataShared.getInstance().setCurrentTagID(currAprilTagTarget);
     }
   }
 
@@ -285,8 +285,10 @@ public class SwerveSubsystem extends SubsystemBase
    */
   public Command alignToReefScore(TargetSide scoringSide)
   {
-
+    Transform2d robotOffset;
+    
     int aprilTag = DataShared.getInstance().getCurrentTagID();
+    System.out.println("alignToReefScore: pulled " + aprilTag + " fromn shared data");
     
     if (scoringSide == DrivebaseConstants.TargetSide.LEFT){
       robotOffset = new Transform2d(DrivebaseConstants.ReefXDistance,
