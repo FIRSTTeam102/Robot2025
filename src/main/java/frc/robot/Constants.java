@@ -1,3 +1,5 @@
+
+\[]
 // Copyright (c) FIRST and other WPILib contributors.
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
@@ -43,9 +45,9 @@ public final class Constants
     // robot camera offsets need to be correct with bumper so the 
     //align to reef works correctly, the reef poles are 6.5 inches from the 
     //center of the april tag
-    public static double ReefLeftYOffset = Units.inchesToMeters(-7.5);
-    public static double ReefRightYOffset = Units.inchesToMeters(7.5);
-    public static double ReefXDistance = Units.inchesToMeters(14.0);                                                                                             
+    public static double ReefLeftYOffset = Units.inchesToMeters(-6.5);
+    public static double ReefRightYOffset = Units.inchesToMeters(6.5);
+    public static double ReefXDistance = Units.inchesToMeters(19.0);                                                                                             
   }
 
   public static class OperatorConstants
