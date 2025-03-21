@@ -184,6 +184,9 @@ public class RobotContainer
     driverXbox.leftBumper().whileTrue(drivebase.alignToReefScore(TargetSide.LEFT));
     driverXbox.rightBumper().whileTrue(drivebase.alignToReefScore(TargetSide.RIGHT));
     
+    driverXbox.leftBumper().whileTrue(new RunCommand(()->drivebase.alignToReefScore(TargetSide.LEFT),drivebase));
+    driverXbox.rightBumper().whileTrue(new RunCommand(()->drivebase.alignToReefScore(TargetSide.RIGHT),drivebase));
+
 
 
     //TODO ???? right bumper used - driverXbox.rightBumper().whileTrue(...) change center of rotation to left or right front corner
