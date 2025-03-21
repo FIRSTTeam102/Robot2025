@@ -358,7 +358,7 @@ public class Vision
   }
 
   /**
-   * Camera Enum to select each camera
+   * Camera   to select each camera
    */
   enum Cameras
   {
@@ -386,8 +386,8 @@ public class Vision
      */
     FrontLeft("FrontLeft",
               new Rotation3d(0, Math.toRadians(12.5), Math.toRadians(-35.65)),  //correct yaw offset
-              new Translation3d(Units.inchesToMeters(10.944),
-                                Units.inchesToMeters(11.2244),
+              new Translation3d(Units.inchesToMeters(11.25),
+                                Units.inchesToMeters(10.75),
                                 Units.inchesToMeters(6.03258)),
               VecBuilder.fill(4, 4, 8), VecBuilder.fill(0.5, 0.5, 1)),
     /*
@@ -395,8 +395,8 @@ public class Vision
      */
     FrontRight("FrontRight",
                new Rotation3d(0, Math.toRadians(12.5), Math.toRadians(33)), //correct yaw offset
-               new Translation3d(Units.inchesToMeters(10.944),
-                                 Units.inchesToMeters(-11.2244),
+               new Translation3d(Units.inchesToMeters(11.25), //10.944
+                                 Units.inchesToMeters(-10.75), //-11.2244
                                  Units.inchesToMeters(6.03258)),
                VecBuilder.fill(4, 4, 8), VecBuilder.fill(0.5, 0.5, 1));
 

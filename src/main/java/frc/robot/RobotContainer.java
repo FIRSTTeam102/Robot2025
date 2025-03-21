@@ -198,8 +198,8 @@ public class RobotContainer
     driverXbox.y().and(driverXbox.leftBumper()).whileTrue(drivebase.alignToReefScore(21,TargetSide.LEFT));
     driverXbox.y().and(driverXbox.rightBumper()).whileTrue(drivebase.alignToReefScore(21,TargetSide.RIGHT));
 
-    driverXbox.b().and(driverXbox.leftBumper()).whileTrue(drivebase.alignToReefScore(18,TargetSide.LEFT));
-    driverXbox.b().and(driverXbox.rightBumper()).whileTrue(drivebase.alignToReefScore(18,TargetSide.RIGHT));
+    driverXbox.b().and(driverXbox.leftBumper()).whileTrue(drivebase.alignToReefScore(7,TargetSide.LEFT));
+    driverXbox.b().and(driverXbox.rightBumper()).whileTrue(drivebase.alignToReefScore(7,TargetSide.RIGHT));
 
     driverXbox.a().and(driverXbox.leftBumper()).whileTrue(drivebase.alignToReefScore(6,TargetSide.LEFT));
     driverXbox.a().and(driverXbox.rightBumper()).whileTrue(drivebase.alignToReefScore(6,TargetSide.RIGHT));
