@@ -130,6 +130,7 @@ public class SwerveSubsystem extends SubsystemBase
       swerveDrive.stopOdometryThread();
     }
     setupPathPlanner();
+
   }
 
   /**
@@ -154,12 +155,8 @@ public class SwerveSubsystem extends SubsystemBase
   {
     vision = new Vision(swerveDrive::getPose, swerveDrive.field);
   }
-  /*
-   * return the currentAprilTagTarget
-   */
-  public int getCurrentReefTarget(){
-    return currAprilTagTarget;
-  }
+ 
+ 
  @Override
   public void periodic()
   {
@@ -172,7 +169,7 @@ public class SwerveSubsystem extends SubsystemBase
       //only ask the cameras for the best reef target if we are using vision, otherwise
       //it will be 0
       currAprilTagTarget = vision.getBestReefTarget();
-      DataShared.getInstance().setCurrentTagID(currAprilTagTarget);
+      SharedData.getInstance().setCurrentTagID(currAprilTagTarget);
     }
   }
 
@@ -193,7 +190,7 @@ public class SwerveSubsystem extends SubsystemBase
     {
       config = RobotConfig.fromGUISettings();
 
-      final boolean enableFeedforward = true;
+      final boolean enableFeedforward = false;
       // Configure AutoBuilder last
       AutoBuilder.configure(
           this::getPose,
@@ -285,9 +282,9 @@ public class SwerveSubsystem extends SubsystemBase
    */
   public Command alignToReefScore(TargetSide scoringSide)
   {
-    Transform2d robotOffset;
+   /*  Transform2d robotOffset;
     
-    int aprilTag = DataShared.getInstance().getCurrentTagID();
+    int aprilTag = SharedData.getInstance().getCurrentTagID();
     System.out.println("alignToReefScore: pulled " + aprilTag + " fromn shared data");
     
     if (scoringSide == DrivebaseConstants.TargetSide.LEFT){
@@ -306,16 +303,16 @@ public class SwerveSubsystem extends SubsystemBase
       System.out.println("No Valid April Tag target " + aprilTag);
       return(Commands.none());
     }
-    
-    // return runOnce(() -> {
+    */
+     return runOnce(() -> {
        
-    //    //If we got a valid april tag target, then drive to an offset from that
-    //    //target based on our robot dimensions
-    //    SharedData.getInstance().setCurrentTagID(vision.getBestReefTarget());
-    //   })
-    //   .andThen(Commands.print("alignToReef"))
-    //   .andThen(alignToReefScore(SharedData.getInstance().getCurrentTagID(),scoringSide))
-    //   .andThen(Commands.print("done alignToReef"));
+        //If we got a valid april tag target, then drive to an offset from that
+        //target based on our robot dimensions
+        SharedData.getInstance().setCurrentTagID(vision.getBestReefTarget());
+       })
+       .andThen(Commands.print("alignToReef"))
+       .andThen(alignToReefScore(SharedData.getInstance().getCurrentTagID(),scoringSide))
+       .andThen(Commands.print("done alignToReef"));
   }
   /**
    * Aim the robot at the target returned by PhotonVision.

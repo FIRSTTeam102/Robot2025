@@ -27,9 +27,9 @@ public class SharedData {
     public static SharedData getInstance()
     {
         if (instance == null) {
-            synchronized (DataSingleton.class) {
+            synchronized (SharedData.class) {
                 if (instance == null) {
-                    instance = new DataSingleton();
+                    instance = new SharedData();
                 }
             }
         }
