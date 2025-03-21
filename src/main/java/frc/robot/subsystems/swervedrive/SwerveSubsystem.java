@@ -260,7 +260,7 @@ public class SwerveSubsystem extends SubsystemBase
    */
   public Command alignToReefScore(int aprilTag, TargetSide scoringSide){
     Transform2d robotOffset;
-    
+
     if (scoringSide == DrivebaseConstants.TargetSide.LEFT){
       robotOffset = new Transform2d(DrivebaseConstants.ReefXDistance,
                         DrivebaseConstants.ReefLeftYOffset,Rotation2d.kPi);
@@ -285,16 +285,35 @@ public class SwerveSubsystem extends SubsystemBase
    */
   public Command alignToReefScore(TargetSide scoringSide)
   {
-   
-    return runOnce(() -> {
+
+    int aprilTag = DataShared.getInstance().getCurrentTagID();
+    
+    if (scoringSide == DrivebaseConstants.TargetSide.LEFT){
+      robotOffset = new Transform2d(DrivebaseConstants.ReefXDistance,
+                        DrivebaseConstants.ReefLeftYOffset,Rotation2d.kPi);
+    }
+    else {
+      robotOffset = new Transform2d(DrivebaseConstants.ReefXDistance,
+                        DrivebaseConstants.ReefRightYOffset,Rotation2d.kPi);
+    }
+    if (aprilTag > 0 && vision.isValidTargetForScoring(aprilTag)){
+      Pose2d newPose = Vision.getAprilTagPose(aprilTag, robotOffset);
+      return(driveToPose(newPose));
+    }
+    else {
+      System.out.println("No Valid April Tag target " + aprilTag);
+      return(Commands.none());
+    }
+    
+    // return runOnce(() -> {
        
-       //If we got a valid april tag target, then drive to an offset from that
-       //target based on our robot dimensions
-       CurrentTargetTag.getInstance().setCurrentTagID(vision.getBestReefTarget());
-      })
-      .andThen(Commands.print("alignToReef"))
-      .andThen(alignToReefScore(CurrentTargetTag.getInstance().getCurrentTagID(),scoringSide))
-      .andThen(Commands.print("done alignToReef"));
+    //    //If we got a valid april tag target, then drive to an offset from that
+    //    //target based on our robot dimensions
+    //    SharedData.getInstance().setCurrentTagID(vision.getBestReefTarget());
+    //   })
+    //   .andThen(Commands.print("alignToReef"))
+    //   .andThen(alignToReefScore(SharedData.getInstance().getCurrentTagID(),scoringSide))
+    //   .andThen(Commands.print("done alignToReef"));
   }
   /**
    * Aim the robot at the target returned by PhotonVision.

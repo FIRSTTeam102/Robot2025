@@ -16,20 +16,25 @@ import frc.robot.Constants.DrivebaseConstants.TargetSide;
  *  target id.
  * . */
 
-public class CurrentTargetTag {
-    private static CurrentTargetTag instance;
-    int targetAprilTagID = 0;
-    private CurrentTargetTag(){
+public class SharedData {
+    private static SharedData instance;
+    private int targetAprilTagID = 0;
+    private SharedData(){
     }
     /*
      * return or create the instance of this class
      */
-    public static CurrentTargetTag getInstance(){
-        if (instance == null){
-            instance = new CurrentTargetTag();
+    public static SharedData getInstance()
+    {
+        if (instance == null) {
+            synchronized (DataSingleton.class) {
+                if (instance == null) {
+                    instance = new DataSingleton();
+                }
+            }
         }
-        return(instance);
-    }
+        return instance;
+    }     
     /*
      * return the current Tag ID
      */
