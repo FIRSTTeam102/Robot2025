@@ -181,7 +181,11 @@ public class Vision
         targetID = getCamerasTargetID(camera);
         
         if (isValidTargetForScoring(targetID)){
-          System.out.println("  Return frontLeftTarget ID:" + targetID);
+          long current = System.currentTimeMillis();
+          if (current - SharedData.getInstance().delay > SharedData.getInstance().lastPrintTimestamp){
+            SharedData.getInstance().lastPrintTimestamp = current;
+            System.out.println("Vision.getBestReefTarget(): Return frontLeftTarget ID:" + targetID);
+          }
           return(targetID);
         }
       }
@@ -189,7 +193,11 @@ public class Vision
         //System.out.println("Vision:GetBestReefTarget: Check FrontRight Camera");
         targetID = getCamerasTargetID(camera);
         if (isValidTargetForScoring(targetID)){
-          System.out.println("  Return frontRightTarget ID:" + targetID);
+          long current = System.currentTimeMillis();
+          if (current - SharedData.getInstance().delay > SharedData.getInstance().lastPrintTimestamp){
+            SharedData.getInstance().lastPrintTimestamp = current;
+            System.out.println("  Return frontRightTarget ID:" + targetID);
+          }
           return(targetID);
         }
       }

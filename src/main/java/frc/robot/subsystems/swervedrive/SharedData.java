@@ -19,6 +19,10 @@ import frc.robot.Constants.DrivebaseConstants.TargetSide;
 public class SharedData {
     private static SharedData instance;
     private int targetAprilTagID = 0;
+
+    public long lastPrintTimestamp = 0;
+    public int delay = 1*1000;
+    
     private SharedData(){
     }
     /*
