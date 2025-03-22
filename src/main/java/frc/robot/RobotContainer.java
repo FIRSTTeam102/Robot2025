@@ -184,7 +184,7 @@ public class RobotContainer
     //driverXbox.leftBumper().whileTrue(drivebase.alignToReefScore(TargetSide.LEFT));
     //driverXbox.rightBumper().whileTrue(drivebase.alignToReefScore(TargetSide.RIGHT));
     
-    driverXbox.leftBumper().whileTrue(new RunCommand(()->drivebase.alignToReefScore(TargetSide.LEFT),drivebase));
+    driverXbox.leftBumper().whileTrue(Commands.print("LeftBumper").andThen(drivebase.alignToReefScore(TargetSide.LEFT)));
     driverXbox.rightBumper().whileTrue(new RunCommand(()->drivebase.alignToReefScore(TargetSide.RIGHT),drivebase));
 
 

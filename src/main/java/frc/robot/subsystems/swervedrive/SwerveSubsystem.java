@@ -310,7 +310,7 @@ public class SwerveSubsystem extends SubsystemBase
         //target based on our robot dimensions
         SharedData.getInstance().setCurrentTagID(vision.getBestReefTarget());
        })
-       .andThen(Commands.print("alignToReef"))
+       .andThen(Commands.print(("alignToReef" + SharedData.getInstance().getCurrentTagID())))
        .andThen(alignToReefScore(SharedData.getInstance().getCurrentTagID(),scoringSide))
        .andThen(Commands.print("done alignToReef"));
   }

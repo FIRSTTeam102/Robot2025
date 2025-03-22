@@ -4,12 +4,6 @@
 
 package frc.robot.subsystems.swervedrive;
 
-import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.geometry.Transform2d;
-import edu.wpi.first.wpilibj.DriverStation;
-import frc.robot.Constants.DrivebaseConstants;
-import frc.robot.Constants.DrivebaseConstants.TargetSide;
 
 /** helper class to keep track of our current reef target
  *  this is a singleton class that will be constantly updated with our current
