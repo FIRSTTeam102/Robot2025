@@ -120,7 +120,6 @@ public class RobotContainer
     // Configure the trigger bindings
     configureBindings();
     DriverStation.silenceJoystickConnectionWarning(true);
-    NamedCommands.registerCommand("test", Commands.print("I EXIST"));
     NamedCommands.registerCommand("Intake", new IntakeAuto(shooter));
     NamedCommands.registerCommand("Shoot", new ShootCoral(shooter, Constants.ShooterConstants.LeftMaxShooterSpeed, Constants.ShooterConstants.RightMaxShooterSpeed));
     NamedCommands.registerCommand("ShootTrough", new ShootCoral(shooter, Constants.ShooterConstants.L1LeftShooterSpeed,Constants.ShooterConstants.L1RightShooterSpeed)); //change the parameters for L1
@@ -279,8 +278,8 @@ public class RobotContainer
    */
   public Command getAutonomousCommand()
   {
-    //return autoChooser.getSelected();//TODO this line may be what is breaking the whole thing
-    return drivebase.getAutonomousCommand("Diagonal 2");
+    return autoChooser.getSelected();//TODO this line may be what is breaking the whole thing
+   //return drivebase.getAutonomousCommand("Diagonal 2");
   }
 
   public void setDriveMode()
