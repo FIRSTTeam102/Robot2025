@@ -198,8 +198,11 @@ public class RobotContainer
     driverXbox.y().and(driverXbox.leftBumper()).whileTrue(drivebase.alignToReefScore(21,TargetSide.LEFT));
     driverXbox.y().and(driverXbox.rightBumper()).whileTrue(drivebase.alignToReefScore(21,TargetSide.RIGHT));
 
-    driverXbox.b().and(driverXbox.leftBumper()).whileTrue(drivebase.alignToReefScore(22,TargetSide.LEFT));
-    driverXbox.b().and(driverXbox.rightBumper()).whileTrue(drivebase.alignToReefScore(22,TargetSide.RIGHT));
+    driverXbox.b().and(driverXbox.leftBumper()).whileTrue(drivebase.alignToReefScore(7,TargetSide.LEFT));
+    driverXbox.b().and(driverXbox.rightBumper()).whileTrue(drivebase.alignToReefScore(7,TargetSide.RIGHT));
+
+    driverXbox.a().and(driverXbox.leftBumper()).whileTrue(drivebase.alignToReefScore(6,TargetSide.LEFT));
+    driverXbox.a().and(driverXbox.rightBumper()).whileTrue(drivebase.alignToReefScore(6,TargetSide.RIGHT));
     // Levels L1, L2, L3, L4 in inches & set to a,b,x,y buttons per Drive team
     //definitions
     operatorXbox.leftBumper().onTrue(elevator.setElevatorHeight(ElevatorConstants.HOME));
@@ -209,6 +212,8 @@ public class RobotContainer
     operatorXbox.y().onTrue(elevator.setElevatorHeight(ElevatorConstants.LEVEL4)); 
     operatorXbox.povRight().whileTrue(new ClimberOutSetSpeed(climber,1));
     operatorXbox.povLeft().whileTrue(new ClimberOutSetSpeed(climber, -1));
+    operatorXbox.povUp().whileTrue(climber.flickFunnel(0.143));
+    operatorXbox.povDown().whileTrue(climber.flickFunnel(-1.024));
     
     operatorXbox.rightTrigger().whileTrue(new ShootCoral(shooter, 
                                 Constants.ShooterConstants.LeftMaxShooterSpeed,

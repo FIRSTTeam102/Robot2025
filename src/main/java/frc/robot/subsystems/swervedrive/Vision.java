@@ -358,7 +358,7 @@ public class Vision
   }
 
   /**
-   * Camera Enum to select each camera
+   * Camera   to select each camera
    */
   enum Cameras
   {
@@ -366,7 +366,7 @@ public class Vision
      * Back Right Camera
      */
     BackRight("BackRight",
-             new Rotation3d(0, Math.toRadians(30), Math.toRadians(106)),  //new camera needs 140
+             new Rotation3d(0, Math.toRadians(30), Math.toRadians(160)),  //new camera needs 140
              new Translation3d(Units.inchesToMeters(-10.6488),
                                Units.inchesToMeters(-11.957134),
                                Units.inchesToMeters(6.03258)),
@@ -376,7 +376,7 @@ public class Vision
      * Back Left Camera
      */
     BackLeft("BackLeft",
-             new Rotation3d(0, Math.toRadians(30), Math.toRadians(201)),
+             new Rotation3d(0, Math.toRadians(30), Math.toRadians(200)),
              new Translation3d(Units.inchesToMeters(-10.6488),
                                Units.inchesToMeters(11.957134),
                                Units.inchesToMeters(6.03258)),
@@ -385,18 +385,18 @@ public class Vision
      * Front Left Camera
      */
     FrontLeft("FrontLeft",
-              new Rotation3d(0, Math.toRadians(30), Math.toRadians(-28)),  //new camera needs to be -40
-              new Translation3d(Units.inchesToMeters(10.6488),
-                                Units.inchesToMeters(11.957134),
+              new Rotation3d(0, Math.toRadians(12.5), Math.toRadians(-35.65)),  //correct yaw offset
+              new Translation3d(Units.inchesToMeters(11.25),
+                                Units.inchesToMeters(10.75),
                                 Units.inchesToMeters(6.03258)),
               VecBuilder.fill(4, 4, 8), VecBuilder.fill(0.5, 0.5, 1)),
     /*
     Front Right Camera*
      */
     FrontRight("FrontRight",
-               new Rotation3d(0, Math.toRadians(30), Math.toRadians(21)),
-               new Translation3d(Units.inchesToMeters(10.6488),
-                                 Units.inchesToMeters(-11.957134),
+               new Rotation3d(0, Math.toRadians(12.5), Math.toRadians(33)), //correct yaw offset
+               new Translation3d(Units.inchesToMeters(11.25), //10.944
+                                 Units.inchesToMeters(-10.75), //-11.2244
                                  Units.inchesToMeters(6.03258)),
                VecBuilder.fill(4, 4, 8), VecBuilder.fill(0.5, 0.5, 1));
 
