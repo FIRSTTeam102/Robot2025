@@ -67,7 +67,6 @@ public class RobotContainer
   private final Elevator elevator = new Elevator();
 
                                                                         
-  private final Climber climber = new Climber();
 
   /**
    * Converts driver input into a field-relative ChassisSpeeds input stream that is 
