@@ -20,18 +20,19 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.DrivebaseConstants;
 import frc.robot.Constants.DrivebaseConstants.TargetSide;
 import frc.robot.Constants.ElevatorConstants;
 import frc.robot.Constants.OperatorConstants;
-import frc.robot.commands.ClimberOutSetSpeed;
+//import frc.robot.commands.ClimberOutSetSpeed;
 import frc.robot.commands.Intake;
 import frc.robot.commands.IntakeAuto;
 import frc.robot.commands.ManualElevatorControl;
 import frc.robot.commands.ShootCoral;
-import frc.robot.subsystems.Climber;
+//import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.Shooter;
 //import frc.robot.commands.swervedrive.drivebase.AbsoluteDriveAdv;
@@ -132,6 +133,7 @@ public class RobotContainer
     NamedCommands.registerCommand("Go to L4",(elevator.setElevatorHeight(ElevatorConstants.LEVEL4))); //change parameters for L4
     NamedCommands.registerCommand("Go to home",(elevator.setElevatorHeight(ElevatorConstants.HOME))); //change parameters for L4
 
+    
   }
 
   /**
@@ -181,10 +183,13 @@ public class RobotContainer
                 ()->driveAngularVelocity.robotRelative(false)
                                         .allianceRelativeControl(true)
                               ));
-
-    driverXbox.leftBumper().whileTrue(drivebase.alignToReefScore(TargetSide.LEFT));
-    driverXbox.rightBumper().whileTrue(drivebase.alignToReefScore(TargetSide.RIGHT));
+    //AutoAlign that uses vision to find the target to drive to
+    //driverXbox.leftBumper().whileTrue(drivebase.alignToReefScore(TargetSide.LEFT));
+    //driverXbox.rightBumper().whileTrue(drivebase.alignToReefScore(TargetSide.RIGHT));
     
+    driverXbox.leftBumper().whileTrue(Commands.print("LeftBumper").andThen(drivebase.alignToReefScore(TargetSide.LEFT)));
+    driverXbox.rightBumper().whileTrue(new RunCommand(()->drivebase.alignToReefScore(TargetSide.RIGHT),drivebase));
+
 
 
     //TODO ???? right bumper used - driverXbox.rightBumper().whileTrue(...) change center of rotation to left or right front corner
@@ -192,8 +197,7 @@ public class RobotContainer
 
     //TODO driverXbox.a().onTrue(....) toggle robot between field & robot oriented, show on
     // shuffleboard
-    //driverXbox.a().whileTrue(drivebase.alignToReefScore(17,TargetSide.LEFT));
-    //driverXbox.b().whileTrue(drivebase.alignToReefScore(18,TargetSide.RIGHT));
+   
     //hardcoded auto align 
     
     // Levels L1, L2, L3, L4 in inches & set to a,b,x,y buttons per Drive team
@@ -203,10 +207,10 @@ public class RobotContainer
     operatorXbox.b().onTrue(elevator.setElevatorHeight(ElevatorConstants.LEVEL2));
     operatorXbox.x().onTrue(elevator.setElevatorHeight(ElevatorConstants.LEVEL3));
     operatorXbox.y().onTrue(elevator.setElevatorHeight(ElevatorConstants.LEVEL4)); 
-    operatorXbox.povRight().whileTrue(new ClimberOutSetSpeed(climber,1));
-    operatorXbox.povLeft().whileTrue(new ClimberOutSetSpeed(climber, -1));
-    operatorXbox.povUp().whileTrue(climber.flickFunnel(0.143));
-    operatorXbox.povDown().whileTrue(climber.flickFunnel(-1.024));
+    //operatorXbox.povRight().whileTrue(new ClimberOutSetSpeed(climber,1));
+    //operatorXbox.povLeft().whileTrue(new ClimberOutSetSpeed(climber, -1));
+    //operatorXbox.povUp().whileTrue(climber.flickFunnel(0.143));
+    //operatorXbox.povDown().whileTrue(climber.flickFunnel(-1.024));
     
     operatorXbox.rightTrigger().whileTrue(new ShootCoral(shooter, 
                                 Constants.ShooterConstants.LeftMaxShooterSpeed,
