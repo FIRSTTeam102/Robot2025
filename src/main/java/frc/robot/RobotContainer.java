@@ -24,12 +24,12 @@ import frc.robot.Constants.DrivebaseConstants;
 import frc.robot.Constants.DrivebaseConstants.TargetSide;
 import frc.robot.Constants.ElevatorConstants;
 import frc.robot.Constants.OperatorConstants;
-import frc.robot.commands.ClimberOutSetSpeed;
+//import frc.robot.commands.ClimberOutSetSpeed;
 import frc.robot.commands.Intake;
 import frc.robot.commands.IntakeAuto;
 import frc.robot.commands.ManualElevatorControl;
 import frc.robot.commands.ShootCoral;
-import frc.robot.subsystems.Climber;
+//import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.Shooter;
 //import frc.robot.commands.swervedrive.drivebase.AbsoluteDriveAdv;
@@ -64,7 +64,7 @@ public class RobotContainer
   private final Elevator elevator = new Elevator();
 
                                                                         
-  private final Climber climber = new Climber();
+  //private final Climber climber = new Climber();
   /**
    * Converts driver input into a field-relative ChassisSpeeds input stream that is 
    * controlled by angular velocity. Invert Joysticks & scale the joystick input (this slows the robot
@@ -210,10 +210,10 @@ public class RobotContainer
     operatorXbox.b().onTrue(elevator.setElevatorHeight(ElevatorConstants.LEVEL2));
     operatorXbox.x().onTrue(elevator.setElevatorHeight(ElevatorConstants.LEVEL3));
     operatorXbox.y().onTrue(elevator.setElevatorHeight(ElevatorConstants.LEVEL4)); 
-    operatorXbox.povRight().whileTrue(new ClimberOutSetSpeed(climber,1));
-    operatorXbox.povLeft().whileTrue(new ClimberOutSetSpeed(climber, -1));
-    operatorXbox.povUp().whileTrue(climber.flickFunnel(0.143));
-    operatorXbox.povDown().whileTrue(climber.flickFunnel(-1.024));
+    //operatorXbox.povRight().whileTrue(new ClimberOutSetSpeed(climber,1));
+    //operatorXbox.povLeft().whileTrue(new ClimberOutSetSpeed(climber, -1));
+    //operatorXbox.povUp().whileTrue(climber.flickFunnel(0.143));
+    //operatorXbox.povDown().whileTrue(climber.flickFunnel(-1.024));
     
     operatorXbox.rightTrigger().whileTrue(new ShootCoral(shooter, 
                                 Constants.ShooterConstants.LeftMaxShooterSpeed,
