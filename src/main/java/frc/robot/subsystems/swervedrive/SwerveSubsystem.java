@@ -35,6 +35,8 @@ import edu.wpi.first.wpilibj.Timer;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.PrintCommand;
+import edu.wpi.first.wpilibj2.command.SelectCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Config;
 import frc.robot.Constants;
@@ -45,6 +47,7 @@ import frc.robot.subsystems.swervedrive.Vision.Cameras;
 import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.DoubleSupplier;
@@ -249,7 +252,100 @@ public class SwerveSubsystem extends SubsystemBase
     PathfindingCommand.warmupCommand().schedule();
   }
  
- 
+ //Blue Alliance reef tags = 17, 18, 19, 20, 21, 22
+  //Red Alliance reef tags = 6, 7, 8, 9, 10, 11
+  private enum ReefSelector {
+    SIX,
+    SEVEN,
+    EIGHT,
+    NINE,
+    TEN,
+    ELEVEN,
+    SEVENTEEN,
+    EIGHTEEN,
+    NINETEEN,
+    TWENTY,
+    TWENTYONE,
+    TWENTYTWO,
+    ZERO
+  }
+
+  // An example selector method for the selectcommand.  Returns the selector that will select
+  // which command to run.  Can base this choice on logical conditions evaluated at runtime.
+  private ReefSelector select() {
+    int currentTag = SharedData.getInstance().getCurrentTagID();
+    System.out.println("currentTag=" + currentTag);
+    switch (currentTag) {
+      case 6:
+        return ReefSelector.SIX;
+      case 7:
+        return ReefSelector.SEVEN;
+      case 8:
+        return ReefSelector.EIGHT;
+      case 9:
+        return ReefSelector.NINE;
+      case 10:
+        return ReefSelector.TEN;
+      case 11:
+        return ReefSelector.ELEVEN;
+      case 17:
+        return ReefSelector.SEVENTEEN;
+      case 18:
+        return ReefSelector.EIGHTEEN;
+      case 19:
+        return ReefSelector.NINETEEN;
+      case 20:
+        return ReefSelector.TWENTY;
+      case 21:
+        return ReefSelector.TWENTYONE;
+      case 22:
+        return ReefSelector.TWENTYTWO;
+      default:
+        return ReefSelector.ZERO;
+    }
+  }
+
+  // An example selectcommand.  Will select from the three commands based on the value returned
+  // by the selector method at runtime.  Note that selectcommand works on Object(), so the
+  // selector does not have to be an enum; it could be any desired type (string, integer,
+  // boolean, double...)
+  public Command selectLeftReefAlign =
+      new SelectCommand<>(
+          // Maps selector values to commands
+          Map.ofEntries(
+              Map.entry(ReefSelector.ZERO, new PrintCommand("No valid april tag seen!")),
+              Map.entry(ReefSelector.SIX, new PrintCommand("Six!").andThen(alignToReefScore(6, TargetSide.LEFT))),
+              Map.entry(ReefSelector.SEVEN, new PrintCommand("Seven!").andThen(alignToReefScore(7, TargetSide.LEFT))),
+              Map.entry(ReefSelector.EIGHT, new PrintCommand("Eight!").andThen(alignToReefScore(8, TargetSide.LEFT))),
+              Map.entry(ReefSelector.NINE, new PrintCommand("Nine!").andThen(alignToReefScore(9, TargetSide.LEFT))),
+              Map.entry(ReefSelector.TEN, new PrintCommand("Ten!").andThen(alignToReefScore(10, TargetSide.LEFT))),
+              Map.entry(ReefSelector.ELEVEN, new PrintCommand("Eleven!").andThen(alignToReefScore(11, TargetSide.LEFT))),
+              Map.entry(ReefSelector.SEVENTEEN, new PrintCommand("Seventeen!").andThen(alignToReefScore(17, TargetSide.LEFT))),
+              Map.entry(ReefSelector.EIGHTEEN, new PrintCommand("Eighteen!").andThen(alignToReefScore(18, TargetSide.LEFT))),
+              Map.entry(ReefSelector.NINETEEN, new PrintCommand("Nineteen!").andThen(alignToReefScore(19, TargetSide.LEFT))),
+              Map.entry(ReefSelector.TWENTY, new PrintCommand("Twenty!").andThen(alignToReefScore(20, TargetSide.LEFT))),
+              Map.entry(ReefSelector.TWENTYONE, new PrintCommand("Twenty-one!").andThen(alignToReefScore(21, TargetSide.LEFT)))),
+          this::select);
+
+    public Command selectRightReefAlign =
+        new SelectCommand<>(
+            // Maps selector values to commands
+            Map.ofEntries(
+                Map.entry(ReefSelector.ZERO, new PrintCommand("No valid april tag seen!")),
+                Map.entry(ReefSelector.SIX, new PrintCommand("Six!").andThen(alignToReefScore(6, TargetSide.RIGHT))),
+                Map.entry(ReefSelector.SEVEN, new PrintCommand("Seven!").andThen(alignToReefScore(7, TargetSide.RIGHT))),
+                Map.entry(ReefSelector.EIGHT, new PrintCommand("Eight!").andThen(alignToReefScore(8, TargetSide.RIGHT))),
+                Map.entry(ReefSelector.NINE, new PrintCommand("Nine!").andThen(alignToReefScore(9, TargetSide.RIGHT))),
+                Map.entry(ReefSelector.TEN, new PrintCommand("Ten!").andThen(alignToReefScore(10, TargetSide.RIGHT))),
+                Map.entry(ReefSelector.ELEVEN, new PrintCommand("Eleven!").andThen(alignToReefScore(11, TargetSide.RIGHT))),
+                Map.entry(ReefSelector.SEVENTEEN, new PrintCommand("Seventeen!").andThen(alignToReefScore(17, TargetSide.RIGHT))),
+                Map.entry(ReefSelector.EIGHTEEN, new PrintCommand("Eighteen!").andThen(alignToReefScore(18, TargetSide.RIGHT))),
+                Map.entry(ReefSelector.NINETEEN, new PrintCommand("Nineteen!").andThen(alignToReefScore(19, TargetSide.RIGHT))),
+                Map.entry(ReefSelector.TWENTY, new PrintCommand("Twenty!").andThen(alignToReefScore(20, TargetSide.RIGHT))),
+                Map.entry(ReefSelector.TWENTYONE, new PrintCommand("Twenty-one!").andThen(alignToReefScore(21, TargetSide.RIGHT)))),
+            this::select);
+
+
   /*
    * driveToReefScore - takes an aprilTagID and a target side
    *   to make testing in the simulator easier when there is no live
