@@ -6,6 +6,7 @@
 package frc.robot;
 
 import java.io.File;
+import java.util.Optional;
 
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
@@ -14,6 +15,7 @@ import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.RobotBase;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -65,6 +67,7 @@ public class RobotContainer
 
                                                                         
   private final Climber climber = new Climber();
+
   /**
    * Converts driver input into a field-relative ChassisSpeeds input stream that is 
    * controlled by angular velocity. Invert Joysticks & scale the joystick input (this slows the robot
@@ -192,17 +195,7 @@ public class RobotContainer
     //driverXbox.a().whileTrue(drivebase.alignToReefScore(17,TargetSide.LEFT));
     //driverXbox.b().whileTrue(drivebase.alignToReefScore(18,TargetSide.RIGHT));
     //hardcoded auto align 
-    driverXbox.x().and(driverXbox.leftBumper()).whileTrue(drivebase.alignToReefScore(20,TargetSide.LEFT));
-    driverXbox.x().and(driverXbox.rightBumper()).whileTrue(drivebase.alignToReefScore(20,TargetSide.RIGHT));
-
-    driverXbox.y().and(driverXbox.leftBumper()).whileTrue(drivebase.alignToReefScore(21,TargetSide.LEFT));
-    driverXbox.y().and(driverXbox.rightBumper()).whileTrue(drivebase.alignToReefScore(21,TargetSide.RIGHT));
-
-    driverXbox.b().and(driverXbox.leftBumper()).whileTrue(drivebase.alignToReefScore(7,TargetSide.LEFT));
-    driverXbox.b().and(driverXbox.rightBumper()).whileTrue(drivebase.alignToReefScore(7,TargetSide.RIGHT));
-
-    driverXbox.a().and(driverXbox.leftBumper()).whileTrue(drivebase.alignToReefScore(6,TargetSide.LEFT));
-    driverXbox.a().and(driverXbox.rightBumper()).whileTrue(drivebase.alignToReefScore(6,TargetSide.RIGHT));
+    
     // Levels L1, L2, L3, L4 in inches & set to a,b,x,y buttons per Drive team
     //definitions
     operatorXbox.leftBumper().onTrue(elevator.setElevatorHeight(ElevatorConstants.HOME));
@@ -236,7 +229,7 @@ public class RobotContainer
     } 
 
     //Left operator joystick controls manual elevator control regardless of mode
-		elevator.setDefaultCommand(new ManualElevatorControl(elevator,  () -> operatorXbox.getLeftY() * -1));
+    elevator.setDefaultCommand(new ManualElevatorControl(elevator,  () -> operatorXbox.getLeftY() * -1));
 
     //define the button to command bindings to run in test mode we don't want to run these
     //by accident so we are putting them on a separate xbox controller. NOTE: sysid needs to
@@ -259,9 +252,52 @@ public class RobotContainer
       //testerXbox.povRight().onTrue(new ClimberOut(climber, 1)); //flip climber in or out
   
     }
+      var allianceColor = DriverStation.getAlliance();
+
+    if (allianceColor.get() == DriverStation.Alliance.Red) {
+      driverXbox.x().and(driverXbox.leftBumper()).whileTrue(drivebase.alignToReefScore(6,TargetSide.LEFT));
+      driverXbox.x().and(driverXbox.rightBumper()).whileTrue(drivebase.alignToReefScore(6,TargetSide.RIGHT));
+  
+      driverXbox.y().and(driverXbox.leftBumper()).whileTrue(drivebase.alignToReefScore(11,TargetSide.LEFT));
+      driverXbox.y().and(driverXbox.rightBumper()).whileTrue(drivebase.alignToReefScore(11,TargetSide.RIGHT));
+  
+      driverXbox.b().and(driverXbox.leftBumper()).whileTrue(drivebase.alignToReefScore(9,TargetSide.LEFT));
+      driverXbox.b().and(driverXbox.rightBumper()).whileTrue(drivebase.alignToReefScore(9,TargetSide.RIGHT));
+  
+      driverXbox.a().and(driverXbox.leftBumper()).whileTrue(drivebase.alignToReefScore(8,TargetSide.LEFT));
+      driverXbox.a().and(driverXbox.rightBumper()).whileTrue(drivebase.alignToReefScore(8,TargetSide.RIGHT));
+
+      driverXbox.b().and(driverXbox.y()).and(driverXbox.leftBumper()).whileTrue(drivebase.alignToReefScore(10, TargetSide.LEFT));
+      driverXbox.b().and(driverXbox.y()).and(driverXbox.rightBumper()).whileTrue(drivebase.alignToReefScore(10, TargetSide.RIGHT));
+
+      driverXbox.a().and(driverXbox.x()).and(driverXbox.leftBumper()).whileTrue(drivebase.alignToReefScore(7, TargetSide.LEFT));
+      driverXbox.a().and(driverXbox.x()).and(driverXbox.rightBumper()).whileTrue(drivebase.alignToReefScore(7, TargetSide.RIGHT));
+  
+    } else if (allianceColor.get() == DriverStation.Alliance.Blue) {
+      driverXbox.x().and(driverXbox.leftBumper()).whileTrue(drivebase.alignToReefScore(19,TargetSide.LEFT));
+      driverXbox.x().and(driverXbox.rightBumper()).whileTrue(drivebase.alignToReefScore(19,TargetSide.RIGHT));
+  
+      driverXbox.y().and(driverXbox.leftBumper()).whileTrue(drivebase.alignToReefScore(20,TargetSide.LEFT));
+      driverXbox.y().and(driverXbox.rightBumper()).whileTrue(drivebase.alignToReefScore(20,TargetSide.RIGHT));
+  
+      driverXbox.b().and(driverXbox.leftBumper()).whileTrue(drivebase.alignToReefScore(22,TargetSide.LEFT));
+      driverXbox.b().and(driverXbox.rightBumper()).whileTrue(drivebase.alignToReefScore(22,TargetSide.RIGHT));
+  
+      driverXbox.a().and(driverXbox.leftBumper()).whileTrue(drivebase.alignToReefScore(17,TargetSide.LEFT));
+      driverXbox.a().and(driverXbox.rightBumper()).whileTrue(drivebase.alignToReefScore(17,TargetSide.RIGHT));
+
+      driverXbox.b().and(driverXbox.y()).and(driverXbox.leftBumper()).whileTrue(drivebase.alignToReefScore(21, TargetSide.LEFT));
+      driverXbox.b().and(driverXbox.y()).and(driverXbox.rightBumper()).whileTrue(drivebase.alignToReefScore(21, TargetSide.RIGHT));
+
+      driverXbox.a().and(driverXbox.x()).and(driverXbox.leftBumper()).whileTrue(drivebase.alignToReefScore(18, TargetSide.LEFT));
+      driverXbox.a().and(driverXbox.x()).and(driverXbox.rightBumper()).whileTrue(drivebase.alignToReefScore(18, TargetSide.RIGHT));
+    } else {
+      System.out.println("no alliance found");
+    }
+    } 
     
 
-    }
+    
 
   
   public void ZeroGyro(){
