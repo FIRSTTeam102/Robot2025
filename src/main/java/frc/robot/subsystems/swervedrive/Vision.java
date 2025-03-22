@@ -154,15 +154,15 @@ public class Vision
   public int getCamerasTargetID(Cameras camera){
     PhotonTrackedTarget target;
 
-    System.out.println("Vision:getCamerasTargetID: Check Camera");
+    //System.out.println("Vision:getCamerasTargetID: Check Camera");
     var results = camera.getLatestResult();
     if (!results.isEmpty()){
       var result = results.orElse(null);
       if (result == null) return(0);
       if (result.hasTargets()){
-         System.out.println("   Camera found a result target");
+         //System.out.println("   Camera found a result target");
          target = result.getBestTarget();
-         System.out.println("   Camera found a best target getting ID");
+        // System.out.println("   Camera found a best target getting ID");
          return(target.getFiducialId());
       }
     }
@@ -177,24 +177,32 @@ public class Vision
     for (Cameras camera : Cameras.values()){
       if (camera.equals(Cameras.FrontLeft)){
 
-        System.out.println("Vision:GetBestReefTarget: Check FrontLeft Camera");
+        //System.out.println("Vision:GetBestReefTarget: Check FrontLeft Camera");
         targetID = getCamerasTargetID(camera);
         
         if (isValidTargetForScoring(targetID)){
-          System.out.println("  Return frontLeftTarget ID:" + targetID);
+          long current = System.currentTimeMillis();
+          if (current - SharedData.getInstance().delay > SharedData.getInstance().lastPrintTimestamp){
+            SharedData.getInstance().lastPrintTimestamp = current;
+            System.out.println("Vision.getBestReefTarget(): Return frontLeftTarget ID:" + targetID);
+          }
           return(targetID);
         }
       }
       if (camera.equals(Cameras.FrontRight)){
-        System.out.println("Vision:GetBestReefTarget: Check FrontRight Camera");
+        //System.out.println("Vision:GetBestReefTarget: Check FrontRight Camera");
         targetID = getCamerasTargetID(camera);
         if (isValidTargetForScoring(targetID)){
-          System.out.println("  Return frontRightTarget ID:" + targetID);
+          long current = System.currentTimeMillis();
+          if (current - SharedData.getInstance().delay > SharedData.getInstance().lastPrintTimestamp){
+            SharedData.getInstance().lastPrintTimestamp = current;
+            System.out.println("  Return frontRightTarget ID:" + targetID);
+          }
           return(targetID);
         }
       }
     }
-    System.out.println("Vision:GetBestReefTarget: NO APRIL TAG TARGET FOUND return 0");
+    //System.out.println("Vision:GetBestReefTarget: NO APRIL TAG TARGET FOUND return 0");
     return(0);
   }
   /**

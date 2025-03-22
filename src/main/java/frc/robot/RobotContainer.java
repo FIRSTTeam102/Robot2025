@@ -18,6 +18,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.DrivebaseConstants;
@@ -129,6 +130,7 @@ public class RobotContainer
     NamedCommands.registerCommand("Go to L4",(elevator.setElevatorHeight(ElevatorConstants.LEVEL4))); //change parameters for L4
     NamedCommands.registerCommand("Go to home",(elevator.setElevatorHeight(ElevatorConstants.HOME))); //change parameters for L4
 
+    
   }
 
   /**
@@ -178,10 +180,13 @@ public class RobotContainer
                 ()->driveAngularVelocity.robotRelative(false)
                                         .allianceRelativeControl(true)
                               ));
-
-    driverXbox.leftBumper().whileTrue(drivebase.alignToReefScore(TargetSide.LEFT));
-    driverXbox.rightBumper().whileTrue(drivebase.alignToReefScore(TargetSide.RIGHT));
+    //AutoAlign that uses vision to find the target to drive to
+    //driverXbox.leftBumper().whileTrue(drivebase.alignToReefScore(TargetSide.LEFT));
+    //driverXbox.rightBumper().whileTrue(drivebase.alignToReefScore(TargetSide.RIGHT));
     
+    driverXbox.leftBumper().whileTrue(Commands.print("LeftBumper").andThen(drivebase.alignToReefScore(TargetSide.LEFT)));
+    driverXbox.rightBumper().whileTrue(new RunCommand(()->drivebase.alignToReefScore(TargetSide.RIGHT),drivebase));
+
 
 
     //TODO ???? right bumper used - driverXbox.rightBumper().whileTrue(...) change center of rotation to left or right front corner
@@ -189,8 +194,7 @@ public class RobotContainer
 
     //TODO driverXbox.a().onTrue(....) toggle robot between field & robot oriented, show on
     // shuffleboard
-    //driverXbox.a().whileTrue(drivebase.alignToReefScore(17,TargetSide.LEFT));
-    //driverXbox.b().whileTrue(drivebase.alignToReefScore(18,TargetSide.RIGHT));
+   
     //hardcoded auto align 
     driverXbox.x().and(driverXbox.leftBumper()).whileTrue(drivebase.alignToReefScore(20,TargetSide.LEFT));
     driverXbox.x().and(driverXbox.rightBumper()).whileTrue(drivebase.alignToReefScore(20,TargetSide.RIGHT));
