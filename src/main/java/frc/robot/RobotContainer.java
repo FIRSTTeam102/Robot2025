@@ -6,6 +6,7 @@
 package frc.robot;
 
 import java.io.File;
+import java.util.Map;
 import java.util.Optional;
 
 import com.pathplanner.lib.auto.AutoBuilder;
@@ -20,7 +21,9 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.PrintCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
+import edu.wpi.first.wpilibj2.command.SelectCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.DrivebaseConstants;
@@ -35,6 +38,7 @@ import frc.robot.commands.ShootCoral;
 //import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.Shooter;
+import frc.robot.subsystems.swervedrive.SharedData;
 //import frc.robot.commands.swervedrive.drivebase.AbsoluteDriveAdv;
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
 import swervelib.SwerveInputStream;
@@ -135,6 +139,100 @@ public class RobotContainer
     
   }
 
+ //Blue Alliance reef tags = 17, 18, 19, 20, 21, 22
+  //Red Alliance reef tags = 6, 7, 8, 9, 10, 11
+  private enum ReefSelector {
+    SIX,
+    SEVEN,
+    EIGHT,
+    NINE,
+    TEN,
+    ELEVEN,
+    SEVENTEEN,
+    EIGHTEEN,
+    NINETEEN,
+    TWENTY,
+    TWENTYONE,
+    TWENTYTWO,
+    ZERO
+  }
+
+  // An example selector method for the selectcommand.  Returns the selector that will select
+  // which command to run.  Can base this choice on logical conditions evaluated at runtime.
+  private ReefSelector select() {
+    int currentTag = SharedData.getInstance().getCurrentTagID();
+    System.out.println("currentTag=" + currentTag);
+    switch (currentTag) {
+      case 6:
+        return ReefSelector.SIX;
+      case 7:
+        return ReefSelector.SEVEN;
+      case 8:
+        return ReefSelector.EIGHT;
+      case 9:
+        return ReefSelector.NINE;
+      case 10:
+        return ReefSelector.TEN;
+      case 11:
+        return ReefSelector.ELEVEN;
+      case 17:
+        return ReefSelector.SEVENTEEN;
+      case 18:
+        return ReefSelector.EIGHTEEN;
+      case 19:
+        return ReefSelector.NINETEEN;
+      case 20:
+        return ReefSelector.TWENTY;
+      case 21:
+        return ReefSelector.TWENTYONE;
+      case 22:
+        return ReefSelector.TWENTYTWO;
+      default:
+        return ReefSelector.ZERO;
+    }
+  }
+
+  // An example selectcommand.  Will select from the three commands based on the value returned
+  // by the selector method at runtime.  Note that selectcommand works on Object(), so the
+  // selector does not have to be an enum; it could be any desired type (string, integer,
+  // boolean, double...)
+  public Command selectLeftReefAlign =
+      new SelectCommand<>(
+          // Maps selector values to commands
+          Map.ofEntries(
+              Map.entry(ReefSelector.ZERO, new PrintCommand("No valid april tag seen!")),
+              Map.entry(ReefSelector.SIX, new PrintCommand("Six!").andThen(drivebase.alignToReefScore(6, TargetSide.LEFT))),
+              Map.entry(ReefSelector.SEVEN, new PrintCommand("Seven!").andThen(drivebase.alignToReefScore(7, TargetSide.LEFT))),
+              Map.entry(ReefSelector.EIGHT, new PrintCommand("Eight!").andThen(drivebase.alignToReefScore(8, TargetSide.LEFT))),
+              Map.entry(ReefSelector.NINE, new PrintCommand("Nine!").andThen(drivebase.alignToReefScore(9, TargetSide.LEFT))),
+              Map.entry(ReefSelector.TEN, new PrintCommand("Ten!").andThen(drivebase.alignToReefScore(10, TargetSide.LEFT))),
+              Map.entry(ReefSelector.ELEVEN, new PrintCommand("Eleven!").andThen(drivebase.alignToReefScore(11, TargetSide.LEFT))),
+              Map.entry(ReefSelector.SEVENTEEN, new PrintCommand("Seventeen!").andThen(drivebase.alignToReefScore(17, TargetSide.LEFT))),
+              Map.entry(ReefSelector.EIGHTEEN, new PrintCommand("Eighteen!").andThen(drivebase.alignToReefScore(18, TargetSide.LEFT))),
+              Map.entry(ReefSelector.NINETEEN, new PrintCommand("Nineteen!").andThen(drivebase.alignToReefScore(19, TargetSide.LEFT))),
+              Map.entry(ReefSelector.TWENTY, new PrintCommand("Twenty!").andThen(drivebase.alignToReefScore(20, TargetSide.LEFT))),
+              Map.entry(ReefSelector.TWENTYONE, new PrintCommand("Twenty-one!").andThen(drivebase.alignToReefScore(21, TargetSide.LEFT)))),
+          this::select);
+
+    public Command selectRightReefAlign =
+        new SelectCommand<>(
+            // Maps selector values to commands
+            Map.ofEntries(
+                Map.entry(ReefSelector.ZERO, new PrintCommand("No valid april tag seen!")),
+                Map.entry(ReefSelector.SIX, new PrintCommand("Six!").andThen(drivebase.alignToReefScore(6, TargetSide.RIGHT))),
+                Map.entry(ReefSelector.SEVEN, new PrintCommand("Seven!").andThen(drivebase.alignToReefScore(7, TargetSide.RIGHT))),
+                Map.entry(ReefSelector.EIGHT, new PrintCommand("Eight!").andThen(drivebase.alignToReefScore(8, TargetSide.RIGHT))),
+                Map.entry(ReefSelector.NINE, new PrintCommand("Nine!").andThen(drivebase.alignToReefScore(9, TargetSide.RIGHT))),
+                Map.entry(ReefSelector.TEN, new PrintCommand("Ten!").andThen(drivebase.alignToReefScore(10, TargetSide.RIGHT))),
+                Map.entry(ReefSelector.ELEVEN, new PrintCommand("Eleven!").andThen(drivebase.alignToReefScore(11, TargetSide.RIGHT))),
+                Map.entry(ReefSelector.SEVENTEEN, new PrintCommand("Seventeen!").andThen(drivebase.alignToReefScore(17, TargetSide.RIGHT))),
+                Map.entry(ReefSelector.EIGHTEEN, new PrintCommand("Eighteen!").andThen(drivebase.alignToReefScore(18, TargetSide.RIGHT))),
+                Map.entry(ReefSelector.NINETEEN, new PrintCommand("Nineteen!").andThen(drivebase.alignToReefScore(19, TargetSide.RIGHT))),
+                Map.entry(ReefSelector.TWENTY, new PrintCommand("Twenty!").andThen(drivebase.alignToReefScore(20, TargetSide.RIGHT))),
+                Map.entry(ReefSelector.TWENTYONE, new PrintCommand("Twenty-one!").andThen(drivebase.alignToReefScore(21, TargetSide.RIGHT)))),
+            this::select);
+
+
   /**
    * Use this method to define your trigger->command mappings. Triggers can be created via the
    * {@link Trigger#Trigger(java.util.function.BooleanSupplier)} constructor with an arbitrary predicate, or via the
@@ -189,8 +287,8 @@ public class RobotContainer
     //driverXbox.leftBumper().whileTrue(Commands.print("LeftBumper").andThen(drivebase.alignToReefScore(TargetSide.LEFT)));
     //driverXbox.rightBumper().whileTrue(new RunCommand(()->drivebase.alignToReefScore(TargetSide.RIGHT),drivebase));
 
-    driverXbox.leftBumper().whileTrue(Commands.print("LeftBumper").andThen(drivebase.selectLeftReefAlign));
-    driverXbox.rightBumper().whileTrue(Commands.print("RightBumper").andThen(drivebase.selectRightReefAlign));
+    driverXbox.leftBumper().whileTrue(Commands.print("LeftBumper").andThen(selectLeftReefAlign));
+    driverXbox.rightBumper().whileTrue(Commands.print("RightBumper").andThen(selectRightReefAlign));
 
 
     //TODO ???? right bumper used - driverXbox.rightBumper().whileTrue(...) change center of rotation to left or right front corner
