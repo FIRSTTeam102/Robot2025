@@ -183,11 +183,10 @@ public class RobotContainer
                                         .allianceRelativeControl(true)
                               ));
     //AutoAlign that uses vision to find the target to drive to
-    //driverXbox.leftBumper().whileTrue(drivebase.alignToReefScore(TargetSide.LEFT));
-    //driverXbox.rightBumper().whileTrue(drivebase.alignToReefScore(TargetSide.RIGHT));
     
-    driverXbox.leftBumper().whileTrue(Commands.print("LeftBumper").andThen(drivebase.alignToReefScore(TargetSide.LEFT)));
-    driverXbox.rightBumper().whileTrue(new RunCommand(()->drivebase.alignToReefScore(TargetSide.RIGHT),drivebase));
+     driverXbox.leftBumper().whileTrue(Commands.run(()->{drivebase.alignToReefScore(()->drivebase.getReefTargetTagID(), TargetSide.LEFT).schedule();}));
+     driverXbox.rightBumper().whileTrue(Commands.run(()->{drivebase.alignToReefScore(()->drivebase.getReefTargetTagID(), TargetSide.RIGHT).schedule();}));
+                    
 
 
 
