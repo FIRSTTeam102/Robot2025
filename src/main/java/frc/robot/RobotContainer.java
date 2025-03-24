@@ -257,7 +257,7 @@ public class RobotContainer
     }
       var allianceColor = DriverStation.getAlliance();
 
-    if (allianceColor.get() == DriverStation.Alliance.Red) {
+    if (allianceColor.isPresent() && allianceColor.get() == DriverStation.Alliance.Red) {
       driverXbox.x().and(driverXbox.leftBumper()).whileTrue(drivebase.alignToReefScore(6,TargetSide.LEFT));
       driverXbox.x().and(driverXbox.rightBumper()).whileTrue(drivebase.alignToReefScore(6,TargetSide.RIGHT));
   
@@ -276,7 +276,7 @@ public class RobotContainer
       driverXbox.a().and(driverXbox.x()).and(driverXbox.leftBumper()).whileTrue(drivebase.alignToReefScore(7, TargetSide.LEFT));
       driverXbox.a().and(driverXbox.x()).and(driverXbox.rightBumper()).whileTrue(drivebase.alignToReefScore(7, TargetSide.RIGHT));
   
-    } else if (allianceColor.get() == DriverStation.Alliance.Blue) {
+    } else if (allianceColor.isPresent() && allianceColor.get() == DriverStation.Alliance.Blue) {
       driverXbox.x().and(driverXbox.leftBumper()).whileTrue(drivebase.alignToReefScore(19,TargetSide.LEFT));
       driverXbox.x().and(driverXbox.rightBumper()).whileTrue(drivebase.alignToReefScore(19,TargetSide.RIGHT));
   
