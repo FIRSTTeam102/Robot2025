@@ -34,7 +34,9 @@ import frc.robot.commands.ManualElevatorControl;
 import frc.robot.commands.ShootCoral;
 //import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Elevator;
+import frc.robot.subsystems.Lights;
 import frc.robot.subsystems.Shooter;
+import frc.robot.subsystems.Lights.AnimationTypes;
 //import frc.robot.commands.swervedrive.drivebase.AbsoluteDriveAdv;
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
 import swervelib.SwerveInputStream;
@@ -134,6 +136,7 @@ public class RobotContainer
     configureBindings();
     DriverStation.silenceJoystickConnectionWarning(true);
     
+    Lights.getInstance().setPattern(AnimationTypes.Rainbow);
     
   }
 
