@@ -81,6 +81,8 @@ public final class Constants
     public static final double LEVEL2 = 37.6415;
     public static final double LEVEL3 = 55.0746; //little high?? bot needs to move away a lil to shoot  
     public static final double LEVEL4 = 80.7107; 
+    public static final double ALGAE1 = 13.87;
+    public static final double ALGAE2 = 42.12;
 
 
 // The encoder is directly mounted to the elevator shaft - 1 rotation = 1 full rotation of the chain
