@@ -11,6 +11,12 @@
           }
         },
         {
+          "type": "named",
+          "data": {
+            "name": "align 21 Left"
+          }
+        },
+        {
           "type": "wait",
           "data": {
             "waitTime": 1.0
