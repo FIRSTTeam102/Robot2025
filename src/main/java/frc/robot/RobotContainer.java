@@ -127,9 +127,42 @@ public class RobotContainer
     NamedCommands.registerCommand("Go to L3",elevator.setElevatorHeight(ElevatorConstants.LEVEL3)); //change parameters for L3
     NamedCommands.registerCommand("Go to L4",(elevator.setElevatorHeight(ElevatorConstants.LEVEL4))); //change parameters for L4
     NamedCommands.registerCommand("Go to home",(elevator.setElevatorHeight(ElevatorConstants.HOME))); //change parameters for home
-    NamedCommands.registerCommand("align 21 Left",(drivebase.alignToReefScore(21,TargetSide.LEFT)));
-    NamedCommands.registerCommand("align 21 Right",(drivebase.alignToReefScore(21,TargetSide.RIGHT)));
+    NamedCommands.registerCommand("Intake", new IntakeAuto(shooter));
+    NamedCommands.registerCommand("Shoot", new ShootCoral(shooter, Constants.ShooterConstants.LeftMaxShooterSpeed, Constants.ShooterConstants.RightMaxShooterSpeed));
+    NamedCommands.registerCommand("ShootTrough", new ShootCoral(shooter, Constants.ShooterConstants.L1LeftShooterSpeed,Constants.ShooterConstants.L1RightShooterSpeed)); //change the parameters for L1
+    NamedCommands.registerCommand("Go to L1",elevator.setElevatorHeight(ElevatorConstants.LEVEL1));
+    NamedCommands.registerCommand("Go to L2",elevator.setElevatorHeight(ElevatorConstants.LEVEL2)); //change parameters for L2
+    NamedCommands.registerCommand("Go to L3",elevator.setElevatorHeight(ElevatorConstants.LEVEL3)); //change parameters for L3
+    NamedCommands.registerCommand("Go to L4",(elevator.setElevatorHeight(ElevatorConstants.LEVEL4))); //change parameters for L4
+    NamedCommands.registerCommand("Go to home",(elevator.setElevatorHeight(ElevatorConstants.HOME))); //change parameters for L4
 
+    //naming convention = alliance, clock position based on johan's diagram, side of position
+    NamedCommands.registerCommand("Red Align 12 Left", drivebase.alignToReefScore(7,TargetSide.LEFT));
+    NamedCommands.registerCommand("Red Align 12 Right", drivebase.alignToReefScore(7,TargetSide.RIGHT));
+    NamedCommands.registerCommand("Red Align 2 Right", drivebase.alignToReefScore(6,TargetSide.RIGHT));
+    NamedCommands.registerCommand("Red Align 2 Left", drivebase.alignToReefScore(6,TargetSide.LEFT));
+    NamedCommands.registerCommand("Red Align 4 Right", drivebase.alignToReefScore(11,TargetSide.RIGHT));
+    NamedCommands.registerCommand("Red Align 4 Left", drivebase.alignToReefScore(11,TargetSide.LEFT));
+    NamedCommands.registerCommand("Red Align 6 Right", drivebase.alignToReefScore(10,TargetSide.RIGHT));
+    NamedCommands.registerCommand("Red Align 6 Left", drivebase.alignToReefScore(10,TargetSide.LEFT));
+    NamedCommands.registerCommand("Red Align 8 Right", drivebase.alignToReefScore(9,TargetSide.RIGHT));
+    NamedCommands.registerCommand("Red Align 8 Left", drivebase.alignToReefScore(9,TargetSide.LEFT));
+    NamedCommands.registerCommand("Red Align 10 Right", drivebase.alignToReefScore(8,TargetSide.RIGHT));
+    NamedCommands.registerCommand("Red Align 10 Left", drivebase.alignToReefScore(8,TargetSide.LEFT));
+
+    NamedCommands.registerCommand("Blue Align 12 Left", drivebase.alignToReefScore(18,TargetSide.LEFT));
+    NamedCommands.registerCommand("Blue Align 12 Right", drivebase.alignToReefScore(18,TargetSide.RIGHT));
+    NamedCommands.registerCommand("Blue Align 2 Right", drivebase.alignToReefScore(19,TargetSide.RIGHT));
+    NamedCommands.registerCommand("Blue Align 2 Left", drivebase.alignToReefScore(19,TargetSide.LEFT));
+    NamedCommands.registerCommand("Blue Align 4 Right", drivebase.alignToReefScore(20,TargetSide.RIGHT));
+    NamedCommands.registerCommand("Blue Align 4 Left", drivebase.alignToReefScore(20,TargetSide.LEFT));
+    NamedCommands.registerCommand("Blue Align 6 Right", drivebase.alignToReefScore(21,TargetSide.RIGHT));
+    NamedCommands.registerCommand("Blue Align 6 Left", drivebase.alignToReefScore(21,TargetSide.LEFT));
+    NamedCommands.registerCommand("Blue Align 8 Right", drivebase.alignToReefScore(22,TargetSide.RIGHT));
+    NamedCommands.registerCommand("Blue Align 8 Left", drivebase.alignToReefScore(22,TargetSide.LEFT));
+    NamedCommands.registerCommand("Blue Align 10 Right", drivebase.alignToReefScore(17,TargetSide.RIGHT));
+    NamedCommands.registerCommand("Blue Align 10 Left", drivebase.alignToReefScore(17,TargetSide.LEFT));
+    NamedCommands.registerCommand("align Left",Commands.run(()->{drivebase.alignToReefScore(()->drivebase.getReefTargetTagID(), TargetSide.LEFT).schedule();}));
     autoChooser = AutoBuilder.buildAutoChooser();
     SmartDashboard.putData("Auto Chooser", autoChooser);
     // Configure the trigger bindings
