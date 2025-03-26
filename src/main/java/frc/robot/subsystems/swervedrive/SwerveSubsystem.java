@@ -251,13 +251,29 @@ public class SwerveSubsystem extends SubsystemBase
  
  
   /*
-   * driveToReefScore - takes an aprilTagID and a target side
-   *   to make testing in the simulator easier when there is no live
-   *   vision.
+   * ask the cameras for the best reef target - open this up to the drive subsystem 
+   * returns 0 if no valid target on this alliance is visible.
    */
   public int getReefTargetTagID(){
     return(vision.getBestReefTarget());
   }
+  //get the pose to align straight on to an april tag for algae removal
+  //generate a path to the april tag.
+  public Command alignToAlgae(IntSupplier aprilTagIntSupplier){
+    int aprilTag = aprilTagIntSupplier.getAsInt();
+
+    Transform2d robotOffset = new Transform2d(DrivebaseConstants.ReefXDistance,0,Rotation2d.kPi);
+    if (aprilTag > 0 && vision.isValidTargetForScoring(aprilTag)){
+      Pose2d newPose = Vision.getAprilTagPose(aprilTag,robotOffset);
+      return(driveToPose(newPose));
+    }
+    return(Commands.none());
+  }
+  /*
+   * driveToReefScore - takes an aprilTagID and a target side
+   *   to make testing in the simulator easier when there is no live
+   *   vision.
+   */
   public Command alignToReefScore(int aprilTag, TargetSide scoringSide){
     Transform2d robotOffset;
     if (scoringSide == DrivebaseConstants.TargetSide.LEFT){

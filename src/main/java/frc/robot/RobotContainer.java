@@ -189,11 +189,11 @@ public class RobotContainer
                               ));
     //AutoAlign that uses vision to find the target to drive to
     
-     driverXbox.leftBumper().whileTrue(Commands.run(()->{drivebase.alignToReefScore(()->drivebase.getReefTargetTagID(), TargetSide.LEFT).schedule();}));
-     driverXbox.rightBumper().whileTrue(Commands.run(()->{drivebase.alignToReefScore(()->drivebase.getReefTargetTagID(), TargetSide.RIGHT).schedule();}));
-                    
-
-
+     driverXbox.leftBumper().onTrue(Commands.runOnce(()->{drivebase.alignToReefScore(()->drivebase.getReefTargetTagID(), TargetSide.LEFT).schedule();}));
+     driverXbox.rightBumper().onTrue(Commands.runOnce(()->{drivebase.alignToReefScore(()->drivebase.getReefTargetTagID(), TargetSide.RIGHT).schedule();}));
+    
+     driverXbox.povUp().onTrue(Commands.runOnce(()->{drivebase.alignToAlgae(()->drivebase.getReefTargetTagID()).schedule();}));
+     
 
     //TODO ???? right bumper used - driverXbox.rightBumper().whileTrue(...) change center of rotation to left or right front corner
     // depending on if left joystick x is left or right
