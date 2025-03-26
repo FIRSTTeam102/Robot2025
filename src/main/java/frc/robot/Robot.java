@@ -12,6 +12,8 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.subsystems.Lights;
+import frc.robot.subsystems.Lights.AnimationTypes;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to each mode, as
@@ -88,6 +90,7 @@ public class Robot extends LoggedRobot
     m_robotContainer.setMotorBrake(true);
     disabledTimer.reset();
     disabledTimer.start();
+    Lights.getInstance().setPattern(AnimationTypes.Rainbow);
   }
 
   @Override
@@ -115,6 +118,16 @@ public class Robot extends LoggedRobot
     {
       m_autonomousCommand.schedule();
     }
+    var alliance = DriverStation.getAlliance();
+    if (alliance.isPresent() && alliance.get() == DriverStation.Alliance.Red){
+      Lights.getInstance().setPattern(AnimationTypes.RED);
+    }
+    else if (alliance.isPresent() && alliance.get() == DriverStation.Alliance.Blue){
+      Lights.getInstance().setPattern(AnimationTypes.BLUE);
+    }
+    else {
+      Lights.getInstance().setPattern(AnimationTypes.WHITE);
+    }
   }
 
   /**
@@ -140,6 +153,16 @@ public class Robot extends LoggedRobot
       CommandScheduler.getInstance().cancelAll();
     }
     m_robotContainer.setDriveMode();
+    var alliance = DriverStation.getAlliance();
+    if (alliance.isPresent() && alliance.get() == DriverStation.Alliance.Red){
+      Lights.getInstance().setPattern(AnimationTypes.RED);
+    }
+    else if (alliance.isPresent() && alliance.get() == DriverStation.Alliance.Blue){
+      Lights.getInstance().setPattern(AnimationTypes.BLUE);
+    }
+    else {
+      Lights.getInstance().setPattern(AnimationTypes.WHITE);
+    }
   }
 
   /**

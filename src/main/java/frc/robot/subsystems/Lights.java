@@ -14,6 +14,7 @@ import com.ctre.phoenix.led.LarsonAnimation.BounceMode;
 import com.ctre.phoenix.led.RainbowAnimation;
 import com.ctre.phoenix.led.RgbFadeAnimation;
 import com.ctre.phoenix.led.SingleFadeAnimation;
+import com.ctre.phoenix.led.TwinkleAnimation;
 import com.ctre.phoenix.led.TwinkleAnimation.TwinklePercent;
 import com.ctre.phoenix.led.TwinkleOffAnimation.TwinkleOffPercent;
 
@@ -28,19 +29,20 @@ public class Lights {
   public enum AnimationTypes {
     BLUE,
     RED,
+    WHITE,
     Empty,
-    ColorFlow,
-    Fire,
-    Larson,
+   // ColorFlow,
+   // Fire,
+   // Larson,
     Rainbow,
-    RgbFade,
+   // RgbFade,
     SingleFade,
-    Strobe,
-    Twinkle,
+   // Strobe,
+    TwinkleRED,
+    TwinkleBLUE,
     TwinkleOff,
-    SetAll
-  
-}
+   // SetAll
+  }
   private Lights(){
     candle = new CANdle(6);
     // Configure the CANdle
@@ -72,11 +74,18 @@ public class Lights {
         break;
       case BLUE:
         toAnimate = new SingleFadeAnimation(0,0,255,0,0.7,totalLEDS);
+      case WHITE:
+        toAnimate = new SingleFadeAnimation(100,100,100,0,0.7,totalLEDS);
+      case TwinkleRED:
+        toAnimate = new TwinkleAnimation(0,0,0,200,0.7, totalLEDS, TwinklePercent.Percent64,8);
+        break;
+      case TwinkleBLUE:
+        toAnimate = new TwinkleAnimation(0,0,255,0,0.7,totalLEDS,TwinklePercent.Percent64,8);
+        break;
       default:
         toAnimate = new RainbowAnimation(1,0.7,totalLEDS,animateDir,8);
         break;
     }
-      candle.animate(toAnimate,0);
-    
+      candle.animate(toAnimate,0);   
   }
 }
