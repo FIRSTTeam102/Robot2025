@@ -8,11 +8,16 @@ import com.ctre.phoenix.led.Animation;
 import com.ctre.phoenix.led.CANdle;
 import com.ctre.phoenix.led.CANdle.LEDStripType;
 import com.ctre.phoenix.led.CANdleConfiguration;
+import com.ctre.phoenix.led.FireAnimation;
 import com.ctre.phoenix.led.ColorFlowAnimation.Direction;
 import com.ctre.phoenix.led.LarsonAnimation.BounceMode;
 import com.ctre.phoenix.led.RainbowAnimation;
+import com.ctre.phoenix.led.RgbFadeAnimation;
+import com.ctre.phoenix.led.SingleFadeAnimation;
 import com.ctre.phoenix.led.TwinkleAnimation.TwinklePercent;
 import com.ctre.phoenix.led.TwinkleOffAnimation.TwinkleOffPercent;
+
+import edu.wpi.first.wpilibj.DriverStation;
 
 /** Add your docs here. */
 public class Lights {
@@ -43,6 +48,7 @@ public class Lights {
       config.brightnessScalar = 0.5;
       config.stripType = LEDStripType.GRB;
     candle.configAllSettings(config);
+
   }
   public static Lights getInstance()
   {
@@ -62,11 +68,15 @@ public class Lights {
         toAnimate = new RainbowAnimation(1, 0.7, totalLEDS, animateDir,8);
         break;
       case RED:
+        toAnimate = new SingleFadeAnimation(255,0,0,0,0.7,totalLEDS);
         break;
       case BLUE:
+        toAnimate = new SingleFadeAnimation(0,0,255,0,0.7,totalLEDS);
+      default:
+        toAnimate = new RainbowAnimation(1,0.7,totalLEDS,animateDir,8);
         break;
     }
-      candle.animate(toAnimate,1);
+      candle.animate(toAnimate,0);
     
   }
 }
