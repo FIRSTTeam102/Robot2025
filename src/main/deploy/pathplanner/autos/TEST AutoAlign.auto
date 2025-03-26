@@ -5,15 +5,9 @@
     "data": {
       "commands": [
         {
-          "type": "path",
-          "data": {
-            "pathName": "E Start"
-          }
-        },
-        {
           "type": "named",
           "data": {
-            "name": "Go to L1"
+            "name": "Red Align 6 Right"
           }
         }
       ]
@@ -21,5 +15,5 @@
   },
   "resetOdom": true,
   "folder": null,
-  "choreoAuto": true
+  "choreoAuto": false
 }
