@@ -243,6 +243,8 @@ public class RobotContainer
     operatorXbox.b().onTrue(elevator.setElevatorHeight(ElevatorConstants.LEVEL2));
     operatorXbox.x().onTrue(elevator.setElevatorHeight(ElevatorConstants.LEVEL3));
     operatorXbox.y().onTrue(elevator.setElevatorHeight(ElevatorConstants.LEVEL4)); 
+    operatorXbox.leftTrigger().onTrue(elevator.setElevatorHeight(ElevatorConstants.ALGAE2));
+    operatorXbox.leftBumper().onTrue(elevator.setElevatorHeight(ElevatorConstants.ALGAE1));
     //operatorXbox.povRight().whileTrue(new ClimberOutSetSpeed(climber,1));
     //operatorXbox.povLeft().whileTrue(new ClimberOutSetSpeed(climber, -1));
     //operatorXbox.povUp().whileTrue(climber.flickFunnel(0.143));
