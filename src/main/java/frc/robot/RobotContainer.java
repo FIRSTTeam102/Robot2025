@@ -67,6 +67,7 @@ public class RobotContainer
                                                                          "swerve/Robot2025"));
 
   private final Elevator elevator = new Elevator();
+  private final Lights lights = new Lights();
 
                                                                         
 
@@ -170,7 +171,7 @@ public class RobotContainer
     configureBindings();
     DriverStation.silenceJoystickConnectionWarning(true);
     
-    Lights.getInstance().setPattern(AnimationTypes.Rainbow);
+    lights.setPattern(AnimationTypes.Rainbow);
     
   }
 
@@ -243,9 +244,12 @@ public class RobotContainer
     operatorXbox.a().onTrue(elevator.setElevatorHeight(ElevatorConstants.LEVEL1));
     operatorXbox.b().onTrue(elevator.setElevatorHeight(ElevatorConstants.LEVEL2));
     operatorXbox.x().onTrue(elevator.setElevatorHeight(ElevatorConstants.LEVEL3));
-    operatorXbox.y().onTrue(elevator.setElevatorHeight(ElevatorConstants.LEVEL4)); 
-    operatorXbox.povUp().onTrue(elevator.setElevatorHeight(ElevatorConstants.ALGAE2));
-    operatorXbox.povDown().onTrue(elevator.setElevatorHeight(ElevatorConstants.ALGAE1));
+    operatorXbox.y().onTrue(elevator.setElevatorHeight(ElevatorConstants.LEVEL4)
+                    .andThen(()->lights.setPattern(AnimationTypes.LEVEL4))); 
+    operatorXbox.povUp().onTrue(elevator.setElevatorHeight(ElevatorConstants.ALGAE2)
+                    .andThen(()->lights.setPattern(AnimationTypes.ALGAE)));
+    operatorXbox.povDown().onTrue(elevator.setElevatorHeight(ElevatorConstants.ALGAE1)
+                    .andThen(()->lights.setPattern(AnimationTypes.ALGAE)));
     //operatorXbox.povRight().whileTrue(new ClimberOutSetSpeed(climber,1));
     //operatorXbox.povLeft().whileTrue(new ClimberOutSetSpeed(climber, -1));
     //operatorXbox.povUp().whileTrue(climber.flickFunnel(0.143));
@@ -280,9 +284,6 @@ public class RobotContainer
     if (DriverStation.isTest())
     {
 
-
-
-
       drivebase.setDefaultCommand(driveRobotOrientAngularVelocity);
       testerXbox.a().whileTrue(drivebase.sysIdAngleMotorCommand());
       testerXbox.b().whileTrue(drivebase.sysIdDriveMotorCommand());
@@ -293,7 +294,7 @@ public class RobotContainer
       testerXbox.leftBumper().onTrue(drivebase.driveToDistanceCommand(1.0, 0.2));
       //testerXbox.povLeft().onTrue(new FunnelOut(climber, 0.2)); //flip funnel in or out
       //testerXbox.povRight().onTrue(new ClimberOut(climber, 1)); //flip climber in or out
-  
+      
     }
       var allianceColor = DriverStation.getAlliance();
 
@@ -366,5 +367,11 @@ public class RobotContainer
   public void setMotorBrake(boolean brake)
   {
     drivebase.setMotorBrake(brake);
+  }
+  public void setLightPattern(AnimationTypes animation){
+    lights.setPattern(animation);
+  }
+  public void setDefaultLights(){
+    lights.setForAllianceDefault();
   }
 }

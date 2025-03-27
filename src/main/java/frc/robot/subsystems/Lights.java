@@ -8,7 +8,8 @@ import com.ctre.phoenix.led.Animation;
 import com.ctre.phoenix.led.CANdle;
 import com.ctre.phoenix.led.CANdle.LEDStripType;
 import com.ctre.phoenix.led.CANdleConfiguration;
-import com.ctre.phoenix.led.FireAnimation;
+import com.ctre.phoenix.led.ColorFlowAnimation;
+import com.ctre.phoenix.led.LarsonAnimation;
 import com.ctre.phoenix.led.ColorFlowAnimation.Direction;
 import com.ctre.phoenix.led.LarsonAnimation.BounceMode;
 import com.ctre.phoenix.led.RainbowAnimation;
@@ -19,10 +20,10 @@ import com.ctre.phoenix.led.TwinkleAnimation.TwinklePercent;
 import com.ctre.phoenix.led.TwinkleOffAnimation.TwinkleOffPercent;
 
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 /** Add your docs here. */
-public class Lights {
-  private static Lights instance;
+public class Lights extends SubsystemBase{
   private CANdle candle;
   private int  totalLEDS = 60;
   private boolean animateDir = false;
@@ -30,20 +31,13 @@ public class Lights {
     BLUE,
     RED,
     WHITE,
-    Empty,
-   // ColorFlow,
-   // Fire,
-   // Larson,
+    CORAL,
+    LEVEL4,
+    ALGAE,
     Rainbow,
-   // RgbFade,
-    SingleFade,
-   // Strobe,
-    TwinkleRED,
-    TwinkleBLUE,
-    TwinkleOff,
-   // SetAll
+    USA,
   }
-  private Lights(){
+  public Lights(){
     candle = new CANdle(6);
     // Configure the CANdle
     CANdleConfiguration config = new CANdleConfiguration();
@@ -52,40 +46,61 @@ public class Lights {
     candle.configAllSettings(config);
 
   }
-  public static Lights getInstance()
-  {
-      if (instance == null) {
-          synchronized (Lights.class) {
-              if (instance == null) {
-                  instance = new Lights();
-              }
-          }
-      }
-      return instance;
-  }     
+ 
   public void setPattern(AnimationTypes animation){
     Animation toAnimate = null;
-    switch (animation) {
-      case Rainbow:
-        toAnimate = new RainbowAnimation(1, 0.7, totalLEDS, animateDir,8);
+     switch (animation) {
+      case LEVEL4:
+        toAnimate = new LarsonAnimation(255,30,0,0, 0.75,68, LarsonAnimation.BounceMode.Back,9, 8);
+        System.out.println("Lights:Level4");
         break;
       case RED:
-        toAnimate = new SingleFadeAnimation(255,0,0,0,0.7,totalLEDS);
+        toAnimate = new TwinkleAnimation(255, 0, 0, 0, 0.75, 68, TwinkleAnimation.TwinklePercent.Percent88, 0 );
+        System.out.println("Lights:RED");
         break;
       case BLUE:
-        toAnimate = new SingleFadeAnimation(0,0,255,0,0.7,totalLEDS);
-      case WHITE:
-        toAnimate = new SingleFadeAnimation(100,100,100,0,0.7,totalLEDS);
-      case TwinkleRED:
-        toAnimate = new TwinkleAnimation(0,0,0,200,0.7, totalLEDS, TwinklePercent.Percent64,8);
+        toAnimate = new TwinkleAnimation(0, 0, 255, 0, 0.75, 68, TwinkleAnimation.TwinklePercent.Percent88, 0 );
+        System.out.println("Lights:BLUE");
         break;
-      case TwinkleBLUE:
-        toAnimate = new TwinkleAnimation(0,0,255,0,0.7,totalLEDS,TwinklePercent.Percent64,8);
+      case WHITE:
+        toAnimate = new TwinkleAnimation(255, 255, 255, 0, 0.75, 68, TwinkleAnimation.TwinklePercent.Percent88, 0 );
+        System.out.println("Lights:WHITE");
+        break;
+      case ALGAE:
+        toAnimate = new ColorFlowAnimation(0, 255, 0, 0, 0.5, 68, ColorFlowAnimation.Direction.Forward, 0);
+        System.out.println("Lights:ALGAE");
+        break;
+      case CORAL:
+        toAnimate = new ColorFlowAnimation(255, 255, 255, 0, 0.5, 68, ColorFlowAnimation.Direction.Forward, 0);
+        System.out.println("Lights:CORAL");
+        break;
+      case USA:
+        toAnimate = new TwinkleAnimation(60, 0, 0, 0,0.7, 27,TwinkleAnimation.TwinklePercent.Percent76, 0);
+        toAnimate = new TwinkleAnimation(60, 60, 60, 60,0.7, 20,TwinkleAnimation.TwinklePercent.Percent76, 28);
+        toAnimate = new TwinkleAnimation(0, 0, 60, 60,0.7, 20,TwinkleAnimation.TwinklePercent.Percent76, 48);
+        System.out.println("Lights:USA");
+        break;
+      case Rainbow:
+        toAnimate = new RainbowAnimation(1,0.7,totalLEDS);
+        System.out.println("Lights:Rainbow");
         break;
       default:
-        toAnimate = new RainbowAnimation(1,0.7,totalLEDS,animateDir,8);
-        break;
+        toAnimate = new RainbowAnimation(1,0.7,totalLEDS);
+        System.out.println("Lights:default");
     }
       candle.animate(toAnimate,0);   
+  }
+  public void setForAllianceDefault(){
+    var alliance = DriverStation.getAlliance();
+    System.out.println("Lights:Set Alliance Default");
+    if (alliance.isPresent() && alliance.get() == DriverStation.Alliance.Red){
+      setPattern(AnimationTypes.RED);
+    }
+    else if (alliance.isPresent() && alliance.get() == DriverStation.Alliance.Blue){
+      setPattern(AnimationTypes.BLUE);
+    }
+    else {
+      setPattern(AnimationTypes.USA);
+    }
   }
 }
