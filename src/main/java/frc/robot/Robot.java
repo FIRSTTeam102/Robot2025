@@ -90,7 +90,7 @@ public class Robot extends LoggedRobot
     m_robotContainer.setMotorBrake(true);
     disabledTimer.reset();
     disabledTimer.start();
-    Lights.getInstance().setPattern(AnimationTypes.Rainbow);
+    m_robotContainer.setLightPattern(AnimationTypes.Rainbow);
   }
 
   @Override
@@ -118,16 +118,7 @@ public class Robot extends LoggedRobot
     {
       m_autonomousCommand.schedule();
     }
-    var alliance = DriverStation.getAlliance();
-    if (alliance.isPresent() && alliance.get() == DriverStation.Alliance.Red){
-      Lights.getInstance().setPattern(AnimationTypes.RED);
-    }
-    else if (alliance.isPresent() && alliance.get() == DriverStation.Alliance.Blue){
-      Lights.getInstance().setPattern(AnimationTypes.BLUE);
-    }
-    else {
-      Lights.getInstance().setPattern(AnimationTypes.WHITE);
-    }
+    m_robotContainer.setDefaultLights();
   }
 
   /**
@@ -153,16 +144,7 @@ public class Robot extends LoggedRobot
       CommandScheduler.getInstance().cancelAll();
     }
     m_robotContainer.setDriveMode();
-    var alliance = DriverStation.getAlliance();
-    if (alliance.isPresent() && alliance.get() == DriverStation.Alliance.Red){
-      Lights.getInstance().setPattern(AnimationTypes.RED);
-    }
-    else if (alliance.isPresent() && alliance.get() == DriverStation.Alliance.Blue){
-      Lights.getInstance().setPattern(AnimationTypes.BLUE);
-    }
-    else {
-      Lights.getInstance().setPattern(AnimationTypes.WHITE);
-    }
+    m_robotContainer.setDefaultLights();
   }
 
   /**
