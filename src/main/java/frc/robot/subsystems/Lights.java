@@ -37,6 +37,8 @@ public class Lights extends SubsystemBase{
     Rainbow,
     USA,
   }
+  private AnimationTypes prevAnimation = AnimationTypes.Rainbow;
+
   public Lights(){
     candle = new CANdle(6);
     // Configure the CANdle
@@ -48,6 +50,8 @@ public class Lights extends SubsystemBase{
   }
  
   public void setPattern(AnimationTypes animation){
+    if (prevAnimation != animation) {
+    prevAnimation = animation;
     Animation toAnimate = null;
      switch (animation) {
       case LEVEL4:
@@ -89,6 +93,7 @@ public class Lights extends SubsystemBase{
         System.out.println("Lights:default");
     }
       candle.animate(toAnimate,0);   
+    }
   }
   public void setForAllianceDefault(){
     var alliance = DriverStation.getAlliance();
