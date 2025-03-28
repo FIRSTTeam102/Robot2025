@@ -67,9 +67,9 @@
           }
         },
         {
-          "type": "named",
+          "type": "wait",
           "data": {
-            "name": "Intake"
+            "waitTime": 3.0
           }
         },
         {
