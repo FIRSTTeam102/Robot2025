@@ -1,11 +1,11 @@
 {
- "name":"Rsource to L2",
+ "name":"Rsource to 4L",
  "version":1,
  "snapshot":{
   "waypoints":[
     {"x":1.499062180519104, "y":0.6049247980117798, "heading":0.9443317843629842, "intervals":24, "split":false, "fixTranslation":true, "fixHeading":true, "overrideIntervals":false},
     {"x":3.3231592178344727, "y":2.5518338680267334, "heading":1.04, "intervals":14, "split":false, "fixTranslation":true, "fixHeading":true, "overrideIntervals":false},
-    {"x":3.64, "y":3.05, "heading":1.04, "intervals":40, "split":false, "fixTranslation":true, "fixHeading":true, "overrideIntervals":false}],
+    {"x":3.64, "y":3.05, "heading":1.04, "intervals":14, "split":false, "fixTranslation":true, "fixHeading":true, "overrideIntervals":false}],
   "constraints":[
     {"from":"first", "to":null, "data":{"type":"StopPoint", "props":{}}, "enabled":true},
     {"from":"last", "to":null, "data":{"type":"StopPoint", "props":{}}, "enabled":true},
@@ -17,7 +17,7 @@
   "waypoints":[
     {"x":{"exp":"1.499062180519104 m", "val":1.499062180519104}, "y":{"exp":"0.6049247980117798 m", "val":0.6049247980117798}, "heading":{"exp":"0.9443317843629842 rad", "val":0.9443317843629842}, "intervals":24, "split":false, "fixTranslation":true, "fixHeading":true, "overrideIntervals":false},
     {"x":{"exp":"3.3231592178344727 m", "val":3.3231592178344727}, "y":{"exp":"2.5518338680267334 m", "val":2.5518338680267334}, "heading":{"exp":"1.04 rad", "val":1.04}, "intervals":14, "split":false, "fixTranslation":true, "fixHeading":true, "overrideIntervals":false},
-    {"x":{"exp":"3.64 m", "val":3.64}, "y":{"exp":"3.05 m", "val":3.05}, "heading":{"exp":"1.04 rad", "val":1.04}, "intervals":40, "split":false, "fixTranslation":true, "fixHeading":true, "overrideIntervals":false}],
+    {"x":{"exp":"3.64 m", "val":3.64}, "y":{"exp":"3.05 m", "val":3.05}, "heading":{"exp":"1.04 rad", "val":1.04}, "intervals":14, "split":false, "fixTranslation":true, "fixHeading":true, "overrideIntervals":false}],
   "constraints":[
     {"from":"first", "to":null, "data":{"type":"StopPoint", "props":{}}, "enabled":true},
     {"from":"last", "to":null, "data":{"type":"StopPoint", "props":{}}, "enabled":true},
