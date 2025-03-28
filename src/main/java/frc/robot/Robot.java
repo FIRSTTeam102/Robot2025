@@ -10,6 +10,7 @@ import org.littletonrobotics.junction.networktables.NT4Publisher;
 
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.subsystems.Lights;
@@ -79,6 +80,8 @@ public class Robot extends LoggedRobot
     // and running subsystem periodic() methods.  This must be called from the robot's periodic
     // block in order for anything in the Command-based framework to work.
     CommandScheduler.getInstance().run();
+    SmartDashboard.putData(CommandScheduler.getInstance());  //may kill eveything lmao
+
   }
 
   /**

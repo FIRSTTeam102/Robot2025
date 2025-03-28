@@ -19,6 +19,7 @@ import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
@@ -135,6 +136,7 @@ public class RobotContainer
     NamedCommands.registerCommand("Go to L2",elevator.setElevatorHeight(ElevatorConstants.LEVEL2)); //change parameters for L2
     NamedCommands.registerCommand("Go to L3",elevator.setElevatorHeight(ElevatorConstants.LEVEL3)); //change parameters for L3
     NamedCommands.registerCommand("Go to L4",(elevator.setElevatorHeight(ElevatorConstants.LEVEL4))); //change parameters for L4
+    NamedCommands.registerCommand("Go to L4 V2",(elevator.setElevatorHeight(ElevatorConstants.LEVEL4Auto))); //change parameters for L4
     NamedCommands.registerCommand("Go to home",(elevator.setElevatorHeight(ElevatorConstants.HOME))); //change parameters for L4
 
     //naming convention = alliance, clock position based on johan's diagram, side of position
@@ -184,7 +186,6 @@ public class RobotContainer
    */
   private void configureBindings()
   {
-
     funnelTrigger = new Trigger(coralSensor1::get); //make the trigger and bind it to the funnel sensor
       
     funnelTrigger.whileFalse(new Intake(shooter));
