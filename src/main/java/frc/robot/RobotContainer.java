@@ -244,12 +244,9 @@ public class RobotContainer
     operatorXbox.a().onTrue(elevator.setElevatorHeight(ElevatorConstants.LEVEL1));
     operatorXbox.b().onTrue(elevator.setElevatorHeight(ElevatorConstants.LEVEL2));
     operatorXbox.x().onTrue(elevator.setElevatorHeight(ElevatorConstants.LEVEL3));
-    operatorXbox.y().onTrue(elevator.setElevatorHeight(ElevatorConstants.LEVEL4)
-                    .andThen(()->lights.setPattern(AnimationTypes.LEVEL4))); 
-    operatorXbox.povUp().onTrue(elevator.setElevatorHeight(ElevatorConstants.ALGAE2)
-                    .andThen(()->lights.setPattern(AnimationTypes.ALGAE)));
-    operatorXbox.povDown().onTrue(elevator.setElevatorHeight(ElevatorConstants.ALGAE1)
-                    .andThen(()->lights.setPattern(AnimationTypes.ALGAE)));
+    operatorXbox.y().onTrue(elevator.setElevatorHeight(ElevatorConstants.LEVEL4)); 
+    operatorXbox.povUp().onTrue(elevator.setElevatorHeight(ElevatorConstants.ALGAE2));
+    operatorXbox.povDown().onTrue(elevator.setElevatorHeight(ElevatorConstants.ALGAE1));
     //operatorXbox.povRight().whileTrue(new ClimberOutSetSpeed(climber,1));
     //operatorXbox.povLeft().whileTrue(new ClimberOutSetSpeed(climber, -1));
     //operatorXbox.povUp().whileTrue(climber.flickFunnel(0.143));
@@ -373,5 +370,8 @@ public class RobotContainer
   }
   public void setDefaultLights(){
     lights.setForAllianceDefault();
+  }
+  public boolean getElevatorHeight(double height, double tolerance){
+    return(elevator.aroundHeight(height, tolerance));
   }
 }

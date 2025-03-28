@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.Constants.ElevatorConstants;
 import frc.robot.subsystems.Lights;
 import frc.robot.subsystems.Lights.AnimationTypes;
 
@@ -79,6 +80,28 @@ public class Robot extends LoggedRobot
     // and running subsystem periodic() methods.  This must be called from the robot's periodic
     // block in order for anything in the Command-based framework to work.
     CommandScheduler.getInstance().run();
+
+    /** LIGHTS
+     * 1. if elevator is at l4
+     *  set lights to l4 color
+     * 2. elif elevator is at algae
+     *  set lights to algae color
+     * 3. elif hascoral = true
+     *  set lights to hascoral
+     * 4. else
+     *  alliance color
+     */
+
+     if(m_robotContainer.getElevatorHeight(ElevatorConstants.LEVEL4, 2)){
+      m_robotContainer.setLightPattern(AnimationTypes.LEVEL4);
+    }
+    else if(m_robotContainer.getElevatorHeight(ElevatorConstants.ALGAE1, 2)||
+      m_robotContainer.getElevatorHeight(ElevatorConstants.ALGAE2, 2)){
+      m_robotContainer.setLightPattern(AnimationTypes.ALGAE);
+    }
+    else{
+      m_robotContainer.setDefaultLights();
+    }
   }
 
   /**
@@ -97,7 +120,7 @@ public class Robot extends LoggedRobot
   public void disabledPeriodic()
   {
     if (disabledTimer.hasElapsed(Constants.DrivebaseConstants.WHEEL_LOCK_TIME))
-    {
+     {
       m_robotContainer.setMotorBrake(false);
       disabledTimer.stop();
     }
