@@ -93,7 +93,7 @@ public class Robot extends LoggedRobot
      *  alliance color
      */
 
-     if(m_robotContainer.getElevatorHeight(ElevatorConstants.LEVEL4, 2)){
+     if(m_robotContainer.getElevatorHeight(ElevatorConstants.LEVEL4, 4)){
       m_robotContainer.setLightPattern(AnimationTypes.LEVEL4);
     }
     else if(m_robotContainer.getElevatorHeight(ElevatorConstants.ALGAE1, 2)||
