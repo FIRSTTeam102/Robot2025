@@ -100,6 +100,9 @@ public class Robot extends LoggedRobot
       m_robotContainer.getElevatorHeight(ElevatorConstants.ALGAE2, 2)){
       m_robotContainer.setLightPattern(AnimationTypes.ALGAE);
     }
+    else if (m_robotContainer.hasCoral()){
+      m_robotContainer.setLightPattern(AnimationTypes.CORAL);
+    }
     else{
       m_robotContainer.setDefaultLights();
     }

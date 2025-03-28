@@ -88,6 +88,7 @@ public class Lights extends SubsystemBase{
   }
   public void setForAllianceDefault(){
     var alliance = DriverStation.getAlliance();
+    
     if (alliance.isPresent() && alliance.get() == DriverStation.Alliance.Red){
       setPattern(AnimationTypes.RED);
     }
