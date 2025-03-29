@@ -79,7 +79,7 @@ public class Shooter extends SubsystemBase {
 
   @Override
   public void periodic() {
-
+    hasCoral = !coralSensor2.get();
   //  coralSensor1Output =getCoralSensor1();
   /* coralSensor2Output =getCoralSensor2();
     

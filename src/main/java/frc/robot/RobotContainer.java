@@ -129,7 +129,6 @@ public class RobotContainer
     NamedCommands.registerCommand("Go to L3",elevator.setElevatorHeight(ElevatorConstants.LEVEL3)); //change parameters for L3
     NamedCommands.registerCommand("Go to L4",(elevator.setElevatorHeight(ElevatorConstants.LEVEL4))); //change parameters for L4
     NamedCommands.registerCommand("Go to home",(elevator.setElevatorHeight(ElevatorConstants.HOME))); //change parameters for home
-    NamedCommands.registerCommand("Intake", new IntakeAuto(shooter,coralSensor1::get));
     NamedCommands.registerCommand("Shoot", new ShootCoral(shooter, Constants.ShooterConstants.LeftMaxShooterSpeed, Constants.ShooterConstants.RightMaxShooterSpeed));
     NamedCommands.registerCommand("ShootTrough", new ShootCoral(shooter, Constants.ShooterConstants.L1LeftShooterSpeed,Constants.ShooterConstants.L1RightShooterSpeed)); //change the parameters for L1
     NamedCommands.registerCommand("Go to L1",elevator.setElevatorHeight(ElevatorConstants.LEVEL1));
@@ -166,7 +165,6 @@ public class RobotContainer
     NamedCommands.registerCommand("Blue Align 10 Right", drivebase.alignToReefScore(17,TargetSide.RIGHT));
     NamedCommands.registerCommand("Blue Align 10 Left", drivebase.alignToReefScore(17,TargetSide.LEFT));
     NamedCommands.registerCommand("align Left",Commands.run(()->{drivebase.alignToReefScore(()->drivebase.getReefTargetTagID(), TargetSide.LEFT).schedule();}));
-    NamedCommands.registerCommand("Intake", new IntakeAuto(shooter,coralSensor1::get));
     autoChooser = AutoBuilder.buildAutoChooser();
     SmartDashboard.putData("Auto Chooser", autoChooser);
     // Configure the trigger bindings
