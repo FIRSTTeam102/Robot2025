@@ -7,7 +7,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "right side 8"
+            "pathName": "left side 4"
           }
         },
         {
@@ -63,7 +63,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "R8 to Lsource"
+            "pathName": "L4 to Rsource"
           }
         },
         {
@@ -75,7 +75,75 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Lsource to R10"
+            "pathName": "Rsource to 4L.0"
+          }
+        },
+        {
+          "type": "race",
+          "data": {
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "Go to L4 V2"
+                }
+              },
+              {
+                "type": "wait",
+                "data": {
+                  "waitTime": 1.5
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 1.0
+          }
+        },
+        {
+          "type": "race",
+          "data": {
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "Shoot"
+                }
+              },
+              {
+                "type": "wait",
+                "data": {
+                  "waitTime": 0.25
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Go to home"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "4L to Rsource.0"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 1.0
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Rsource to 4R.0"
           }
         },
         {

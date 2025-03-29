@@ -7,7 +7,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "left side 4"
+            "pathName": "right side 8"
           }
         },
         {
@@ -63,7 +63,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "L4 to Rsource"
+            "pathName": "R8 to Lsource"
           }
         },
         {
@@ -82,7 +82,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Rsource to 4L.0"
+            "pathName": "Lsource to L10"
           }
         },
         {
@@ -123,7 +123,7 @@
               {
                 "type": "wait",
                 "data": {
-                  "waitTime": 0.75
+                  "waitTime": 0.25
                 }
               }
             ]
@@ -138,7 +138,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "4L to Rsource.0"
+            "pathName": "L10 to L Source"
           }
         },
         {
@@ -150,7 +150,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Rsource to 4R.0"
+            "pathName": "Lsource to R10"
           }
         },
         {
@@ -191,7 +191,7 @@
               {
                 "type": "wait",
                 "data": {
-                  "waitTime": 0.75
+                  "waitTime": 0.25
                 }
               }
             ]
