@@ -138,6 +138,9 @@ public final class Constants
     public static final double leftIntakeSpeed = 0.05;
     public static final double rightIntakeSpeed = -0.05;
 
+    public static final double L23leftshooterSpeed = -0.15;
+    public static final double L23rightshooterSpeed = 0.15;
+
   }
   public static class ClimberConstants {
     public static final int climberMotorID = 31; 

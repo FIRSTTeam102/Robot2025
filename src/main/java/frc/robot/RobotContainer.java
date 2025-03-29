@@ -257,6 +257,9 @@ public class RobotContainer
     operatorXbox.rightBumper().whileTrue(
          new ShootCoral(shooter,Constants.ShooterConstants.L1LeftShooterSpeed,
                                 Constants.ShooterConstants.L1RightShooterSpeed ));
+    operatorXbox.leftTrigger().whileTrue(new ShootCoral(shooter,
+                                Constants.ShooterConstants.L23leftshooterSpeed,
+                                Constants.ShooterConstants.L23rightshooterSpeed));
 
                                 
     //TODO flick algae - flip funnel up andThen back
