@@ -13,13 +13,13 @@ import frc.robot.subsystems.Shooter;
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
 public class IntakeAuto extends Command {
   Shooter shooter;
-  BooleanSupplier coralSensor1Supplier;
+ // BooleanSupplier coralSensor1Supplier;
   
   /** Creates a new IntakeAuto. */
-  public IntakeAuto(Shooter shooter, BooleanSupplier coralSensor1Supplier) {
+  public IntakeAuto(Shooter shooter) {  //BooleanSupplier coralSensor1Supplier
     this.shooter = shooter;
     addRequirements(shooter);
-    this.coralSensor1Supplier = coralSensor1Supplier;
+    //this.coralSensor1Supplier = coralSensor1Supplier;
   }
 
   // Called when the command is initially scheduled.
@@ -53,11 +53,12 @@ public class IntakeAuto extends Command {
     // may not be true -> return false
     //Done loading - coral has passed coralSensor1, so: coralSensor1 == true && hasCoral == true
     // -> return true
-    if(coralSensor1Supplier.getAsBoolean() && shooter.hasCoral()){
+    /**if(coralSensor1Supplier.getAsBoolean() && shooter.hasCoral()){
       return true;
     }
     else{
       return false;
-    }
+    }*/
+    return false;
   }
 }
