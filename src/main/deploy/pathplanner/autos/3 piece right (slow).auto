@@ -48,22 +48,10 @@
               {
                 "type": "wait",
                 "data": {
-                  "waitTime": 0.25
+                  "waitTime": 0.15
                 }
               }
             ]
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "Go to home"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "L4 to Rsource"
           }
         },
         {
@@ -81,9 +69,15 @@
                 "data": {
                   "commands": [
                     {
+                      "type": "wait",
+                      "data": {
+                        "waitTime": 0.2
+                      }
+                    },
+                    {
                       "type": "path",
                       "data": {
-                        "pathName": "4L to Rsource"
+                        "pathName": "L4 to Rsource.0"
                       }
                     }
                   ]
@@ -162,15 +156,35 @@
           }
         },
         {
-          "type": "named",
+          "type": "parallel",
           "data": {
-            "name": "Go to home"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "4L to Rsource.0"
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "Go to home"
+                }
+              },
+              {
+                "type": "sequential",
+                "data": {
+                  "commands": [
+                    {
+                      "type": "wait",
+                      "data": {
+                        "waitTime": 0.2
+                      }
+                    },
+                    {
+                      "type": "path",
+                      "data": {
+                        "pathName": "4L to Rsource"
+                      }
+                    }
+                  ]
+                }
+              }
+            ]
           }
         },
         {
