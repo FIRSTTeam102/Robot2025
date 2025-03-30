@@ -55,15 +55,22 @@
           }
         },
         {
-          "type": "named",
+          "type": "parallel",
           "data": {
-            "name": "Go to home"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "R8 to Lsource"
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "Go to home"
+                }
+              },
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "R8 to Lsource"
+                }
+              }
+            ]
           }
         },
         {
@@ -130,15 +137,22 @@
           }
         },
         {
-          "type": "named",
+          "type": "parallel",
           "data": {
-            "name": "Go to home"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "L10 to L Source"
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "Go to home"
+                }
+              },
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "L10 to L Source"
+                }
+              }
+            ]
           }
         },
         {
@@ -198,9 +212,16 @@
           }
         },
         {
-          "type": "named",
+          "type": "parallel",
           "data": {
-            "name": "Go to home"
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "Go to home"
+                }
+              }
+            ]
           }
         }
       ]

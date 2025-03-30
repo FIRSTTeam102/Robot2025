@@ -55,15 +55,22 @@
           }
         },
         {
-          "type": "named",
+          "type": "parallel",
           "data": {
-            "name": "Go to home"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "L4 to Rsource"
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "Go to home"
+                }
+              },
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "L4 to Rsource"
+                }
+              }
+            ]
           }
         },
         {
