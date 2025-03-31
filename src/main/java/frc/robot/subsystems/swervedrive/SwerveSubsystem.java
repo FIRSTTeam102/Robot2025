@@ -82,6 +82,9 @@ public class SwerveSubsystem extends SubsystemBase
   @AutoLogOutput
    private int currAprilTagTarget = 0;
 
+  @AutoLogOutput
+   private double distanceToTarget = 0;
+
  /**
    * AprilTag field layout.
    */
@@ -169,6 +172,7 @@ public class SwerveSubsystem extends SubsystemBase
       //only ask the cameras for the best reef target if we are using vision, otherwise
       //it will be 0
       currAprilTagTarget = vision.getBestReefTarget();
+      distanceToTarget = vision.getDistanceFromAprilTag(currAprilTagTarget);
       //SharedData.getInstance().setCurrentTagID(currAprilTagTarget);
     }
   }
