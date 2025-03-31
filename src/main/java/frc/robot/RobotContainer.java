@@ -7,6 +7,7 @@ package frc.robot;
 
 import java.io.File;
 import java.util.Optional;
+import java.util.function.BooleanSupplier;
 
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
@@ -59,7 +60,8 @@ public class RobotContainer
 
   DigitalInput coralSensor1 = new DigitalInput(Constants.ShooterConstants.coralSensor1Back);
   Trigger funnelTrigger;
-  
+  Trigger isIntakingTrigger = new Trigger(() -> !coralSensor1.get());
+  BooleanSupplier isIntakingSupplier = ()->!coralSensor1.get();
   // The robot's subsystems and commands are defined here...
 
   public final Shooter shooter = new Shooter();
@@ -122,7 +124,7 @@ public class RobotContainer
    */
   public RobotContainer()
   {
-    NamedCommands.registerCommand("Intake", new IntakeAuto(shooter));
+    NamedCommands.registerCommand("Intake", new IntakeAuto(shooter,isIntakingSupplier));
     NamedCommands.registerCommand("Shoot", new ShootCoral(shooter, Constants.ShooterConstants.LeftMaxShooterSpeed, Constants.ShooterConstants.RightMaxShooterSpeed));
     NamedCommands.registerCommand("ShootTrough", new ShootCoral(shooter, Constants.ShooterConstants.L1LeftShooterSpeed,Constants.ShooterConstants.L1RightShooterSpeed)); //change the parameters for L1
     NamedCommands.registerCommand("Go to L1",elevator.setElevatorHeight(ElevatorConstants.LEVEL1));
@@ -187,7 +189,7 @@ public class RobotContainer
   {
     //funnelTrigger = new Trigger(coralSensor1::get); //make the trigger and bind it to the funnel sensor
    
-    Trigger isIntakingTrigger = new Trigger(() -> !coralSensor1.get());
+    
     isIntakingTrigger.and(RobotModeTriggers.teleop()).whileTrue(new Intake(shooter));
 
    //default drive mode is field oriented w/ left joystick controlling speed & direction
@@ -379,6 +381,13 @@ public class RobotContainer
     return(elevator.aroundHeight(height, tolerance));
   }
   public boolean hasCoral(){
-    return(shooter.hasCoral());
+    if(!isIntakingSupplier.getAsBoolean() && shooter.hasCoral()){
+      return(true);
+    }
+    else {
+      return(false);
+    }
+    
   }
+  
 }

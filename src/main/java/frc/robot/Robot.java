@@ -4,6 +4,7 @@
 
 package frc.robot;
 
+import org.littletonrobotics.junction.AutoLogOutput;
 import org.littletonrobotics.junction.LoggedRobot;
 import org.littletonrobotics.junction.Logger;
 import org.littletonrobotics.junction.networktables.NT4Publisher;
@@ -31,7 +32,8 @@ public class Robot extends LoggedRobot
   private RobotContainer m_robotContainer;
 
   private Timer disabledTimer;
-
+  @AutoLogOutput
+  private boolean hasCoral = false;
   public Robot()
   {
     instance = this;
@@ -59,6 +61,7 @@ public class Robot extends LoggedRobot
     // Create a timer to disable motor brake a few seconds after disable.  This will let the robot stop
     // immediately when disabled, but then also let it be pushed more 
     disabledTimer = new Timer();
+    m_robotContainer.setLightPattern(AnimationTypes.Rainbow);
 
     if (isSimulation())
     {
@@ -92,6 +95,7 @@ public class Robot extends LoggedRobot
      * 4. else
      *  alliance color
      */
+    hasCoral = m_robotContainer.hasCoral();
 
     if(isDisabled()){
       m_robotContainer.setLightPattern(AnimationTypes.Rainbow);
