@@ -66,11 +66,11 @@ public class Shooter extends SubsystemBase {
     RightMotor.stopMotor();
     LeftMotor.stopMotor();
   }
-
+/* 
   public void hasCoralToggle(){
     hasCoral=!hasCoral;
   }
-
+*/
   public boolean hasCoral(){
     //return hasCoral;
     return (!coralSensor2.get());

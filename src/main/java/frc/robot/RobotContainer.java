@@ -185,9 +185,10 @@ public class RobotContainer
    */
   private void configureBindings()
   {
-    funnelTrigger = new Trigger(coralSensor1::get); //make the trigger and bind it to the funnel sensor
-
-    funnelTrigger.whileFalse(new Intake(shooter));
+    //funnelTrigger = new Trigger(coralSensor1::get); //make the trigger and bind it to the funnel sensor
+   
+    Trigger isIntakingTrigger = new Trigger(() -> !coralSensor1.get());
+    isIntakingTrigger.and(RobotModeTriggers.teleop()).whileTrue(new Intake(shooter));
 
    //default drive mode is field oriented w/ left joystick controlling speed & direction
    //right joystick controls top rotation w/ angular velocity (X axis of right joy stick)
