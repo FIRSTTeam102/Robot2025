@@ -23,6 +23,7 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import edu.wpi.first.wpilibj2.command.button.RobotModeTriggers;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.DrivebaseConstants;
 import frc.robot.Constants.DrivebaseConstants.TargetSide;
@@ -121,7 +122,7 @@ public class RobotContainer
    */
   public RobotContainer()
   {
-    NamedCommands.registerCommand("Intake", new IntakeAuto(shooter,coralSensor1::get));
+    NamedCommands.registerCommand("Intake", new IntakeAuto(shooter));
     NamedCommands.registerCommand("Shoot", new ShootCoral(shooter, Constants.ShooterConstants.LeftMaxShooterSpeed, Constants.ShooterConstants.RightMaxShooterSpeed));
     NamedCommands.registerCommand("ShootTrough", new ShootCoral(shooter, Constants.ShooterConstants.L1LeftShooterSpeed,Constants.ShooterConstants.L1RightShooterSpeed)); //change the parameters for L1
     NamedCommands.registerCommand("Go to L1",elevator.setElevatorHeight(ElevatorConstants.LEVEL1));
@@ -185,7 +186,7 @@ public class RobotContainer
   private void configureBindings()
   {
     funnelTrigger = new Trigger(coralSensor1::get); //make the trigger and bind it to the funnel sensor
-      
+
     funnelTrigger.whileFalse(new Intake(shooter));
 
    //default drive mode is field oriented w/ left joystick controlling speed & direction
