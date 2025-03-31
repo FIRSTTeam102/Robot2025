@@ -6,6 +6,7 @@ package frc.robot;
 
 import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.wpilibj.DriverStation;
 import swervelib.math.Matter;
 
 /**
@@ -43,7 +44,7 @@ public final class Constants
     // robot camera offsets need to be correct with bumper so the 
     //align to reef works correctly, the reef poles are 6.5 inches from the 
     //center of the april tag
-    public static double ReefLeftYOffset = Units.inchesToMeters(-9);
+    public static double ReefLeftYOffset = Units.inchesToMeters(-9.5);
     public static double ReefRightYOffset = Units.inchesToMeters(4);
     public static double ReefXDistance = Units.inchesToMeters(17.0);                                                                                             
   }
@@ -78,8 +79,12 @@ public final class Constants
     ;
     public static final double LEVEL1 = 26.479;
     public static final double LEVEL2 = 37.6415;
-    public static final double LEVEL3 = 56.0746; //little high?? bot needs to move away a lil to shoot  
+    public static final double LEVEL3 = 55.0746; //little high?? bot needs to move away a lil to shoot  
     public static final double LEVEL4 = 80.7107; 
+    public static final double LEVEL4Auto = 75.7107; //73.7107; 
+
+    public static final double ALGAE1 = 13.87;
+    public static final double ALGAE2 = 42.12;
 
 
 // The encoder is directly mounted to the elevator shaft - 1 rotation = 1 full rotation of the chain
@@ -132,6 +137,9 @@ public final class Constants
 
     public static final double leftIntakeSpeed = 0.05;
     public static final double rightIntakeSpeed = -0.05;
+
+    public static final double L23leftshooterSpeed = -0.15;
+    public static final double L23rightshooterSpeed = 0.15;
 
   }
   public static class ClimberConstants {

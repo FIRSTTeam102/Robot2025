@@ -154,15 +154,15 @@ public class Vision
   public int getCamerasTargetID(Cameras camera){
     PhotonTrackedTarget target;
 
-    System.out.println("Vision:getCamerasTargetID: Check Camera");
+    //System.out.println("Vision:getCamerasTargetID: Check Camera");
     var results = camera.getLatestResult();
     if (!results.isEmpty()){
       var result = results.orElse(null);
       if (result == null) return(0);
       if (result.hasTargets()){
-         System.out.println("   Camera found a result target");
+         //System.out.println("   Camera found a result target");
          target = result.getBestTarget();
-         System.out.println("   Camera found a best target getting ID");
+        // System.out.println("   Camera found a best target getting ID");
          return(target.getFiducialId());
       }
     }
@@ -177,24 +177,22 @@ public class Vision
     for (Cameras camera : Cameras.values()){
       if (camera.equals(Cameras.FrontLeft)){
 
-        System.out.println("Vision:GetBestReefTarget: Check FrontLeft Camera");
+        //System.out.println("Vision:GetBestReefTarget: Check FrontLeft Camera");
         targetID = getCamerasTargetID(camera);
         
         if (isValidTargetForScoring(targetID)){
-          System.out.println("  Return frontLeftTarget ID:" + targetID);
           return(targetID);
         }
       }
       if (camera.equals(Cameras.FrontRight)){
-        System.out.println("Vision:GetBestReefTarget: Check FrontRight Camera");
+        //System.out.println("Vision:GetBestReefTarget: Check FrontRight Camera");
         targetID = getCamerasTargetID(camera);
         if (isValidTargetForScoring(targetID)){
-          System.out.println("  Return frontRightTarget ID:" + targetID);
           return(targetID);
         }
       }
     }
-    System.out.println("Vision:GetBestReefTarget: NO APRIL TAG TARGET FOUND return 0");
+    //System.out.println("Vision:GetBestReefTarget: NO APRIL TAG TARGET FOUND return 0");
     return(0);
   }
   /**
@@ -364,23 +362,25 @@ public class Vision
   {
     /*
      * Back Right Camera
-     */
+     
     BackRight("BackRight",
              new Rotation3d(0, Math.toRadians(30), Math.toRadians(160)),  //new camera needs 140
              new Translation3d(Units.inchesToMeters(-10.6488),
                                Units.inchesToMeters(-11.957134),
                                Units.inchesToMeters(6.03258)),
              VecBuilder.fill(4, 4, 8), VecBuilder.fill(0.5, 0.5, 1)),
+    */
     /**
     /**
      * Back Left Camera
-     */
+     
     BackLeft("BackLeft",
              new Rotation3d(0, Math.toRadians(30), Math.toRadians(200)),
              new Translation3d(Units.inchesToMeters(-10.6488),
                                Units.inchesToMeters(11.957134),
                                Units.inchesToMeters(6.03258)),
              VecBuilder.fill(4, 4, 8), VecBuilder.fill(0.5, 0.5, 1)),
+    */
     /**
      * Front Left Camera
      */
