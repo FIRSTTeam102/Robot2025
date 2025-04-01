@@ -7,6 +7,7 @@ package frc.robot;
 
 import java.io.File;
 import java.util.Optional;
+import java.util.Set;
 import java.util.function.BooleanSupplier;
 
 import com.pathplanner.lib.auto.AutoBuilder;
@@ -23,6 +24,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.RunCommand;
+import edu.wpi.first.wpilibj2.command.Subsystem;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.RobotModeTriggers;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
@@ -226,9 +228,10 @@ public class RobotContainer
                                         .allianceRelativeControl(true)
                               ));
     //AutoAlign that uses vision to find the target to drive to
-    
-     driverXbox.leftBumper().onTrue(Commands.runOnce(()->{drivebase.alignToReefScore(()->drivebase.getReefTargetTagID(), TargetSide.LEFT).schedule();}));
-     driverXbox.rightBumper().onTrue(Commands.runOnce(()->{drivebase.alignToReefScore(()->drivebase.getReefTargetTagID(), TargetSide.RIGHT).schedule();}));
+
+     Set<Subsystem> alignReqSet = Set.of(drivebase);
+     driverXbox.leftBumper().whileTrue(Commands.defer(()->drivebase.alignToReefScore(()->drivebase.getReefTargetTagID(), TargetSide.LEFT),alignReqSet));
+     driverXbox.rightBumper().whileTrue(Commands.defer(()->drivebase.alignToReefScore(()->drivebase.getReefTargetTagID(), TargetSide.RIGHT),alignReqSet));
     
      driverXbox.povUp().onTrue(Commands.runOnce(()->{drivebase.alignToAlgae(()->drivebase.getReefTargetTagID()).schedule();}));
      
