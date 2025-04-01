@@ -392,5 +392,15 @@ public class RobotContainer
     }
     
   }
+  public boolean alignDistanceCheck(){
+   final double x = drivebase.getDistanceToTarget();
+    
+    if(x >= 0.9 && x <= 3.43 ){
+      return(true);
+    }
+    else{
+      return(false);
+    }
+  }
   
 }

@@ -76,10 +76,11 @@ public class Lights extends SubsystemBase{
         toAnimate = new ColorFlowAnimation(255, 255, 255, 0, 0.5, 68, ColorFlowAnimation.Direction.Forward, 0);
         break;
       case OutOfRange:
-        toAnimate = new StrobeAnimation (255, 255, 0, 0, 0.5, 68, 0);
+        toAnimate = new StrobeAnimation (255, 30, 0, 0, 0.5, 68, 0);
         break;
       case Stuck:
-        toAnimate = new SingleFadeAnimation (255, 50, 255, 0, 0.75, 68, 0); 
+        toAnimate = new SingleFadeAnimation (255, 255, 0, 0, 0.75, 68, 0); 
+        break;
       case USA:
         toAnimate = new TwinkleAnimation(60, 0, 0, 0,0.7, 27,TwinkleAnimation.TwinklePercent.Percent76, 0);
         toAnimate = new TwinkleAnimation(60, 60, 60, 60,0.7, 20,TwinkleAnimation.TwinklePercent.Percent76, 28);
