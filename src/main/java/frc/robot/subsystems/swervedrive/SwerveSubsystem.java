@@ -83,8 +83,12 @@ public class SwerveSubsystem extends SubsystemBase
    private int currAprilTagTarget = 0;
 
   @AutoLogOutput
-   private double distanceToTarget = 0;
+   private double distanceToTarget = 0.0;
 
+  
+  public double getDistanceToTarget(){
+    return(distanceToTarget);
+  }
  /**
    * AprilTag field layout.
    */
