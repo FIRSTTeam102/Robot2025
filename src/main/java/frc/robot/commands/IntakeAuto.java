@@ -13,12 +13,15 @@ import frc.robot.subsystems.Shooter;
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
 public class IntakeAuto extends Command {
   Shooter shooter;
+  BooleanSupplier isIntakingSupplier;
  // BooleanSupplier coralSensor1Supplier;
   
   /** Creates a new IntakeAuto. */
-  public IntakeAuto(Shooter shooter) {  //BooleanSupplier coralSensor1Supplier
+  public IntakeAuto(Shooter shooter, BooleanSupplier isIntakinBooleanSupplier) {  //BooleanSupplier coralSensor1Supplier
     this.shooter = shooter;
+    this.isIntakingSupplier = isIntakinBooleanSupplier;
     addRequirements(shooter);
+    
     //this.coralSensor1Supplier = coralSensor1Supplier;
   }
 
@@ -41,24 +44,15 @@ public class IntakeAuto extends Command {
 
   // Returns true when the command should end.
   @Override
-  public boolean isFinished() { //This has a trigger to stop it since there is no trigger that calls this function, thus there is no trigger that can cause an interrupt.
-    //NOTE - sensors are false when they see something & true when they dont :/
-
-    //Only if coral sensor 1 is true - meaning it sees no coral & the shooter says it
-    // actually has a coral- stop the motors
-    // this is because there is no trigger to start the motors & human player will take time
-    // to drop the coral & we don't know how long.
-    //Start motors on init - coralSensor1 == true && hasCoral == false -> return false
-    //While loading - but hasn't passed coralSensor1: coralSensor1 == false && hasCoral may
-    // may not be true -> return false
-    //Done loading - coral has passed coralSensor1, so: coralSensor1 == true && hasCoral == true
-    // -> return true
-    /**if(coralSensor1Supplier.getAsBoolean() && shooter.hasCoral()){
+  public boolean isFinished() { 
+    
+    // intaking is done when the Intaking Sensor (coral sensor1 does not see a coral) &&
+    //the shooter has a coral
+    if (!isIntakingSupplier.getAsBoolean() && shooter.hasCoral()){
       return true;
     }
     else{
       return false;
-    }*/
-    return false;
+    }
   }
 }

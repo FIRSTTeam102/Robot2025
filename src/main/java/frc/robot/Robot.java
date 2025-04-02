@@ -4,6 +4,7 @@
 
 package frc.robot;
 
+import org.littletonrobotics.junction.AutoLogOutput;
 import org.littletonrobotics.junction.LoggedRobot;
 import org.littletonrobotics.junction.Logger;
 import org.littletonrobotics.junction.networktables.NT4Publisher;
@@ -16,6 +17,7 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.Constants.ElevatorConstants;
 import frc.robot.subsystems.Lights;
 import frc.robot.subsystems.Lights.AnimationTypes;
+import frc.robot.subsystems.swervedrive.SwerveSubsystem;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to each mode, as
@@ -31,6 +33,12 @@ public class Robot extends LoggedRobot
   private RobotContainer m_robotContainer;
 
   private Timer disabledTimer;
+
+  @AutoLogOutput
+  private boolean hasCoral = false;
+
+  @AutoLogOutput
+  private boolean isDistanceGood = false;
 
   public Robot()
   {
@@ -59,6 +67,7 @@ public class Robot extends LoggedRobot
     // Create a timer to disable motor brake a few seconds after disable.  This will let the robot stop
     // immediately when disabled, but then also let it be pushed more 
     disabledTimer = new Timer();
+    m_robotContainer.setLightPattern(AnimationTypes.Rainbow);
 
     if (isSimulation())
     {
@@ -80,7 +89,9 @@ public class Robot extends LoggedRobot
     // commands, running already-scheduled commands, removing finished or interrupted commands,
     // and running subsystem periodic() methods.  This must be called from the robot's periodic
     // block in order for anything in the Command-based framework to work.
+    
     CommandScheduler.getInstance().run();
+
 
     /** LIGHTS
      * 1. if elevator is at l4
@@ -92,6 +103,9 @@ public class Robot extends LoggedRobot
      * 4. else
      *  alliance color
      */
+   
+    hasCoral = m_robotContainer.hasCoral();
+    isDistanceGood = m_robotContainer.alignDistanceCheck();
 
     if(isDisabled()){
       m_robotContainer.setLightPattern(AnimationTypes.Rainbow);
@@ -102,6 +116,9 @@ public class Robot extends LoggedRobot
     else if(m_robotContainer.getElevatorHeight(ElevatorConstants.ALGAE1, 2)||
       m_robotContainer.getElevatorHeight(ElevatorConstants.ALGAE2, 2)){
       m_robotContainer.setLightPattern(AnimationTypes.ALGAE);
+    }
+    else if(m_robotContainer.alignDistanceCheck()){
+      m_robotContainer.setLightPattern(AnimationTypes.Stuck);
     }
     else if (m_robotContainer.hasCoral()){
       m_robotContainer.setLightPattern(AnimationTypes.CORAL);

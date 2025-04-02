@@ -7,7 +7,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "left side 4 (red)"
+            "pathName": "right side 8"
           }
         },
         {
@@ -77,7 +77,7 @@
                     {
                       "type": "path",
                       "data": {
-                        "pathName": "L4 to Rsource (red)"
+                        "pathName": "R8 to Lsource"
                       }
                     }
                   ]
@@ -102,7 +102,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Rsource to 4L.0"
+            "pathName": "Lsource to L10"
           }
         },
         {
@@ -172,7 +172,7 @@
                     {
                       "type": "path",
                       "data": {
-                        "pathName": "4L to Rsource"
+                        "pathName": "L10 to L Source"
                       }
                     }
                   ]
@@ -197,7 +197,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Rsource to 4R.0"
+            "pathName": "Lsource to 8R"
           }
         },
         {

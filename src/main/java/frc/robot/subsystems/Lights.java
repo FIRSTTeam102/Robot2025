@@ -15,6 +15,7 @@ import com.ctre.phoenix.led.LarsonAnimation.BounceMode;
 import com.ctre.phoenix.led.RainbowAnimation;
 import com.ctre.phoenix.led.RgbFadeAnimation;
 import com.ctre.phoenix.led.SingleFadeAnimation;
+import com.ctre.phoenix.led.StrobeAnimation;
 import com.ctre.phoenix.led.TwinkleAnimation;
 import com.ctre.phoenix.led.TwinkleAnimation.TwinklePercent;
 import com.ctre.phoenix.led.TwinkleOffAnimation.TwinkleOffPercent;
@@ -36,6 +37,8 @@ public class Lights extends SubsystemBase{
     ALGAE,
     Rainbow,
     USA,
+    OutOfRange,
+    Stuck
   }
   private AnimationTypes prevAnimation = AnimationTypes.Rainbow;
 
@@ -72,6 +75,12 @@ public class Lights extends SubsystemBase{
       case CORAL:
         toAnimate = new ColorFlowAnimation(255, 255, 255, 0, 0.5, 68, ColorFlowAnimation.Direction.Forward, 0);
         break;
+      case OutOfRange:
+        toAnimate = new StrobeAnimation (255, 30, 0, 0, 0.5, 68, 0);
+        break;
+      case Stuck:
+        toAnimate = new SingleFadeAnimation (255, 255, 0, 0, 0.75, 68, 0); 
+        break;
       case USA:
         toAnimate = new TwinkleAnimation(60, 0, 0, 0,0.7, 27,TwinkleAnimation.TwinklePercent.Percent76, 0);
         toAnimate = new TwinkleAnimation(60, 60, 60, 60,0.7, 20,TwinkleAnimation.TwinklePercent.Percent76, 28);
@@ -96,7 +105,7 @@ public class Lights extends SubsystemBase{
       setPattern(AnimationTypes.BLUE);
     }
     else {
-      setPattern(AnimationTypes.USA);
+      setPattern(AnimationTypes.Rainbow);
     }
   }
 }

@@ -7,6 +7,8 @@ package frc.robot;
 
 import java.io.File;
 import java.util.Optional;
+import java.util.Set;
+import java.util.function.BooleanSupplier;
 
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
@@ -22,6 +24,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.RunCommand;
+import edu.wpi.first.wpilibj2.command.Subsystem;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.RobotModeTriggers;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
@@ -59,7 +62,8 @@ public class RobotContainer
 
   DigitalInput coralSensor1 = new DigitalInput(Constants.ShooterConstants.coralSensor1Back);
   Trigger funnelTrigger;
-  
+  Trigger isIntakingTrigger = new Trigger(() -> !coralSensor1.get());
+  BooleanSupplier isIntakingSupplier = ()->!coralSensor1.get();
   // The robot's subsystems and commands are defined here...
 
   public final Shooter shooter = new Shooter();
@@ -122,7 +126,7 @@ public class RobotContainer
    */
   public RobotContainer()
   {
-    NamedCommands.registerCommand("Intake", new IntakeAuto(shooter));
+    NamedCommands.registerCommand("Intake", new IntakeAuto(shooter,isIntakingSupplier));
     NamedCommands.registerCommand("Shoot", new ShootCoral(shooter, Constants.ShooterConstants.LeftMaxShooterSpeed, Constants.ShooterConstants.RightMaxShooterSpeed));
     NamedCommands.registerCommand("ShootTrough", new ShootCoral(shooter, Constants.ShooterConstants.L1LeftShooterSpeed,Constants.ShooterConstants.L1RightShooterSpeed)); //change the parameters for L1
     NamedCommands.registerCommand("Go to L1",elevator.setElevatorHeight(ElevatorConstants.LEVEL1));
@@ -185,9 +189,10 @@ public class RobotContainer
    */
   private void configureBindings()
   {
-    funnelTrigger = new Trigger(coralSensor1::get); //make the trigger and bind it to the funnel sensor
-
-    funnelTrigger.whileFalse(new Intake(shooter));
+    //funnelTrigger = new Trigger(coralSensor1::get); //make the trigger and bind it to the funnel sensor
+   
+    
+    isIntakingTrigger.and(RobotModeTriggers.teleop()).whileTrue(new Intake(shooter));
 
    //default drive mode is field oriented w/ left joystick controlling speed & direction
    //right joystick controls top rotation w/ angular velocity (X axis of right joy stick)
@@ -223,9 +228,10 @@ public class RobotContainer
                                         .allianceRelativeControl(true)
                               ));
     //AutoAlign that uses vision to find the target to drive to
-    
-     driverXbox.leftBumper().onTrue(Commands.runOnce(()->{drivebase.alignToReefScore(()->drivebase.getReefTargetTagID(), TargetSide.LEFT).schedule();}));
-     driverXbox.rightBumper().onTrue(Commands.runOnce(()->{drivebase.alignToReefScore(()->drivebase.getReefTargetTagID(), TargetSide.RIGHT).schedule();}));
+
+     Set<Subsystem> alignReqSet = Set.of(drivebase);
+     driverXbox.leftBumper().whileTrue(Commands.defer(()->drivebase.alignToReefScore(()->drivebase.getReefTargetTagID(), TargetSide.LEFT),alignReqSet));
+     driverXbox.rightBumper().whileTrue(Commands.defer(()->drivebase.alignToReefScore(()->drivebase.getReefTargetTagID(), TargetSide.RIGHT),alignReqSet));
     
      driverXbox.povUp().onTrue(Commands.runOnce(()->{drivebase.alignToAlgae(()->drivebase.getReefTargetTagID()).schedule();}));
      
@@ -378,6 +384,23 @@ public class RobotContainer
     return(elevator.aroundHeight(height, tolerance));
   }
   public boolean hasCoral(){
-    return(shooter.hasCoral());
+    if(!isIntakingSupplier.getAsBoolean() && shooter.hasCoral()){
+      return(true);
+    }
+    else {
+      return(false);
+    }
+    
   }
+  public boolean alignDistanceCheck(){
+   final double x = drivebase.getDistanceToTarget();
+    
+    if(x >= 0.9 && x <= 3.43 ){
+      return(true);
+    }
+    else{
+      return(false);
+    }
+  }
+  
 }

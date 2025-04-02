@@ -7,7 +7,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "left side 4 (red)"
+            "pathName": "left side 4"
           }
         },
         {
@@ -77,7 +77,7 @@
                     {
                       "type": "path",
                       "data": {
-                        "pathName": "L4 to Rsource (red)"
+                        "pathName": "L4 to Rsource.0"
                       }
                     }
                   ]
