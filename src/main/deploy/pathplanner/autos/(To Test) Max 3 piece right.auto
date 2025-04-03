@@ -5,7 +5,7 @@
     "data": {
       "commands": [
         {
-          "type": "sequential",
+          "type": "parallel",
           "data": {
             "commands": [
               {
@@ -32,30 +32,37 @@
                     }
                   ]
                 }
-              },
+              }
+            ]
+          }
+        },
+        {
+          "type": "sequential",
+          "data": {
+            "commands": [
               {
-                "type": "sequential",
+                "type": "race",
                 "data": {
                   "commands": [
                     {
-                      "type": "race",
+                      "type": "named",
                       "data": {
-                        "commands": [
-                          {
-                            "type": "named",
-                            "data": {
-                              "name": "Shoot"
-                            }
-                          },
-                          {
-                            "type": "wait",
-                            "data": {
-                              "waitTime": 0.2
-                            }
-                          }
-                        ]
+                        "name": "Shoot"
                       }
                     },
+                    {
+                      "type": "wait",
+                      "data": {
+                        "waitTime": 0.2
+                      }
+                    }
+                  ]
+                }
+              },
+              {
+                "type": "parallel",
+                "data": {
+                  "commands": [
                     {
                       "type": "named",
                       "data": {
@@ -63,9 +70,60 @@
                       }
                     },
                     {
+                      "type": "sequential",
+                      "data": {
+                        "commands": [
+                          {
+                            "type": "wait",
+                            "data": {
+                              "waitTime": 0.15
+                            }
+                          },
+                          {
+                            "type": "path",
+                            "data": {
+                              "pathName": "Max L4 to Rsource"
+                            }
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Intake"
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "Max Rsource to 4L"
+                }
+              },
+              {
+                "type": "sequential",
+                "data": {
+                  "commands": [
+                    {
                       "type": "wait",
                       "data": {
-                        "waitTime": 0.5
+                        "waitTime": 1.0
+                      }
+                    },
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "Go to L4 V2"
                       }
                     }
                   ]
@@ -98,24 +156,38 @@
                 }
               },
               {
-                "type": "named",
+                "type": "parallel",
                 "data": {
-                  "name": "Go to home"
-                }
-              },
-              {
-                "type": "wait",
-                "data": {
-                  "waitTime": 0.3
+                  "commands": [
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "Go to home"
+                      }
+                    },
+                    {
+                      "type": "sequential",
+                      "data": {
+                        "commands": [
+                          {
+                            "type": "wait",
+                            "data": {
+                              "waitTime": 0.15
+                            }
+                          },
+                          {
+                            "type": "path",
+                            "data": {
+                              "pathName": "Max 4L to Rsource"
+                            }
+                          }
+                        ]
+                      }
+                    }
+                  ]
                 }
               }
             ]
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "Max L4 to Rsource"
           }
         },
         {
@@ -131,7 +203,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "Max Rsource to 4L"
+                  "pathName": "Max Rsource to 4R"
                 }
               },
               {
@@ -141,7 +213,7 @@
                     {
                       "type": "wait",
                       "data": {
-                        "waitTime": 0.7
+                        "waitTime": 1.0
                       }
                     },
                     {
@@ -188,7 +260,7 @@
               {
                 "type": "wait",
                 "data": {
-                  "waitTime": 0.3
+                  "waitTime": 0.15
                 }
               }
             ]
