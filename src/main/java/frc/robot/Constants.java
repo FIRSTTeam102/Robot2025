@@ -78,8 +78,8 @@ public final class Constants
     public static final double HOME = 0.00
     ;
     public static final double LEVEL1 = 26.479;
-    public static final double LEVEL2 = 37.6415;
-    public static final double LEVEL3 = 55.0746; //little high?? bot needs to move away a lil to shoot  
+    public static final double LEVEL2 = 35.8307; //37
+    public static final double LEVEL3 = 52.3724; //55  
     public static final double LEVEL4 = 80.7107; 
     public static final double LEVEL4Auto = 75.7107; //73.7107; 
 
@@ -138,8 +138,8 @@ public final class Constants
     public static final double leftIntakeSpeed = 0.05;
     public static final double rightIntakeSpeed = -0.05;
 
-    public static final double L23leftshooterSpeed = -0.15;
-    public static final double L23rightshooterSpeed = 0.15;
+    public static final double L23leftshooterSpeed = -0.10; //-0.15
+    public static final double L23rightshooterSpeed = 0.10; //0.15
 
   }
   public static class ClimberConstants {
