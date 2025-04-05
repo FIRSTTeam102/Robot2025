@@ -29,6 +29,12 @@
                       "data": {
                         "name": "Go to L4 V2"
                       }
+                    },
+                    {
+                      "type": "wait",
+                      "data": {
+                        "waitTime": 0.1
+                      }
                     }
                   ]
                 }
@@ -125,6 +131,12 @@
                       "data": {
                         "name": "Go to L4 V2"
                       }
+                    },
+                    {
+                      "type": "wait",
+                      "data": {
+                        "waitTime": 0.1
+                      }
                     }
                   ]
                 }
@@ -220,6 +232,12 @@
                       "type": "named",
                       "data": {
                         "name": "Go to L4 V2"
+                      }
+                    },
+                    {
+                      "type": "wait",
+                      "data": {
+                        "waitTime": 0.1
                       }
                     }
                   ]
