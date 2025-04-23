@@ -113,13 +113,22 @@ public class Robot extends LoggedRobot
     else if(m_robotContainer.getElevatorHeight(ElevatorConstants.LEVEL4, 4)){
       m_robotContainer.setLightPattern(AnimationTypes.LEVEL4);
     }
+    else if(m_robotContainer.getElevatorHeight(ElevatorConstants.LEVEL3, 4)){
+      m_robotContainer.setLightPattern(AnimationTypes.LEVEL3);
+    }
+    else if(m_robotContainer.getElevatorHeight(ElevatorConstants.LEVEL2, 4)){
+      m_robotContainer.setLightPattern(AnimationTypes.LEVEL2);
+    }
+    else if(m_robotContainer.getElevatorHeight(ElevatorConstants.LEVEL1, 4)){
+      m_robotContainer.setLightPattern(AnimationTypes.LEVEL1);
+    }
     else if(m_robotContainer.getElevatorHeight(ElevatorConstants.ALGAE1, 2)||
       m_robotContainer.getElevatorHeight(ElevatorConstants.ALGAE2, 2)){
       m_robotContainer.setLightPattern(AnimationTypes.ALGAE);
     }
-    else if(m_robotContainer.alignDistanceCheck()){
+   /* else if(m_robotContainer.alignDistanceCheck()){   // temp disabled
       m_robotContainer.setLightPattern(AnimationTypes.Stuck);
-    }
+    } */
     else if (m_robotContainer.hasCoral()){
       m_robotContainer.setLightPattern(AnimationTypes.CORAL);
     }
