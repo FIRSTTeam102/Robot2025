@@ -38,7 +38,10 @@ public class Lights extends SubsystemBase{
     Rainbow,
     USA,
     OutOfRange,
-    Stuck
+    Stuck,
+    LEVEL1,
+    LEVEL2,
+    LEVEL3
   }
   private AnimationTypes prevAnimation = AnimationTypes.Rainbow;
 
@@ -88,6 +91,15 @@ public class Lights extends SubsystemBase{
         break;
       case Rainbow:
         toAnimate = new RainbowAnimation(1,0.7,totalLEDS);
+        break;
+      case LEVEL1: //just for showcasing bot for byctw day, delete after
+        toAnimate = new ColorFlowAnimation(255, 0, 0, 0, 0.5, 68, ColorFlowAnimation.Direction.Forward, 0);
+        break;
+      case LEVEL2: //just for showcasing bot for byctw day, delete after
+        toAnimate = new TwinkleAnimation(255, 105, 180, 0, 0.75, 68, TwinkleAnimation.TwinklePercent.Percent88, 0 );
+        break;
+      case LEVEL3: //just for showcasing bot for byctw day, delete after
+        toAnimate = new TwinkleAnimation(255, 105, 180, 0, 0.75, 68, TwinkleAnimation.TwinklePercent.Percent88, 0 );
         break;
       default:
         toAnimate = new RainbowAnimation(1,0.7,totalLEDS);
