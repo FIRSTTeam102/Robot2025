@@ -210,30 +210,30 @@ public class RobotContainer
   //changes and is in effect until it is changed back
 
   //Drive in precise mode when left trigger is pressed
-   driverXbox.leftTrigger().onTrue(Commands.runOnce(
-               ()->driveAngularVelocity.scaleTranslation(Constants.DrivebaseConstants.DrivePrecisionScale)
-                                       .scaleRotation(0.3)
-                                       ))
-                           .onFalse(Commands.runOnce(
-                ()->driveAngularVelocity.scaleTranslation(Constants.DrivebaseConstants.DriveFastScale)
-                                        .scaleRotation(0.5)));
+  // driverXbox.leftTrigger().onTrue(Commands.runOnce(
+    //           ()->driveAngularVelocity.scaleTranslation(Constants.DrivebaseConstants.DrivePrecisionScale)
+      //                                 .scaleRotation(0.3)
+        //                               ))
+          //                 .onFalse(Commands.runOnce(
+            //    ()->driveAngularVelocity.scaleTranslation(Constants.DrivebaseConstants.DriveFastScale)
+              //                          .scaleRotation(0.5)));
                                         
   //Enable robotRelative driving if the right trigger is pressed.
-    driverXbox.rightTrigger().onTrue(Commands.runOnce(
+   /**  driverXbox.rightTrigger().onTrue(Commands.runOnce(
                 ()->driveAngularVelocity.robotRelative(true)
                                         .allianceRelativeControl(false)
                                         ))
                               .onFalse(Commands.runOnce(
                 ()->driveAngularVelocity.robotRelative(false)
                                         .allianceRelativeControl(true)
-                              ));
+                              ));*/
     //AutoAlign that uses vision to find the target to drive to
 
      Set<Subsystem> alignReqSet = Set.of(drivebase);
-     driverXbox.leftBumper().whileTrue(Commands.defer(()->drivebase.alignToReefScore(()->drivebase.getReefTargetTagID(), TargetSide.LEFT),alignReqSet));
-     driverXbox.rightBumper().whileTrue(Commands.defer(()->drivebase.alignToReefScore(()->drivebase.getReefTargetTagID(), TargetSide.RIGHT),alignReqSet));
+    // driverXbox.leftBumper().whileTrue(Commands.defer(()->drivebase.alignToReefScore(()->drivebase.getReefTargetTagID(), TargetSide.LEFT),alignReqSet));
+     //driverXbox.rightBumper().whileTrue(Commands.defer(()->drivebase.alignToReefScore(()->drivebase.getReefTargetTagID(), TargetSide.RIGHT),alignReqSet));
     
-     driverXbox.povUp().onTrue(Commands.runOnce(()->{drivebase.alignToAlgae(()->drivebase.getReefTargetTagID()).schedule();}));
+     //driverXbox.povUp().onTrue(Commands.runOnce(()->{drivebase.alignToAlgae(()->drivebase.getReefTargetTagID()).schedule();}));
      
 
     //TODO ???? right bumper used - driverXbox.rightBumper().whileTrue(...) change center of rotation to left or right front corner
@@ -276,10 +276,10 @@ public class RobotContainer
     
 
     //switch to Robot oriented driving while right trigger is held in both simulation & live robot
-    if (Robot.isSimulation())
+    /** if (Robot.isSimulation())
     {
       driverXbox.rightTrigger().whileTrue(driveRobotOrientAngularVelocitySim);
-    } 
+    } */
 
     //Left operator joystick controls manual elevator control regardless of mode
     elevator.setDefaultCommand(new ManualElevatorControl(elevator,  () -> operatorXbox.getLeftY() * -1));
@@ -304,7 +304,7 @@ public class RobotContainer
     }
       var allianceColor = DriverStation.getAlliance();
 
-    if (allianceColor.isPresent() && allianceColor.get() == DriverStation.Alliance.Red) {
+  /**  if (allianceColor.isPresent() && allianceColor.get() == DriverStation.Alliance.Red) {
       driverXbox.x().and(driverXbox.leftBumper()).whileTrue(drivebase.alignToReefScore(6,TargetSide.LEFT));
       driverXbox.x().and(driverXbox.rightBumper()).whileTrue(drivebase.alignToReefScore(6,TargetSide.RIGHT));
   
@@ -344,7 +344,7 @@ public class RobotContainer
     } else {
       System.out.println("no alliance found");
     }
-    } 
+    } */
     
 
     
