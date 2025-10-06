@@ -83,8 +83,8 @@ public class RobotContainer
    * down - so switch this to 0.9 or 1 to request faster speeds)
    */
   SwerveInputStream driveAngularVelocity = SwerveInputStream.of(drivebase.getSwerveDrive(),
-                                                                () -> driverXbox.getLeftY() * -1,
-                                                                () -> driverXbox.getLeftX() * -1)
+                                                                () -> driverXbox.getLeftY() * 1,
+                                                                () -> driverXbox.getLeftX() * 1)
 
                                                             .withControllerRotationAxis(()->driverXbox.getRightX() * -1)
                                                             .deadband(OperatorConstants.DEADBAND)
