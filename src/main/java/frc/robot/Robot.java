@@ -28,7 +28,11 @@ import frc.robot.subsystems.swervedrive.SwerveSubsystem;
  * described in the TimedRobot documentation. If you change the name of this class or the package after creating this
  * project, you must also update the build.gradle file in the project.
  */
-public class Robot extends LoggedRobot
+
+
+
+ 
+public class Robot extends LoggedRobot 
 {
 
   private static Robot   instance;
@@ -57,9 +61,12 @@ public class Robot extends LoggedRobot
   /**
    * This function is run when the robot is first started up and should be used for any initialization code.
    */
+  private NetworkTable table;
+
   @Override
   public void robotInit()
   {
+    table =  NetworkTableInstance.getDefault().getTable("SmartDashboard");
 
     Logger.recordMetadata("ProjectName", "MyProject"); // Set a metadata value
     Logger.addDataReceiver(new NT4Publisher()); // Publish data to NetworkTables
@@ -205,6 +212,8 @@ public class Robot extends LoggedRobot
   @Override
   public void teleopPeriodic()
   {
+    double testVariable = table.getEntry("Testing").getDouble(0.0);
+        System.out.println(testVariable);
   }
 
   @Override
