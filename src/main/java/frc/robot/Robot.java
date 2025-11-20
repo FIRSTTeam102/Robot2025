@@ -34,6 +34,7 @@ import frc.robot.subsystems.swervedrive.SwerveSubsystem;
  
 public class Robot extends LoggedRobot 
 {
+  private NetworkTable table;
 
   private static Robot   instance;
   private        Command m_autonomousCommand;
@@ -61,16 +62,15 @@ public class Robot extends LoggedRobot
   /**
    * This function is run when the robot is first started up and should be used for any initialization code.
    */
-  private NetworkTable table;
-
   @Override
   public void robotInit()
   {
-    table =  NetworkTableInstance.getDefault().getTable("SmartDashboard");
+    
 
     Logger.recordMetadata("ProjectName", "MyProject"); // Set a metadata value
     Logger.addDataReceiver(new NT4Publisher()); // Publish data to NetworkTables
     Logger.start();
+    table =  NetworkTableInstance.getDefault().getTable("SmartDashboard");
 
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
@@ -103,7 +103,7 @@ public class Robot extends LoggedRobot
     // block in order for anything in the Command-based framework to work.
     
     CommandScheduler.getInstance().run();
-
+    
 
     /** LIGHTS
      * 1. if elevator is at l4
@@ -212,9 +212,11 @@ public class Robot extends LoggedRobot
   @Override
   public void teleopPeriodic()
   {
-    double testVariable = table.getEntry("Testing").getDouble(0.0);
-        System.out.println(testVariable);
+    double testVariable = table.getEntry("Alerts").getDouble(0.0);
+    System.out.println(testVariable);
+  
   }
+        
 
   @Override
   public void testInit()
