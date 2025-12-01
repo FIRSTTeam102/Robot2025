@@ -34,7 +34,7 @@ import frc.robot.subsystems.swervedrive.SwerveSubsystem;
  
 public class Robot extends LoggedRobot 
 {
-  private NetworkTable table;
+  public NetworkTable table;
 
   private static Robot   instance;
   private        Command m_autonomousCommand;
